@@ -1,0 +1,147 @@
+.bgDark{
+  background-color: #343a40;
+}
+
+html{
+  font-family:Verdana, Tahoma, sans-serif;
+  font-size: 62.5%;  /*62.5% = 10px = 1 rem donc 12px = 1.2rem, 14px = 1.4rem, 16px = 1.6rem etc...*/
+}
+
+body, p, h5, h6, .btn,
+.accordion-button,
+.form-select, .form-text{
+  font-size: 1.6rem;
+}
+
+h1{
+  font-size: 3.2rem;
+}
+
+h2, legend{
+  font-size: 2.4rem;
+}
+
+h3{
+  font-size: 1.8rem;
+}
+
+h4{
+  font-size: 1.7rem;
+}
+
+input, textarea{
+  border: none;
+  width: 100%;
+  font-size: 1.6rem;  
+}
+
+/* Manage color star*/
+.rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rating i {
+  font-size: 24px;
+  color: #d7d7d7;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.rating i:hover,
+.rating i.active {
+  color: #ffcc00;
+}
+
+/*-----------------------------------------------------------------------*/
+/*--------PARAMETRES ECRANS SUPERIEURs A 460px---------------------------*/
+/*-----------------------------------------------------------------------*/
+
+header{
+  background-image: url('../img/banner/Nebuleuse_Careine_576x150_XS.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 150px;
+}
+
+footer{
+  background-image: url('../img/banner/champ_profond_1233x400.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 200px;
+}
+
+@media screen and (min-width: 576px){
+
+  header{
+    background-image: url('../img/banner/Nebuleuse_Careine_576x200_S.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 200px;
+  }
+
+}
+
+@media screen and (min-width: 768px){
+
+  header{
+    background-image: url('../img/banner/Nebuleuse_Careine_768x250_M.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 250px;
+  }
+
+}
+
+@media screen and (min-width: 992px){
+
+  header{
+    background-image: url('../img/banner/Nebuleuse_Careine_992x300_L.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 300px;
+  }
+
+  #home_article2_img{
+    width:251px;
+    height:750px;
+    object-fit: cover;
+  }
+
+}
+
+@media screen and (min-width: 1200px){
+
+  header{
+    background-image: url('../img/banner/Nebuleuse_Careine_1200x350_XL.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 350px;
+  }
+
+  #home_article2_img{
+    width:251px;
+    height:600px;
+    object-fit: cover;
+  }
+
+}
+
+@media screen and (min-width: 1400px){
+
+  header{
+    background-image: url('../img/banner/Nebuleuse_Careine_1820x400_XXL.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+  }
+
+}

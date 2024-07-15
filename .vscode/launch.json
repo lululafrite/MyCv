@@ -1,0 +1,120 @@
+//Le tuto Xdebug est après de la configuration ci-dessous
+//Le tuto Debug javascript est après le tuto XDEBUG
+
+{
+    // Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
+    // Pointez pour afficher la description des attributs existants.
+    // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
+
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Lancer node",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/public"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Lancer Chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/public"
+        },
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Lancer Edge",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/public"
+        },
+        {
+            "type": "php",
+            "request": "launch",
+            "name": "Lancer Xdebug",
+            "port": 9003
+        }
+    ]
+}
+
+//************************************************************
+// DEBOGAGE AVEC XDEBUG pour PHP
+//************************************************************
+//
+// 1) vérifier et configurer le serveur php pour Xdebug :
+//    1.1) tapez la commande php -i dans une console (cmd ou powershell)
+//    1.2) selectionnez puis copier (ctrl c) le résultat
+//    1.3) rendez-vous sur le site https://xdebug.org/wizard
+//    1.4) collez le résultat de la console dans le champ texte du site https://xdebug.org/wizard
+//    1.5) suivez les instructions :
+//          - télécharger dll puis renomer le fichier dll,
+//          - copier coller le fichier dans le dossier ext,
+//          - modifier le fichier php.ini (voir ci-dessous).
+//    1.6) modifier le fichier php.ini : si elles n'existent pas, ajoutez le lignes ci-dessous dans le fichier php.ini.
+//         [XDEBUG]
+//         zend_extension = xdebug
+//         xdebug.mode=debug,Develop
+//         ;xdebug.start_with_request = yes
+//         xdebug.start_with_request = trigger
+// 2) insatller l'extension php debug edité par xdebug.org
+// 3) rendez-vous dans le menu de débogage de vscode puis créez le fichier launch.json 
+// 4) ajouter la fonction xdebug_start(); dans le fichier index.php de démarrage de votre site web
+//    commentez la fonction //xdebug_start();
+//
+//************************************************************
+// Lancer le DEBOGAGE AVEC votre navigateur
+//************************************************************
+//
+// 1) décommenter la fonction xdebug_start();
+// 2) Ajouter au moins un point d'arrêt dans votre code php
+// 3) Démarrez la session de débogage avec "Listen for Xdebug"
+// 4) ouvrer votre site dans votre navigateur
+//    La session de débogage c'est arrêtée sur le premier point d'arrêt, vous pouvez commencer votre débogage.
+//
+//************************************************************
+// stopper le DEBOGAGE AVEC votre navigateur
+//************************************************************
+//
+// 1) cliquez sur le bouton "arrêter le débogage"
+// 2) commentez la fonction //xdebug_start();
+//
+//************************************************************
+// information complémentaire sur Xdebug
+//************************************************************
+//
+// Pour toutes informatons plus détaillées rendez-vous sur ce site :
+//  https://www.devenir-webmaster.com/V2/TUTO/CHAPITRE/OUTILS/25-Xdebug-3/
+//  https://www.youtube.com/watch?v=ZTU6cRv0hKs
+//
+//************************************************************
+// Fin tuto Xdebug
+//************************************************************
+
+
+//************************************************************
+// Tuto Debug Javascript
+//************************************************************
+/*
+Installez les extentions suivantes :
+
+    - JavaScript Debugger (Nightly) edité par Microsoft
+    - JavaScript Debugger edité par Microsoft
+
+Créez (à la racine du projet) et configurez le fichier package.json :
+
+    {
+        "name": "NomDuProjet", //Remplacez NomDuProjet par le nom de votre projet
+        "version": "1.0.0",
+        "description": "Description du projet",  //Remplacez la description par celle de votre projet
+        "main": "home.php",
+        "scripts": {
+            "start": "php -S 0.0.0.0:8080 -t public"
+        }
+    }
+
+Ouvrir un terminal : Javascript Debug Terminal
+Executez la commande : npm run start
+Lancer le débugeur Edge ou Chrome : lancer Edge ou Lancer Chrome
+
+*/
