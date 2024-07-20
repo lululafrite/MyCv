@@ -1,9 +1,9 @@
 <?php
-
-    include_once('../common/utilies.php');
-    include_once('../model/home.class.php');
-
- //   use \Firebase\JWT\JWT;
+    
+    use MyCv\Model\Home;
+    
+    require_once('../common/utilies.php');
+    require_once('../model/home.class.php');
 
     $btn_save_header = isset($_POST['btn_save_header']) ? true : false;
     unset($_POST['btn_save_header']);
@@ -17,16 +17,8 @@
     $btn_home_article2_img = isset($_POST['btn_home_article2_img']) ? true : false;
     unset($_POST['btn_home_article2_img']);
 
-    
-    if(!isset($homes)){
-        $homes = new Home();
-    }
+    $homes = new Home();
 
-/*    $jwt1 = JWT::jsondecode($_SESSION['jwt']);
-    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']));
-
-    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['delay']){
-*/
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if(verifCsrf('csrfHome') || verifCsrf('csrfHeader')){
@@ -35,44 +27,53 @@
                 
                 saveHome($homes,'');
 
-            }
+            }else if($btn_home_article1_img || $btn_home_article2_img){
+                
+                $home = $homes->get(1,'home_id','DESC','0','10');
 
-            //***********************************************************************************************
-            // traitement du téléchargement des images 
-            //***********************************************************************************************
+                $homes->setHomeTitle($home[0]['home_title']);
+                $homes->setHomeSubtitle($home[0]['home_subtitle']);
+        
+                $homes->setHomeTitlePage($home[0]['home_title_page']);
+        
+                $homes->setHomeArticle1Title($home[0]['home_article1_title']);
+                $homes->setHomeArticle1($home[0]['home_article1']);
+                $homes->setHomeArticle1Img( $home[0]['home_article1_img']);
+        
+                $homes->setHomeArticle2Title($home[0]['home_article2_title']);
+                $homes->setHomeArticle2($home[0]['home_article2']);
+                $homes->setHomeArticle2Img($home[0]['home_article2_img']);
 
-            if($btn_home_article1_img){
+                if($btn_home_article1_img){
 
-                //$btn_home_article1_img = false;
+                    if (uploadImg('newImgChapter1','text_home_article1_img','file_home_article1_img','./img/picture/')){
 
-                if (uploadImg('newImgChapter1','text_home_article1_img','file_home_article1_img','./img/picture/')){
+                        $home[0]['home_article1_img'] = $_SESSION['newImgChapter1'];
+                        $homes->setHomeArticle1Img($_SESSION['newImgChapter1']);
+                        $homes->updateHome(1);
 
-                    $home[0]['home_article1_img'] = $_SESSION['newImgChapter1'];
-                    //saveHome($homes,'');
+                    }else{
 
-                }else{
+                        echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
 
-                    echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
+                    }
+
+                }else if($btn_home_article2_img){
+
+                    if (uploadImg('newImgChapter2','text_home_article2_img','file_home_article2_img','./img/picture/')){
+
+                        $home[0]['home_article2_img'] = $_SESSION['newImgChapter2'];
+                        $homes->setHomeArticle2Img($_SESSION['newImgChapter2']);
+                        $homes->updateHome(1);
+
+                    }else{
+
+                        echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
+
+                    }
 
                 }
-
-            }
-
-            if($btn_home_article2_img){
-
-                //$btn_home_article2_img = false;
-
-                if (uploadImg('newImgChapter2','text_home_article2_img','file_home_article2_img','./img/picture/')){
-
-                    $home[0]['home_article2_img'] = $_SESSION['newImgChapter2'];
-                    //saveHome($homes,'');
-
-                }else{
-
-                    echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
-
-                }
-
+            
             }
 
         }
@@ -80,8 +81,11 @@
     }
 
     if(
-        ($btn_home_article1_img || $btn_home_article2_img && (!$btn_save_header && !$btn_home_save))
+        /*($btn_home_article1_img || $btn_home_article2_img && (!$btn_save_header && !$btn_home_save))
         ||
+        (!$btn_home_article1_img && !$btn_home_article2_img && !$btn_save_header && !$btn_home_save)*/
+        /*($btn_save_header || $btn_home_save)
+        ||*/
         (!$btn_home_article1_img && !$btn_home_article2_img && !$btn_save_header && !$btn_home_save)
     ){
         

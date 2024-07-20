@@ -1,5 +1,7 @@
 <?php
 
+	namespace GarageParrot\Model;
+
 	class User
 	{
 
@@ -119,7 +121,7 @@
 		private $listPseudo;
 		public function getPseudoUser()
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -143,7 +145,7 @@
 		private $theUser;
 		public function getUser($îdUser)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -185,7 +187,7 @@
 		private $userList;
 		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -223,7 +225,7 @@
 
 		public function addUser()
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -255,7 +257,7 @@
 
 		public function updateUser($idUser)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -288,7 +290,7 @@
 
 		public function deleteUser($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -310,7 +312,7 @@
 		private $userExist;
 		public function verifUser($email)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

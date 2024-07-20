@@ -1,5 +1,7 @@
 <?php
 
+	namespace GarageParrot\Model;
+
 	class Type
 	{
 
@@ -30,7 +32,7 @@
 		private $theType;
 		public function getType($îdType)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -61,7 +63,7 @@
 		private $userTypeList;
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -92,7 +94,7 @@
 
 		public function addUserType()
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -119,7 +121,7 @@
 
 		public function updateUserType($idType)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -143,7 +145,7 @@
 
 		public function deleteUserType($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

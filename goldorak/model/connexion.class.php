@@ -4,7 +4,7 @@
         private $dataConnect;
         public function getPw($email){
 
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -30,7 +30,7 @@
         }
         public function queryConnect($email,$pw){
 
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

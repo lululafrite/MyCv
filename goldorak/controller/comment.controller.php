@@ -2,8 +2,8 @@
 
     use \Firebase\JWT\JWT;
 
-    include_once('../../common/utilies.php');
-    include_once('../../goldorak/model/comment.class.php');
+    require_once('../../common/utilies.php');
+    require_once('../../goldorak/model/comment.class.php');
     
     $bt_save_comment = isset($_POST['bt_save_comment']) ? true : false;
     unset($_POST['bt_save_comment']);

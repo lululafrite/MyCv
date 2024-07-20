@@ -1,5 +1,9 @@
 <?php
 
+	namespace GarageParrot\Model;
+	use \PDO;
+	use \PDOException;
+
 	class Car
 	{
 		private $id_car;
@@ -189,7 +193,7 @@
 		private $theCar;
 		public function getCar($idCar)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -241,7 +245,7 @@
 		private $carList;
 		public function get($whereClause, $orderBy = 'price', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -297,7 +301,7 @@
 
 		public function addCar()
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -370,7 +374,7 @@
 
 		public function updateCar($idCar)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -435,7 +439,7 @@
 
 		public function deleteCar($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -463,7 +467,7 @@
 		private $carExist;
 		public function verifCar($brand, $model, $motorization, $year, $mileage, $price)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

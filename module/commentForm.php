@@ -1,5 +1,5 @@
-<?php include_once("../common/utilies.php"); ?>
-<?php include_once("../controller/comment.controller.php"); ?>
+<?php require_once("../common/utilies.php"); ?>
+<?php require_once("../controller/comment.controller.php"); ?>
 
 <table class="table table-dark table-bordered">
 

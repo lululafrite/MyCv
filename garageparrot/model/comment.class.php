@@ -1,5 +1,7 @@
 <?php
 
+	namespace GarageParrot\Model;
+
 	class Comment
 	{
 
@@ -66,7 +68,7 @@
 		private $theComment;
 		public function getComments($îdComment)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -102,7 +104,7 @@
 		private $CommentList;
 		public function get($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -143,7 +145,7 @@
 		
 		public function addComment()
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -203,7 +205,7 @@
 
 		public function updateComment($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -243,7 +245,7 @@
 		
 		public function deleteComment($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

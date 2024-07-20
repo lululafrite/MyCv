@@ -1,4 +1,6 @@
 <?php
+    use GarageParrot\Model\Schedules;
+
     include('../../garageparrot/model/schedules.class.php');
     $scheldules_ = new Schedules();
     if(isset($_POST['bt_schedules'])){

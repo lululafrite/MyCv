@@ -1,4 +1,4 @@
-<?php include_once ("../../goldorak/controller/home.controller.php");?>
+<?php require_once ("../../goldorak/controller/home.controller.php");?>
 
 <form method="post" id="formHome"  enctype="multipart/form-data">
     

@@ -1,6 +1,8 @@
 <?php
-    include_once('../../common/utilies.php');
-    include_once('../../garageparrot/model/comment.class.php');
+    use GarageParrot\Model\Comment;
+
+    require_once('../../common/utilies.php');
+    require_once('../../garageparrot/model/comment.class.php');
 
     $comments = new Comment();
 

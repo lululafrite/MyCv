@@ -1,4 +1,9 @@
 <?php
+
+	namespace MyCv\Model;
+	use \PDO;
+	use \PDOException;
+
 	class dbConnect
 	{
 		public function connectionDb(){

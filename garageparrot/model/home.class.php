@@ -1,5 +1,9 @@
 <?php
 
+	namespace GarageParrot\Model;
+	use \PDO;
+	use \PDOException;
+
 	class Home
 	{
 		private $id_home;
@@ -209,7 +213,7 @@
 		private $theHome;
 		public function getHome($idHome)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -259,7 +263,7 @@
 		private $homeList;
 		public function get($whereClause, $orderBy = 'id_home', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -311,7 +315,7 @@
 
 		public function updateHome($idHome)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
@@ -363,7 +367,7 @@
 
 		public function deleteHome($id)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

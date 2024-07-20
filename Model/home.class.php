@@ -1,5 +1,9 @@
 <?php
 
+	namespace MyCv\Model;
+	use \PDO;
+	use \PDOException;
+
 	class Home
 	{
 		private $homeId;
@@ -125,7 +129,7 @@
 		private $theHome;
 		public function getHome($idHome)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
@@ -168,7 +172,7 @@
 		private $homeList;
 		public function get($whereClause, $orderBy = 'home_id', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -210,7 +214,7 @@
 
 		public function updateHome($homeId)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -254,9 +258,8 @@
 
 		//-----------------------------------------------------------------------
 
-		public function deleteHome($id)
-		{
-			include_once('../model/dbConnect.class.php');
+		public function deleteHome($id): bool{
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -266,59 +269,66 @@
 				$stmt = $bdd->prepare('DELETE FROM home WHERE home_id = :id');
 				$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 				$stmt->execute();
-
-				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
+				$bdd = null;
+				return true;
 			}
 			catch (PDOException $e)
 			{
+				$bdd = null;
 				echo "Erreur de la requete :" . $e->getMessage();
+				return false;
 			}
 
-			$bdd = null;
 		}
 
-		public function newHome()
-		{
-			include_once('../model/dbConnect.class.php');
+		public function newHome(): bool{
+
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 	
 			try
 			{
-				$stmt = $bdd->prepare("INSERT INTO `home` (`titre1`,
-															`titre_chapter1`,
-															`chapter1`,
-															`img_chapter1`,
-															`titre_chapter2`,
-															`chapter2`,
-															`img_chapter2`) 
-										VALUES (:titre1,
-												:titreChapter1,
-												:chapter1,
-												:imgChapter1,
-												:titreChapter2,
-												:chapter2,
-												:imgChapter2)");
+				$stmt = $bdd->prepare("INSERT INTO `home` (`home_title`,
+															`home_subtitle`,
+															`home_title_page`,
+															`home_article1_title`,
+															`home_article1`,
+															`home_article1_img`,
+															`home_article2_title`,
+															`home_article2`,
+															`home_article2_img`) 
+										VALUES (:home_title,
+												:home_subtitle,
+												:home_title_page,
+												:home_article1_title,
+												:home_article1,
+												:home_article1_img,
+												:home_article2_title,
+												:home_article2,
+												:home_article2_img)");
 	
-				$stmt->bindParam(':titre1', $this->titre1, PDO::PARAM_STR);
-				$stmt->bindParam(':titreChapter1', $this->titre_chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':chapter1', $this->chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':imgChapter1', $this->img_chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':titreChapter2', $this->titre_chapter2, PDO::PARAM_STR);
-				$stmt->bindParam(':chapter2', $this->chapter2, PDO::PARAM_STR);
-				$stmt->bindParam(':imgChapter2', $this->img_chapter2, PDO::PARAM_STR);
+				$stmt->bindParam(':home_title', $this->homeTitle, PDO::PARAM_STR);
+				$stmt->bindParam(':home_subtitle', $this->homeSubtitle, PDO::PARAM_STR);
+				$stmt->bindParam(':home_title_page', $this->homeTitlePage, PDO::PARAM_STR);
+				$stmt->bindParam(':home_article1_title', $this->homeArticle1Title, PDO::PARAM_STR);
+				$stmt->bindParam(':home_article1', $this->homeArticle1, PDO::PARAM_STR);
+				$stmt->bindParam(':home_article1_img', $this->homeArticle1Img, PDO::PARAM_STR);
+				$stmt->bindParam(':home_article2_title', $this->homeArticle2Title, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticle2', $this->homeArticle2, PDO::PARAM_STR);
+				$stmt->bindParam(':home_article2_img', $this->homeArticle2Img, PDO::PARAM_STR);
 	
 				$stmt->execute();
-				
-				echo "Nouvel enregistrement créé avec succès.";
+				$bdd = null;
+				return true;
 			}
 			catch (PDOException $e)
 			{
+				$bdd = null;
 				echo "Erreur de la requête : " . $e->getMessage();
+				return false;
 			}
-	
-			$bdd = null;
 		}
 
 	}

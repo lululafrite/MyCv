@@ -94,7 +94,7 @@
 		}
 		public function setCountLine($theTable)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);

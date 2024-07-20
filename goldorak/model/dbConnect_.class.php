@@ -1,4 +1,9 @@
 <?php
+
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+
 	class dbConnect_
 	{
 		public function connectionDb(){

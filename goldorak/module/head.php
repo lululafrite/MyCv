@@ -14,6 +14,6 @@
 
     <link rel="icon" href="img/icon/icone_goldorak_01.webp" type="image/png">
     
-    <?php include_once '../css/groupSheetStyle.php'; ?>
+    <?php require_once '../css/groupSheetStyle.php'; ?>
 
 </head>

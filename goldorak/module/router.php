@@ -1,6 +1,6 @@
 <?php
     //Routeur Goldorak
-    include_once '../../common/utilies.php'; // Fonctions communes
+    require_once '../../common/utilies.php'; // Fonctions communes
     
     use \Firebase\JWT\JWT;
     
@@ -12,8 +12,8 @@
     if ($page === 'home'){
 
         resetVariableGoldorak();
-        //include_once('./public/goldorak/view/home.php');
-        include_once('view/home.php');
+        //require_once('./public/goldorak/view/home.php');
+        require_once('view/home.php');
 
     }elseif($page === 'events'){
         
@@ -23,19 +23,19 @@
     }elseif ($page === 'adherer'){
         
         resetVariableGoldorak();
-        include_once 'view/adherer.php';
+        require_once 'view/adherer.php';
 
     }elseif ($page === 'connexion'){
         
         resetVariableGoldorak();
-        include_once '../view/connexion.php';
+        require_once '../view/connexion.php';
 
     }elseif ($page === 'disconnect'){
         
         resetVariableGoldorak();
 
         if($_SESSION['typeConnect'] != "Guest"){
-            include_once 'view/disconnect.php';
+            require_once 'view/disconnect.php';
         }else{
             pageUnavailable();
         }
@@ -43,32 +43,32 @@
     }elseif ($page === 'accessPage'){
         
         resetVariableGoldorak();
-        include_once 'errorPage/accessPage.php';
+        require_once 'errorPage/accessPage.php';
 
     }elseif ($page === 'unknownPage'){
         
         resetVariableGoldorak();
-        include_once 'errorPage/unknownPage.php';
+        require_once 'errorPage/unknownPage.php';
 
     }elseif ($page === 'timeExpired'){
         
         resetVariableGoldorak();
-        include_once 'errorPage/timeExpired.php';
+        require_once 'errorPage/timeExpired.php';
 
     }elseif($page === ''){
         
         resetVariableGoldorak();
-        include_once 'errorPage/unknownPage.php';
+        require_once 'errorPage/unknownPage.php';
 
     }elseif(is_null($page)){
         
         resetVariableGoldorak();
-        include_once 'errorPage/unknownPage.php';
+        require_once 'errorPage/unknownPage.php';
 
     }elseif(empty($page)){
         
         resetVariableGoldorak();
-        include_once 'errorPage/unknownPage.php';
+        require_once 'errorPage/unknownPage.php';
 
     }
     
@@ -84,7 +84,7 @@
 
                     if($_SESSION['typeConnect'] === "Administrator"){
 
-                        include_once 'view/user.php';
+                        require_once 'view/user.php';
 
                     }else{
 
@@ -97,7 +97,7 @@
                     $_SESSION['updateMoncompte'] = false;
                     //$_SESSION['btn_monCompte'] = false;
                     //$_SESSION['newUser'] = false;
-                    include_once 'view/userEdit.php';
+                    require_once 'view/userEdit.php';
 
                 }elseif($page === 'media'){
         
@@ -119,7 +119,7 @@
 
                     if($_SESSION['subscriptionConnect'] === "Goldorak" ){
 
-                        include_once 'view/commander.php';
+                        require_once 'view/commander.php';
 
                     }else{
 
@@ -133,7 +133,7 @@
 
                     if($_SESSION['subscriptionConnect'] != "Vénusia" ){
 
-                        include_once 'view/goldorakgo.php';
+                        require_once 'view/goldorakgo.php';
 
                     }else{
 
@@ -168,7 +168,7 @@
         
         resetVariableGoldorak();
         
-        //include_once 'errorPage/unknownPage.php';
+        //require_once 'errorPage/unknownPage.php';
         //timeExpired();
     }
 

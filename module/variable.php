@@ -20,9 +20,9 @@
         
         // Token JWT
         $_SESSION['SECRET_KEY'] = "93082d283829273c47737cd555841ce33af04a29c791c2424df8e0f74a6d3afb";
-        include_once('../../MyCv/common/utilies.php');
+        require_once('../../MyCv/common/utilies.php');
         $_SESSION['jwt'] = tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']);
-        $_SESSION['delay'] = 30; //delay for token JWT (1 hour before disconnection and return to the connection page)
+        $_SESSION['delay'] = 3600; //delay for token JWT (1 hour before disconnection and return to the connection page)
         
         // Token CSRF
         $_SESSION['csrfHome'] = "93082d283829273c47737cd555841ce33af04a29c791c2424df8e0f74a6d3afb";

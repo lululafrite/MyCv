@@ -1,4 +1,4 @@
-<?php include_once('../../garageparrot/controller/car.controller.php'); ?>
+<?php require_once('../../garageparrot/controller/car.controller.php'); ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-center" id="carSection"></section>
 
@@ -231,4 +231,4 @@
     }
 </script>
 
-<?php include_once('../../garageparrot/module/searchCar.php'); ?>
+<?php require_once('../../garageparrot/module/searchCar.php'); ?>

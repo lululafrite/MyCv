@@ -110,7 +110,7 @@
 	
 		private function getSubscriptionId() {
 
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -136,7 +136,7 @@
 	
 		private function getUserTypeId() {
 
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -165,7 +165,7 @@
 		private $listPseudo;
 		public function getPseudoUser()
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -195,7 +195,7 @@
 		private $theUser;
 		public function getUser($idUser)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -248,7 +248,7 @@
 		private $userList;
 		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -308,7 +308,7 @@
 
 		public function addUser(){
 
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -383,7 +383,7 @@
 
 					// L'email existe déjà
 					$_SESSION['message'] = 'Ce courriel est existant! Saisissez un autre courriel';
-					include_once '../../common/utilies.php';
+					require_once '../../common/utilies.php';
 					returnNewError();
 					return false;
 
@@ -408,7 +408,7 @@
 
 		public function updateUser($idUser){
 
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -456,7 +456,7 @@
 		public function deleteUser($id)
 		{
 
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -495,7 +495,7 @@
 		private $userExist;
 		public function verifUser($email)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);

@@ -1,10 +1,10 @@
 <main>
     <?php
         //Routeur Garage PARROT
-        include_once('../../common/utilies.php');
+        require_once('../../common/utilies.php');
 
         if (isset($_POST['next']) || isset($_POST['previous'])){
-            include_once('../../garageparrot/controller/page.controller.php');
+            require_once('../../garageparrot/controller/page.controller.php');
         }
 
         use \Firebase\JWT\JWT;
@@ -21,7 +21,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
             
-            include_once 'view/home.php';
+            require_once 'view/home.php';
 
         }elseif ($page === 'connexion'){
 
@@ -29,7 +29,7 @@
             resetVariableUser();
             resetVariablePage();
 
-            include_once '../view/connexion.php';
+            require_once '../view/connexion.php';
 
         }elseif ($page === 'disconnect'){
 
@@ -38,11 +38,11 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            include_once 'view/disconnect.php';
+            require_once 'view/disconnect.php';
 
         }elseif ($page === 'api'){
 
-            include_once 'view/car.api.php';
+            require_once 'view/car.api.php';
 
         }elseif ($page === 'error_page'){
 
@@ -51,7 +51,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            include_once 'error/error_access_page.php';
+            require_once 'error/error_access_page.php';
 
         }elseif ($page === 'error_unknown_page'){
 
@@ -60,7 +60,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            include_once 'error/error_unknown_page.php';
+            require_once 'error/error_unknown_page.php';
 
         }elseif ($page === 'kanban'){
 
@@ -69,7 +69,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            include_once 'view/kanban.php';
+            require_once 'view/kanban.php';
 
         }elseif ($page === 'mokup'){
 
@@ -78,7 +78,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            include_once 'view/mokup.php';
+            require_once 'view/mokup.php';
 
         }elseif($page === 'car' || $page === 'carBtn' ){
 
@@ -88,14 +88,14 @@
             if($_SESSION['typeConnect'] === 'Administrator' || $_SESSION['typeConnect'] === 'User'){
                 
                 include('../../garageparrot/module/searchCarAdmin.php');
-                include_once 'view/car_admin.php';
+                require_once 'view/car_admin.php';
                 
                 if($page === 'carBtn'){
                 }
 
             }else{
                 
-                include_once 'view/car.php';
+                require_once 'view/car.php';
 
             }
 
@@ -114,7 +114,7 @@
 
                         if($_SESSION['typeConnect'] === 'Administrator' || $_SESSION['typeConnect'] === 'User'){
                             
-                            include_once 'view/car_edit.php';
+                            require_once 'view/car_edit.php';
 
                         }else{
                             
@@ -129,8 +129,8 @@
                         
                         if($_SESSION['typeConnect'] === 'Administrator'){
 
-                            include_once('../../garageparrot/module/searchUser.php');
-                            include_once 'view/user.php';
+                            require_once('../../garageparrot/module/searchUser.php');
+                            require_once 'view/user.php';
 
                             if($page === 'userBtn'){
                             }
@@ -150,7 +150,7 @@
 
                         if($_SESSION['typeConnect'] === 'Administrator'){
                             
-                            include_once 'view/user_edit.php';
+                            require_once 'view/user_edit.php';
 
                         }else{
                             
@@ -189,7 +189,7 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            //include_once 'error/error_unknown_page.php';
+            //require_once 'error/error_unknown_page.php';
 
         }
 

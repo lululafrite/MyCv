@@ -1,7 +1,9 @@
 <?php
 
+    use MyCv\Model\User;
+
     include('../model/user.class.php');
-    include_once('../common/utilies.php');
+    require_once('../common/utilies.php');
 
     $MyUser = new User();
 
@@ -109,7 +111,7 @@
     // Executer la requete SELECT pour rechercher les contacts en fonction de la clause WHERE
     if(!$_SESSION['errorFormUser'] && !$_SESSION['newUser']){
         
-        include_once('../../goldorak/controller/page.controller.php');
+        require_once('../../goldorak/controller/page.controller.php');
         $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
     }
 

@@ -29,7 +29,7 @@
 		private $theSubscription;
 		public function getSubscription_($îdSubscription)
 		{
-			include_once('../../goldorak/model/dbConnect.class.php');
+			require_once('../../goldorak/model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -63,7 +63,7 @@
 		private $userSubscriptionList;
 		public function get($whereClause, $orderBy = 'subscription', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -95,7 +95,7 @@
 
 		public function addUserSubscription()
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -123,7 +123,7 @@
 
 		public function updateUserSubscription($idSubscription)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -148,7 +148,7 @@
 
 		public function deleteUsersubscription($id)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);

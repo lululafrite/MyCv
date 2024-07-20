@@ -1,5 +1,7 @@
 <?php
-    
+
+    use MyCv\Model\Page;
+
     require('../model/page.class.php');
     
     $MyPage = new Page();

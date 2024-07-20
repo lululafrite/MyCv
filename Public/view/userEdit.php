@@ -1,4 +1,4 @@
-<?php include_once('../../controller/userEdit.controller.php'); ?>
+<?php require_once('../../controller/userEdit.controller.php'); ?>
 
 <section class="container">
     

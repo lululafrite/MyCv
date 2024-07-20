@@ -29,7 +29,7 @@
 		private $theType;
 		public function getType($idType)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -64,7 +64,7 @@
 		private $userTypeList;
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -101,7 +101,7 @@
 
 		public function addUserType()
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -126,7 +126,7 @@
 
 		public function updateUserType($idType)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -156,7 +156,7 @@
 
 		public function deleteUserType($id)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);

@@ -1,4 +1,5 @@
 <?php
+    use GarageParrot\Model\Car;
 
 //***********************************************************************************************
 // Daclaration de variables
@@ -6,8 +7,8 @@
 
     $changeImage = false;
 
-    include_once('../../common/utilies.php');
-    include_once('../../garageparrot/model/car.class.php');
+    require_once('../../common/utilies.php');
+    require_once('../../garageparrot/model/car.class.php');
     
     $_SESSION['theTable'] = 'car';
     $MyCar = new Car();
@@ -257,19 +258,19 @@
     }
         
         //Traiment de la BD pour récupérer les données destinées à l'input liste brand
-        include_once('../../garageparrot/model/brand.class.php');
+        require_once('../../garageparrot/model/brand.class.php');
         $Brands = new Brand();
         $MyBrand = $Brands->get(1,'name', 'ASC', 0, 50);
         unset($Brands);
 
         //Traiment de la BD pour récupérer les données destinées à l'input liste model
-        include_once('../../garageparrot/model/model.class.php');
+        require_once('../../garageparrot/model/model.class.php');
         $Models = new Model();
         $MyModel = $Models->get(1,'name', 'ASC', 0, 50);
         unset($Models);
 
         //Traiment de la BD pour récupérer les données destinées à l'input liste motorization
-        include_once('../../garageparrot/model/motorization.class.php');
+        require_once('../../garageparrot/model/motorization.class.php');
         $Motorizations = new Motorization();
         $MyMotorization = $Motorizations->get(1,'name', 'ASC', 0, 50);
         unset($Motorizations);

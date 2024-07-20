@@ -1,5 +1,9 @@
 <?php
 
+    namespace MyCv\Model;
+    use \PDO;
+    use \PDOException;
+
 	class Page
     {        
         // __Nombre de ligne__________________________________________
@@ -94,7 +98,7 @@
 		}
 		public function setCountLine($theTable)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -107,7 +111,7 @@
                     $this->countLine = $bdd->query("SELECT count(*) FROM `" . $theTable . "` WHERE " . $_SESSION['whereClause'])->fetchColumn();
                 }
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}

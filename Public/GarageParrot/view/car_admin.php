@@ -1,8 +1,8 @@
 <?php
-    include_once('../../common/utilies.php');
-    include_once('../../garageparrot/controller/car.controller.php');
-    include_once('../../garageparrot/module/searchCarAdmin.php');
-    include_once('../../module/select_page.php');
+    require_once('../../common/utilies.php');
+    require_once('../../garageparrot/controller/car.controller.php');
+    require_once('../../garageparrot/module/searchCarAdmin.php');
+    require_once('../../module/select_page.php');
 ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-center">

@@ -1,5 +1,7 @@
 <?php
-    include_once('../../common/utilies.php');
+    use GarageParrot\Model\Home;
+
+    require_once('../../common/utilies.php');
     include('../../garageparrot/model/home.class.php');
 
     $homes = new Home();

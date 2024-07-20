@@ -101,7 +101,7 @@
 		private $theHome;
 		public function getHome($idHome)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -141,8 +141,8 @@
 		private $homeList;
 		public function get($whereClause, $orderBy = 'id_home', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
-			//include_once('../model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
+			//require_once('../model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -182,7 +182,7 @@
 
 		public function updateHome($idHome)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -222,7 +222,7 @@
 
 		public function deleteHome($id)
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -245,7 +245,7 @@
 
 		public function newHome()
 		{
-			include_once('../../goldorak/model/dbConnect_.class.php');
+			require_once('../../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);

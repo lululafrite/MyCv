@@ -1,10 +1,11 @@
 <?php
+    use GarageParrot\Model\User;
 
 //***********************************************************************************************
 // Daclaration de variables
 //***********************************************************************************************
 
-    include_once('../../garageparrot/model/user.class.php');
+    require_once('../../garageparrot/model/user.class.php');
     
     $_SESSION['theTable'] = 'user';
 

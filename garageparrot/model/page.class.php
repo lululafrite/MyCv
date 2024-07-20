@@ -1,5 +1,7 @@
 <?php
 
+    namespace GarageParrot\Model;
+
 	class Page
     {
         
@@ -93,7 +95,7 @@
 		}
 		public function setCountLine($theTable)
 		{
-			include_once('../../controller/ConfigConnGP.php');
+			require_once('../../controller/ConfigConnGP.php');
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 

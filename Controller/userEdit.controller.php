@@ -1,7 +1,9 @@
 <?php
 
-    include_once('../model/user.class.php');
-    include_once('../common/utilies.php');
+    use MyCv\Model\User;
+
+    require_once('../model/user.class.php');
+    require_once('../common/utilies.php');
 
 //***********************************************************************************************
 // Echapper les variables
@@ -87,6 +89,9 @@
     $_SESSION['avatarConnect'] = isset($_POST['txt_userEdit_avatar']) ? filterInput('txt_userEdit_avatar') : '';
     $_SESSION['subscription'] = isset($_POST['list_userEdit_subscription']) ? filterInput('list_userEdit_subscription') : '';
     $_SESSION['password'] = isset($_POST['txt_userEdit_password']) ? filterInput('txt_userEdit_password') : '';
+    
+    $password = $_SESSION['password'];
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     if(empty($_SESSION['csrfUSer'])){ verifCsrf('csrfUSer'); }
 
@@ -113,7 +118,7 @@
 
             $MyUser->setAvatar($_SESSION['avatarConnect']);
             $MyUser->setSubscription($_SESSION['subscription']);
-            $MyUser->setPassword($_SESSION['password']);
+            $MyUser->setPassword($hashedPassword);
             
             if($_SESSION['newUser']){
                     

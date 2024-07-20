@@ -1,4 +1,4 @@
-<?php include_once '../../common/utilies.php'; ?>
+<?php require_once '../../common/utilies.php'; ?>
 
 <nav class="navbar navbar-expand-lg mx-auto mt-auto mb-3 ">
 

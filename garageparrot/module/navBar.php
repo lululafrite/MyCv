@@ -1,4 +1,4 @@
-<?php include_once('../../common/utilies.php'); ?>
+<?php require_once('../../common/utilies.php'); ?>
 
 <div class="d-flex justify-content-between bg-body-tertiary py-2">
 

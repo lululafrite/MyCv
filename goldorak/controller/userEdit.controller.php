@@ -1,7 +1,7 @@
 <?php
 
-    include_once('../../goldorak/model/user.class.php');
-    include_once '../../common/utilies.php';
+    require_once('../../goldorak/model/user.class.php');
+    require_once '../../common/utilies.php';
 
 //***********************************************************************************************
 // Echapper les variables

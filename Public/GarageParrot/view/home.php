@@ -1,5 +1,5 @@
-<?php include_once('../../garageparrot/controller/home.controller.php') ?>
-<?php include_once('../../common/utilies.php') ?>
+<?php require_once('../../garageparrot/controller/home.controller.php') ?>
+<?php require_once('../../common/utilies.php') ?>
 
 <form action="" method="post">
 

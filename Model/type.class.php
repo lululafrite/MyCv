@@ -1,5 +1,9 @@
 <?php
 
+	namespace MyCv\Model;
+	use \PDO;
+	use \PDOException;
+
 	class Type
 	{
 		private $id_type;
@@ -29,7 +33,7 @@
 		private $theType;
 		public function getType($idType)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -50,7 +54,7 @@
 
 				return $this->theType;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -64,7 +68,7 @@
 		private $userTypeList;
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -89,7 +93,7 @@
 
 				return $this->userTypeList;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -101,7 +105,7 @@
 
 		public function addUserType()
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -115,7 +119,7 @@
 
 				echo '<script>alert("L\'enregistrement est effectué!");</script>';
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requête : " . $e->getMessage();
 			}
 
@@ -126,7 +130,7 @@
 
 		public function updateUserType($idType)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -144,7 +148,7 @@
 					echo '<script>alert("Aucune modification effectuée. L\'enregistrement avec l\'ID spécifié n\'existe peut-être pas.");</script>';
 				}
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -156,7 +160,7 @@
 
 		public function deleteUserType($id)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -173,7 +177,7 @@
 					echo '<script>alert("L\'enregistrement avec l\'ID spécifié n\'existe pas!");</script>';
 				}
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}

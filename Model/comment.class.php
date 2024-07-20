@@ -1,5 +1,10 @@
 <?php
 
+	namespace MyCv\Model;
+	use \PDO;
+	use \PDOException;
+    use Goldorak\Model\dbConnect_;
+
 	class Comment
 	{
 		private $id;
@@ -77,8 +82,8 @@
 		private $theComment;
 		public function getComments($idComment)
 		{
-			include_once('../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect();
+			require_once('../goldorak/model/dbConnect_.class.php');
+			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 
@@ -122,7 +127,7 @@
 				return $this->theComment;
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -135,7 +140,7 @@
 		private $CommentList;
 		public function get($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
 		{
-			include_once('../goldorak/model/dbConnect_.class.php');
+			require_once('../goldorak/model/dbConnect_.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -180,7 +185,7 @@
 				return $this->CommentList;
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -192,7 +197,7 @@
 		private $idComment;
 		public function addComment()
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -244,7 +249,7 @@
 					echo '<script>alert("L\'enregistrement est effectué!");</script>';
 				}
 
-			}catch (Exception $e){
+			}catch (PDOException $e){
 				
 				echo "Erreur de la requête : " . $e->getMessage();
 
@@ -257,7 +262,7 @@
 
 		public function updateComment($idComment)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -284,7 +289,7 @@
 				
 				echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -296,7 +301,7 @@
 
 		public function modereComment($idComment, $publication)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -318,7 +323,7 @@
 				
 				echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -330,7 +335,7 @@
 		
 		public function deleteComment($id)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -366,7 +371,7 @@
 					// L'ID n'existe pas, gestion de l'erreur si nécessaire
 					echo '<script>alert("L\'enregistrement avec cet ID n\'existe pas!");</script>';
 				}
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requête : " . $e->getMessage();
 			}
 

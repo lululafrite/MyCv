@@ -1,4 +1,4 @@
-<?php include_once "../../goldorak/controller/comment.controller.php"; ?>
+<?php require_once "../../goldorak/controller/comment.controller.php"; ?>
 
 <table class="table table-dark table-bordered">
 

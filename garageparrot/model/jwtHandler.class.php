@@ -1,8 +1,11 @@
 <?php
-    include_once('../../garageparrot/common/.env');
 
+	namespace GarageParrot\Model;
+    
     use Firebase\JWT\JWT;
     use Firebase\JWT\Key;
+
+    require_once('../../garageparrot/common/.env');
 
     class JWTHandler {
         

@@ -1,7 +1,7 @@
 <?php
 
-    //include_once '../../common/utilies.php';
-    include_once('../../goldorak/model/home.class.php');
+    //require_once '../../common/utilies.php';
+    require_once('../../goldorak/model/home.class.php');
 
  //   use \Firebase\JWT\JWT;
 

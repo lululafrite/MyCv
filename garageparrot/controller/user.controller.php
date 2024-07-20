@@ -1,4 +1,6 @@
 <?php
+    use GarageParrot\Model\User;
+
 //---Load model user--------------------
     include('../../garageparrot/model/user.class.php');
 //---Configure object User--
@@ -110,7 +112,7 @@
     // Executer la requete SELECT pour rechercher les contacts en fonction de la clause WHERE
     if($_SESSION['errorFormUser']===false && $MyUser->getNewUser() === false ){
         
-        include_once('../../garageparrot/controller/page.controller.php');
+        require_once('../../garageparrot/controller/page.controller.php');
         $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
     }
 

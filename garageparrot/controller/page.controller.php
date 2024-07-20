@@ -1,4 +1,5 @@
 <?php
+    use GarageParrot\Model\Page;
     
     require('../../garageparrot/model/page.class.php');
     

@@ -1,5 +1,9 @@
 <?php
 
+	namespace MyCv\Model;
+	use \PDO;
+	use \PDOException;
+
 	class User
 	{
 		private $id_user;
@@ -110,7 +114,7 @@
 	
 		private function getSubscriptionId() {
 
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -136,7 +140,7 @@
 	
 		private function getUserTypeId() {
 
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -165,7 +169,7 @@
 		private $listPseudo;
 		public function getPseudoUser()
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -183,7 +187,7 @@
 				}
 
 				return $this->listPseudo;
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requete : function getPseudoUser() :" . $e->getMessage();
 			}
 
@@ -195,7 +199,7 @@
 		private $theUser;
 		public function getUser($idUser)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -234,7 +238,7 @@
 
 				return $this->theUser;
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 
 				echo "Erreur de la requete : function getUser(\$idUser) :" . $e->GetMessage();
 
@@ -248,7 +252,7 @@
 		private $userList;
 		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -295,7 +299,7 @@
 
 				return $this->userList;
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 
 				echo "Erreur de la requete : function get(\$whereClause, \$orderBy = 'name', \$ascOrDesc = 'ASC', \$firstLine = 0, \$linePerPage = 13) : " . $e->GetMessage();
 
@@ -308,7 +312,7 @@
 
 		public function addUser(){
 
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
 			unset($dbConnect_);
@@ -383,7 +387,7 @@
 
 					// L'email existe déjà
 					$_SESSION['message'] = 'Ce courriel est existant! Saisissez un autre courriel';
-					include_once('../common/utilies.php');
+					require_once('../common/utilies.php');
 					returnNewError();
 					return false;
 
@@ -408,7 +412,7 @@
 
 		public function updateUser($idUser){
 
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -442,7 +446,7 @@
 				
 				$_SESSION['message'] = "Les modifications sont enregistrées!";
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				$_SESSION['message'] = "Erreur de la requete  : function updateUser(\$idUser) :" . $e->GetMessage();
 			}
@@ -456,7 +460,7 @@
 		public function deleteUser($id)
 		{
 
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -476,7 +480,7 @@
 					$bdd=null;
 					return true;
 				}
-				catch (Exception $e)
+				catch (PDOException $e)
 				{
 					echo "Erreur de la requete :" . $e->GetMessage();
 					$bdd=null;
@@ -495,7 +499,7 @@
 		private $userExist;
 		public function verifUser($email)
 		{
-			include_once('../model/dbConnect.class.php');
+			require_once('../model/dbConnect.class.php');
 			$dbConnect_ = new dbConnect();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
@@ -516,7 +520,7 @@
 				return $this->userExist['number'];
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 
 				echo "Erreur de la requete : function verifUser(\$email) :" . $e->GetMessage();

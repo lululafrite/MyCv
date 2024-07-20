@@ -77,6 +77,6 @@
     }
     </script>
     
-    <?php include_once 'css/groupSheetStyle.php'; ?>
+    <?php require_once 'css/groupSheetStyle.php'; ?>
 
 </head>

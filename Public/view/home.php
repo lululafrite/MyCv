@@ -1,18 +1,5 @@
-<?php //include_once('../../common/utilies.php');?>
-<?php include_once ('../controller/home.controller.php');?>
-
-<?php $titlePage = "Accueil";?>
-
-<!-- <form method="post" id="formHome" enctype="multipart/form-data"> -->
-    
-    <!-- input hidden csrf -->
-<!-- 
-    <input
-        type="hidden"
-        name="csrfHome"
-        value="<?php //echo $_SESSION['csrfHome'];?>"
-    >
- -->
+<?php require_once ('../controller/home.controller.php');?>
+<p>PAPA</p>
     <!-- start of data save message -->
 
     <div class="container d-flex justify-content-center">
@@ -59,7 +46,8 @@
 
             <div class="d-flex flex-column flex-lg-row align-items-stretch m-0 p-0">
                 
-                <div class="col-12 col-lg-8 overflow-auto border rounded-3 m-0 p-3 me-3" style="max-height: 400px">
+                <!-- <div class="col-12 col-lg-8 overflow-auto border rounded-3 m-0 p-3 me-3" style="max-height: 400px"> -->
+                <div class="col-12 overflow-auto border rounded-3 m-0 p-3 me-3" style="max-height: 400px">
 
                     <div class="d-flex justify-content-between align-items-start">
 
@@ -94,7 +82,7 @@
 
                             <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
 
-                                <p class="p-0" style="text-align: justify;">
+                                <p class="p-0" style="text-align: justify; white-space: pre-line;">
                                     <?php echo escapeInput($home[0]['home_article1']); ?>
                                 </p>
 
@@ -102,7 +90,7 @@
 
                             <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
                                 
-                                <p class="p-0" style="text-align: justify;">
+                                <p class="p-0" style="text-align: justify; white-space: pre-line;">
                                     <textarea
                                         name="textarea_home_article1"
                                         id="textarea_home_article1"
@@ -113,16 +101,7 @@
 
                             <!-- End Chapter 1 -->
                                 
-                    <!-- Start input end botton upload image chapter1 -->
-                    <form method="post" id="formImg1" enctype="multipart/form-data">
-    
-                                <!-- input hidden csrf -->
-
-                                <input
-                                    type="hidden"
-                                    name="csrfHome"
-                                    value="<?php echo $_SESSION['csrfHome'];?>"
-                                >
+                            <!-- Start input end botton upload image chapter1 -->
 
                                 <div class="container">  
 
@@ -131,49 +110,47 @@
                                         <div class="container m-0 p-0">
 
                                             <div class="row">
-                                                
-                                                <!-- <form action="" method="post"> -->
 
-                                                    <div class="col-12 col-lg-5 pb-3 pb-lg-0">
+                                                <div class="col-12 col-lg-5 pb-3 pb-lg-0">
 
-                                                        <input
-                                                            class="form-control-lg bg-transparent m-0 p-0 border border-black"
-                                                            id="text_home_article1_img"
-                                                            name="text_home_article1_img"
-                                                            type="text"
-                                                            placeholder="Saisissez le nom de l'image"
-                                                            readonly
-                                                            style="font-size: 1.6rem;"
-                                                            oninput="validateInput('text_home_article1_img','','labelMessageimg_chapter1','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
-                                                            value="<?php echo isset($_SESSION['newImgChapter1']) ? escapeInput($_SESSION['newImgChapter1']) : escapeInput($home[0]['home_article1_img']);?>"
-                                                        >
+                                                    <input
+                                                        class="form-control-lg bg-transparent m-0 p-0 border border-black"
+                                                        id="text_home_article1_img"
+                                                        name="text_home_article1_img"
+                                                        type="text"
+                                                        placeholder="Saisissez le nom de l'image"
+                                                        readonly
+                                                        style="font-size: 1.6rem;"
+                                                        oninput="validateInput('text_home_article1_img','','labelMessageimg_chapter1','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
+                                                        value="<?php echo isset($_SESSION['newImgChapter1']) ? escapeInput($_SESSION['newImgChapter1']) : escapeInput($home[0]['home_article1_img']);?>"
+                                                    >
 
-                                                    </div>
+                                                </div>
 
-                                                    <div class="col-12 col-lg-5 d-flex align-items-center pb-3 pb-lg-0">
-                                                        
-                                                        <input
-                                                            class=""
-                                                            type="file"
-                                                            name="file_home_article1_img"
-                                                            id="file_home_article1_img"
-                                                            accept="image/jpeg, image/png, image/webp"
-                                                        >
+                                                <div class="col-12 col-lg-5 d-flex align-items-center pb-3 pb-lg-0">
+                                                    
+                                                    <input
+                                                        class=""
+                                                        type="file"
+                                                        name="file_home_article1_img"
+                                                        id="file_home_article1_img"
+                                                        accept="image/jpeg, image/png, image/webp"
+                                                    >
 
-                                                    </div>
+                                                </div>
 
-                                                    <div class="col-12 col-lg-2 d-flex align-items-center pb-3 pb-lg-0">
-                                                        
-                                                        <input
-                                                            class="btn btn-lg btn-primary "
-                                                            type="submit"
-                                                            name="btn_home_article1_img"
-                                                            id="btn_home_article1_img"
-                                                            value="Charger image"
-                                                            style="width: auto;"
-                                                        >
+                                                <div class="col-12 col-lg-2 d-flex align-items-center pb-3 pb-lg-0">
+                                                    
+                                                    <input
+                                                        class="btn btn-lg btn-primary "
+                                                        type="submit"
+                                                        name="btn_home_article1_img"
+                                                        id="btn_home_article1_img"
+                                                        value="Charger image"
+                                                        style="width: auto;"
+                                                    >
 
-                                                    </div>
+                                                </div>
 
                                             </div>
 
@@ -204,57 +181,11 @@
 
                         </div>
 
-                    <!-- </form> -->
-
                     <!-- End image Chapter 1 -->
 
                     </div>
 
                 </div>
-<!-- </form> -->
-                <!-- start of comment area -->
-
-                <div class="col-12 col-lg-4 overflow-auto border rounded-3 p-3 m-0 mt-3 mt-lg-0" style="max-height: 400px">
-                    
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        
-                        <div class="accordion-item" style="background-color: transparent;">
-                            
-                            <h2 class="accordion-header">
-
-                                <button
-                                    class="accordion-button collapsed bg-dark text-light"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne"
-                                    aria-expanded="false"
-                                    aria-controls="flush-collapseOne"
-                                >Partagez votre expérience, laissez un commentaire!
-                                </button>
-
-                            </h2>
-
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                
-                                <div class="accordion-body text-light" style="text-align: justify;">
-                                    
-                                    <?php include("../module/commentForm.php") ?>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="mt-3">
-                        <?php include "../module/comment.php"; ?>
-                    </div>
-
-                </div>
-
-                <!-- end of comment area -->
 
             </div>
 
@@ -270,23 +201,13 @@
         
         <!-- end of data save message -->
 
-<!-- <form method="post" id="formHome" enctype="multipart/form-data"> -->
-
-    <!-- input hidden csrf -->
-<!--
-    <input
-        type="hidden"
-        name="csrfHome"
-        value="<?php //echo $_SESSION['csrfHome'];?>"
-    >
--->
         <div class="row m-2">
 
             <div class="d-flex border rounded-3 m-0 p-0 px-3 my-5">
 
                 <!-- Start image Chapter 2 -->
 
-                <div class="d-none d-lg-block pt-3 pe-3 mb-3">
+                <div class="d-none d-md-block pt-3 pe-3 mb-3">
                     
                     <img
                         class="ms-3"
@@ -331,17 +252,15 @@
 
                     <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
 
-                        <p class="p-0 m-0" style="text-align: justify;">
-
-                            <?php echo nl2br(escapeInput($home[0]['home_article2'])); ?>
-
+                        <p class="p-0" style="text-align: justify; white-space: pre-line;">
+                            <?php echo escapeInput($home[0]['home_article2']); ?>
                         </p>
 
                     <?php } ?>
 
                     <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
                         
-                        <p class="p-0" style="text-align: justify;">
+                        <p class="p-0" style="text-align: justify; white-space: pre-line;">
 
                             <textarea
                                 name="textarea_home_article2"
@@ -353,15 +272,15 @@
                         </p>
 
                 <!-- End Chapter 2 -->
-                <form method="post" id="formImg2" enctype="multipart/form-data">    
+                <form method="post" id="formImg2" enctype="multipart/form-data">
                     <!-- Start input end botton upload image chapter2 -->
-                     
+                    
                         <input
                             type="hidden"
                             name="csrfHome"
                             value="<?php echo $_SESSION['csrfHome'];?>"
                         >
-
+                    
                         <div class="container">
 
                             <div class="row">
@@ -370,7 +289,7 @@
 
                                     <div class="row">
                                         
-                                        <form action="" method="post">
+                                        <!--<form action="" method="post"> -->
 
                                             <div class="col-12 col-lg-5 pb-3 pb-lg-0">
 
@@ -413,7 +332,7 @@
 
                                             </div>
 
-                                        </form>
+                                        <!-- </form> -->
 
                                     </div>
 
@@ -424,16 +343,6 @@
                         </div>
 
                     <?php } ?>
-                    
-                    <!-- End input end botton upload image chapter2 -->
-                </form>
-                    <!-- Start button subscription -->
-                    <!--
-                    <div class="d-flex justify-content-end p-0 m-3 m-md-0 me-md-5 <?php //echo ($_SESSION['typeConnect'] === 'Administrator') ? 'd-none' : ''; ?>">
-                        <button class="btn btn-primary btn-lg mt-0 btAdherer"><a class="text-light" href="index.php?page=adherer">Adhérer</a></button>
-                    </div>
-                    -->
-                    <!-- End button subscription -->
 
                 </div>
 

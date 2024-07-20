@@ -9,7 +9,7 @@
         $payload = array(
 
             "user_pseudo" => $pseudo,
-            "delay" => time() + 30,
+            "delay" => time() + 3600,
             "key" => $key
 
         );
