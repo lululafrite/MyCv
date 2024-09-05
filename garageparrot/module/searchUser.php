@@ -1,3 +1,5 @@
+<?php use garageparrot\model\Type; ?>
+
 <form action="" method="post">
 
     <div class="d-sm-flex justify-content-sm-between p-3 mx-2 mb-2 mt-2 mx-md-5 bgDark border border-secondary border-3 rounded-4">

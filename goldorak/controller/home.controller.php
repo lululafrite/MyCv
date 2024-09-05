@@ -1,5 +1,5 @@
 <?php
-
+    use \Goldorak\Model\Home;
     //require_once '../../common/utilies.php';
     require_once('../../goldorak/model/home.class.php');
 

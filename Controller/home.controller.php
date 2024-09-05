@@ -1,9 +1,14 @@
 <?php
     
-    use MyCv\Model\Home;
-    
     require_once('../common/utilies.php');
     require_once('../model/home.class.php');
+    require_once('../model/homeArticle.class.php');
+
+    use MyCv\Model\Home;
+    use MyCv\Model\HomeArticle;
+
+    $homes = new Home();
+    $homeArticles = new HomeArticle();
 
     $btn_save_header = isset($_POST['btn_save_header']) ? true : false;
     unset($_POST['btn_save_header']);
@@ -17,7 +22,6 @@
     $btn_home_article2_img = isset($_POST['btn_home_article2_img']) ? true : false;
     unset($_POST['btn_home_article2_img']);
 
-    $homes = new Home();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -89,7 +93,8 @@
         (!$btn_home_article1_img && !$btn_home_article2_img && !$btn_save_header && !$btn_home_save)
     ){
         
-        $home = $homes->get(1,'home_id','DESC','0','10');
+        $home = $homes->get(1,'home_id','DESC','0','2');
+        $homeArticle = $homeArticles->get(1,'home_article_sort','ASC','0','20');
  
     }
 

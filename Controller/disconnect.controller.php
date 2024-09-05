@@ -6,7 +6,7 @@
     $_SESSION['avatarConnect'] = 'black_person.svg';
     $_SESSION['connexion'] = false;
     
-    require_once '../../common/utilies.php';
+    require_once '../common/utilies.php';
 
     $_SESSION['jwt'] = tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']);
     

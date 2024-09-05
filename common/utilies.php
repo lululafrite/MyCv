@@ -350,7 +350,7 @@
         $_SESSION['criteriaPseudo'] = '';
         $_SESSION['criteriaType'] = 'Selectionnez un type';
 
-        $_SESSION['newUser'] = false;
+        //$_SESSION['newUser'] = false;
 
         $_SESSION['errorFormUser'] = false;
 

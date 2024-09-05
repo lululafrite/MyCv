@@ -1,7 +1,8 @@
 <?php
 
 	namespace GarageParrot\Model;
-    
+    use \PDO;
+    use \PDOException;
     use Firebase\JWT\JWT;
     use Firebase\JWT\Key;
 

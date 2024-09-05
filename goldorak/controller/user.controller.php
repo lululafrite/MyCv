@@ -1,5 +1,7 @@
 <?php
 
+    use \Goldorak\Model\User;
+
     include('../../goldorak/model/user.class.php');
     require_once '../../common/utilies.php';
 

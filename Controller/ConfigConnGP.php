@@ -1,8 +1,5 @@
 <?php
 
-	use \PDO;
-	use \PDOException;
-
 	function connectDB(): PDO{
 
 		$local = $_SESSION['local'];

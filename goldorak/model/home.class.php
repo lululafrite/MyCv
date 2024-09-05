@@ -1,4 +1,8 @@
 <?php
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+	use \Goldorak\Model\dbConnect_;
 
 	class Home
 	{
@@ -183,7 +187,7 @@
 		public function updateHome($idHome)
 		{
 			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect();
+			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 
@@ -223,7 +227,7 @@
 		public function deleteHome($id)
 		{
 			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect();
+			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 			
@@ -246,7 +250,7 @@
 		public function newHome()
 		{
 			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect();
+			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 	

@@ -2,7 +2,7 @@
     require_once('../../common/utilies.php');
     require_once('../../garageparrot/controller/car.controller.php');
     require_once('../../garageparrot/module/searchCarAdmin.php');
-    require_once('../../module/select_page.php');
+    require('../../garageparrot/module/select_page.php');
 ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-center">
@@ -19,37 +19,37 @@
         <div class="d-flex justify-content-center div__Car--img">
 
             <a
-                href="../img/vehicle/<?php echo escapeInput($Cars[$i]['image1']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image1']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             >
                 <img
-                    src="../img/vehicle/<?php echo $Cars[$i]['image1']; ?>"
+                    src="../garageparrot/img/vehicle/<?php echo $Cars[$i]['image1']; ?>"
                     alt="Image du véhicule"
                     style="width:350px;"
                 >
             </a>
 
             <a
-                href="../img/vehicle/<?php echo escapeInput($Cars[$i]['image2']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image2']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../img/vehicle/<?php echo escapeInput($Cars[$i]['image3']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image3']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../img/vehicle/<?php echo escapeInput($Cars[$i]['image4']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image4']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../img/vehicle/<?php echo escapeInput($Cars[$i]['image5']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image5']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
@@ -193,7 +193,7 @@
 
 </section>
 
-<?php include('../../module/select_page.php');?>
+<?php require('../../garageparrot/module/select_page.php'); ?>
 
 <script>
 

@@ -1,6 +1,8 @@
 <?php
 
 	namespace GarageParrot\Model;
+	use \PDO;
+	use \PDOException;
 
 	class Schedules
 	{

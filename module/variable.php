@@ -17,6 +17,7 @@
         $_SESSION['pseudoConnect']= 'Guest';
         $_SESSION['avatarConnect']= 'black_person.svg';
         $_SESSION['subscriptionConnect'] = 'Vénusia';
+        $_SESSION['subscription'] = 'Guest';
         
         // Token JWT
         $_SESSION['SECRET_KEY'] = "93082d283829273c47737cd555841ce33af04a29c791c2424df8e0f74a6d3afb";

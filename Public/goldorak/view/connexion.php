@@ -1,4 +1,4 @@
-<?php include('../../goldorak/controller/connexion.controller.php'); ?>
+<?php require_once('../../goldorak/controller/connexion.controller.php'); ?>
 
 <div class="container">
 

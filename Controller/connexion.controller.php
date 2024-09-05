@@ -1,31 +1,35 @@
 <?php
 
 use MyCv\Model\UserConnect;
+use Goldorak\Model\UserConnect as GoldorakUserConnect  ;
+use GarageParrot\Model\UserConnect as GarageParrotUserConnect  ;
 
-if (isset($_POST['envoyer'])) {
+if (isset($_POST['envoyer'])){
 
     $current_url = $_SERVER['REQUEST_URI'];
     $goldorak = '/goldorak/';
     $garageParrot = '/garageparrot/';
 
     if(preg_match($goldorak, $current_url)){
-
+        
         require_once('../../goldorak/model/connexion.class.php');
         require_once('../../common/utilies.php');
+        $MyUserConnect = new GoldorakUserConnect();
 
     }else if(preg_match($garageParrot, $current_url)){
 
         require_once('../../garageparrot/model/connexion.class.php');
         require_once('../../common/utilies.php');
+        $MyUserConnect = new GarageParrotUserConnect();
 
     }else{
 
         require_once('../model/connexion.class.php');
         require_once('../common/utilies.php');
+        $MyUserConnect = new UserConnect();
 
     }
 
-    $MyUserConnect = new UserConnect();
 
     $emptyCell = false;
     $emptyEmail = false;
@@ -72,13 +76,14 @@ if (isset($_POST['envoyer'])) {
 
                 if ($data) {
 
-                    //$MyUserConnect->SetUserConnect($data['type']);
                     $_SESSION['typeConnect'] = $data['type'];
                     $_SESSION['pseudoConnect'] = $data['pseudo'];
                     $_SESSION['avatarConnect'] = $data['avatar'];
-                    $_SESSION['subscriptionConnect'] = $data['subscription'];
+                    
+                    if(preg_match($goldorak, $current_url)){
+                        $_SESSION['subscriptionConnect'] = $data['subscription'];
+                    }
                     $_SESSION['connexion'] = true;
-                    //$MyUserConnect->SetConnexion(true);
 
                     $_SESSION['jwt'] = tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']);
 
@@ -101,12 +106,10 @@ if (isset($_POST['envoyer'])) {
 
                     $_SESSION['pseudoConnect'] = "Guest";
                     $_SESSION['typeConnect'] = "Guest";
-                    //$_SESSION['subscriptionConnect'] = "Vénusia";
-                    //$_SESSION['avatarConnect'] = 'avatar_membre_white.webp';
+                    $_SESSION['subscriptionConnect'] = "Vénusia";
+                    $_SESSION['avatarConnect'] = 'black_person.svg';
                     $_SESSION['connexion'] = false;
                     $_SESSION['subscription'] = "Vénusia";
-                    //$MyUserConnect->SetUserConnect('Guest');
-                    //$MyUserConnect->SetConnexion(false);
 
                     $_SESSION['message'] = "Le mot de passe est incorrecte!";
 
@@ -120,18 +123,16 @@ if (isset($_POST['envoyer'])) {
 
             
 
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
 
             $_SESSION['message'] = "error in the query : " . $e->getMessage();
 
             $_SESSION['pseudoConnect'] = "Guest";
             $_SESSION['typeConnect'] = "Guest";
-            //$_SESSION['subscriptionConnect'] = "Vénusia";
-            //$_SESSION['avatarConnect'] = 'avatar_membre_white.webp';
+            $_SESSION['subscriptionConnect'] = "Vénusia";
+            $_SESSION['avatarConnect'] = 'black_person.svg';
             $_SESSION['connexion'] = false;
             $_SESSION['subscription'] = "Vénusia";
-            //$MyUserConnect->SetUserConnect('Guest');
-            //$MyUserConnect->SetConnexion(false);
         }
 
     } else {
@@ -148,12 +149,8 @@ if (isset($_POST['envoyer'])) {
 
         $_SESSION['pseudoConnect'] = "Guest";
         $_SESSION['typeConnect'] = "Guest";
-        //$_SESSION['subscriptionConnect'] = "Vénusia";
-        //$_SESSION['avatarConnect'] = 'avatar_membre_white.webp';
-        $_SESSION['connexion'] = false;
-        $_SESSION['subscription'] = "Vénusia";
-        //$MyUserConnect->SetUserConnect('Guest');
-        //$MyUserConnect->SetConnexion(false);
+        $_SESSION['subscriptionConnect'] = "Vénusia";
+        $_SESSION['avatarConnect'] = 'black_person.svg';
         $_SESSION['connexion'] = false;
         $_SESSION['subscription'] = "Vénusia";
 

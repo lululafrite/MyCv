@@ -1,5 +1,10 @@
 <?php
 
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+	use \Goldorak\Model\dbConnect_;
+
 	class Comment
 	{
 		private $id;
@@ -122,7 +127,7 @@
 				return $this->theComment;
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -180,7 +185,7 @@
 				return $this->CommentList;
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -244,7 +249,7 @@
 					echo '<script>alert("L\'enregistrement est effectué!");</script>';
 				}
 
-			}catch (Exception $e){
+			}catch (PDOException $e){
 				
 				echo "Erreur de la requête : " . $e->getMessage();
 
@@ -284,7 +289,7 @@
 				
 				echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -318,7 +323,7 @@
 				
 				echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -366,7 +371,7 @@
 					// L'ID n'existe pas, gestion de l'erreur si nécessaire
 					echo '<script>alert("L\'enregistrement avec cet ID n\'existe pas!");</script>';
 				}
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requête : " . $e->getMessage();
 			}
 

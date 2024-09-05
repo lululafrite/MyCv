@@ -1,4 +1,6 @@
 <?php
+
+    use \GarageParrot\Model\Page;
     
     require('../../goldorak/model/page.class.php');
     

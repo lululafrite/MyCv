@@ -1,3 +1,5 @@
+<?php use \Goldorak\Model\Type; ?>
+
 <div class="container">
 
     <form action="" method="post">

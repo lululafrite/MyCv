@@ -1,5 +1,8 @@
 <?php
     use GarageParrot\Model\Car;
+    use GarageParrot\Model\Brand;
+    use GarageParrot\Model\Model;
+    use GarageParrot\Model\Motorization;
 
 //***********************************************************************************************
 // Daclaration de variables

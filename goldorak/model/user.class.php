@@ -1,5 +1,10 @@
 <?php
 
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+	use \Goldorak\Model\dbConnect_;
+
 	class User
 	{
 		private $id_user;
@@ -183,7 +188,7 @@
 				}
 
 				return $this->listPseudo;
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requete : function getPseudoUser() :" . $e->getMessage();
 			}
 
@@ -234,7 +239,7 @@
 
 				return $this->theUser;
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 
 				echo "Erreur de la requete : function getUser(\$idUser) :" . $e->GetMessage();
 
@@ -295,7 +300,7 @@
 
 				return $this->userList;
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 
 				echo "Erreur de la requete : function get(\$whereClause, \$orderBy = 'name', \$ascOrDesc = 'ASC', \$firstLine = 0, \$linePerPage = 13) : " . $e->GetMessage();
 
@@ -442,7 +447,7 @@
 				
 				$_SESSION['message'] = "Les modifications sont enregistrées!";
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				$_SESSION['message'] = "Erreur de la requete  : function updateUser(\$idUser) :" . $e->GetMessage();
 			}
@@ -476,7 +481,7 @@
 					$bdd=null;
 					return true;
 				}
-				catch (Exception $e)
+				catch (PDOException $e)
 				{
 					echo "Erreur de la requete :" . $e->GetMessage();
 					$bdd=null;
@@ -496,7 +501,7 @@
 		public function verifUser($email)
 		{
 			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect();
+			$dbConnect_ = new dbConnect_();
 			$bdd = $dbConnect_->connectionDb();
             unset($dbConnect_);
 
@@ -516,7 +521,7 @@
 				return $this->userExist['number'];
 
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 
 				echo "Erreur de la requete : function verifUser(\$email) :" . $e->GetMessage();

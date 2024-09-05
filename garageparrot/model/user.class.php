@@ -1,6 +1,8 @@
 <?php
 
 	namespace GarageParrot\Model;
+	use \PDO;
+	use \PDOException;
 
 	class User
 	{
@@ -229,18 +231,30 @@
 			$conn = connectDB();
             date_default_timezone_set($_SESSION['timeZone']);
 
-			try {
-					$conn->exec("INSERT INTO `user`(`name`,`surname`,`pseudo`,`email`,`phone`,`password`,`id_type`)
-							VALUES('" . $this->name . "',
-									'" . $this->surname . "',
-									'" . $this->pseudo . "',
-									'" . $this->email . "',
-									'" . $this->phone . "',
-									'" . $this->password . "',
-									(SELECT `id_type` FROM `user_type` WHERE `type`='" . $this->type . "'))");
-
-				$sql = $conn->query("SELECT `id_user` FROM `user` WHERE `email`='" . $this->email . "'");
-				$id_user = $sql->fetch();
+			try{
+					
+				$stmt = $conn->prepare("INSERT INTO `user`(`name`,`surname`,`pseudo`,`email`,`phone`,`password`,`id_type`, `pw`)
+										VALUES(:name,
+												:surname,
+												:pseudo,
+												:email,
+												:phone,
+												:password,
+												(SELECT `id_type` FROM `user_type` WHERE `type`=:type),
+												:pw)");
+				
+				$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+				$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
+				$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+				$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+				$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
+				$stmt->bindParam(':password', $this->password, PDO::PARAM_STR);
+				$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+				$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
+				$stmt->execute();
+					
+				$stmt = $conn->query("SELECT `id_user` FROM `user` WHERE `email`='" . $this->email . "'");
+				$id_user = $stmt->fetch();
 				$this->id_user = intval($id_user['id_user']);
 				return intval($id_user['id_user']);
 

@@ -1,5 +1,10 @@
 <?php
 
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+	use \Goldorak\Model\dbConnect_;
+
 	class Type
 	{
 		private $id_type;
@@ -50,7 +55,7 @@
 
 				return $this->theType;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -89,7 +94,7 @@
 
 				return $this->userTypeList;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -115,7 +120,7 @@
 
 				echo '<script>alert("L\'enregistrement est effectué!");</script>';
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				echo "Erreur de la requête : " . $e->getMessage();
 			}
 
@@ -144,7 +149,7 @@
 					echo '<script>alert("Aucune modification effectuée. L\'enregistrement avec l\'ID spécifié n\'existe peut-être pas.");</script>';
 				}
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}
@@ -173,7 +178,7 @@
 					echo '<script>alert("L\'enregistrement avec l\'ID spécifié n\'existe pas!");</script>';
 				}
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->getMessage();
 			}

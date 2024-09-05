@@ -1,4 +1,8 @@
 <?php
+    namespace Goldorak\Model;
+    use \PDO;
+    use \PDOException;
+    use \Goldorak\Model\dbConnect_;
 
 	class Page
     {        
@@ -107,7 +111,7 @@
                     $this->countLine = $bdd->query("SELECT count(*) FROM `" . $theTable . "` WHERE " . $_SESSION['whereClause'])->fetchColumn();
                 }
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}

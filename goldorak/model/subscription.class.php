@@ -1,5 +1,10 @@
 <?php
 
+	namespace Goldorak\Model;
+	use \PDO;
+	use \PDOException;
+	use \Goldorak\Model\dbConnect_;
+
 	class Subscription
 	{
 		private $id_subscription;
@@ -50,7 +55,7 @@
 				$this->theSubscription[] = $sql->fetch();
 				return $this->theSubscription;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -83,7 +88,7 @@
 				while ($this->userSubscriptionList[] = $sql->fetch());
 				return $this->userSubscriptionList;
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -110,7 +115,7 @@
 
 				echo '<script>alert("L\'enregistrement est effectué!");</script>';
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
 				
 				echo "Erreur de la requête : " . $e->getMessage();
 
@@ -136,7 +141,7 @@
 				
 				echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}
@@ -158,7 +163,7 @@
 			    $bdd->exec('DELETE FROM subscription WHERE id_subscription=' . $id);
 				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
 			}
-			catch (Exception $e)
+			catch (PDOException $e)
 			{
 				echo "Erreur de la requete :" . $e->GetMessage();
 			}

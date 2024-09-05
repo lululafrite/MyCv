@@ -1,5 +1,6 @@
 <?php
     use GarageParrot\Model\User;
+    use GarageParrot\Model\Type;
 
 //***********************************************************************************************
 // Daclaration de variables
@@ -40,6 +41,11 @@
             if($req === 0){
                 
                 $MyUser->setId($MyUser->addUser()); // Requete qui ajoute l'utilisateur
+                
+                $user = array(
+                    "id_user" => $MyUser->getId()
+                );
+
                 $_SESSION['newUser'] = false;
 				echo '<script>alert("L\'enregistrement est effectué!");</script>';
 
@@ -81,11 +87,11 @@
 
     }else if(isset($_POST['bt_userEdit_cancel'])){
         
-        $_SESSION['newUserr'] = false;
+        $_SESSION['newUser'] = false;
         
         if($_SESSION['local']===true){
 
-            echo '<script>window.location.href = "http://follaco/garageparrot/index.php?page=user";</script>';
+            echo '<script>window.location.href = "http://MyCv/garageparrot/index.php?page=user";</script>';
         
         }
         else{

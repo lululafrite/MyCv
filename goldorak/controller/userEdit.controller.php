@@ -1,5 +1,9 @@
 <?php
 
+    use \Goldorak\Model\User;
+    use \Goldorak\Model\Type;
+    use \Goldorak\Model\Subscription;
+
     require_once('../../goldorak/model/user.class.php');
     require_once '../../common/utilies.php';
 

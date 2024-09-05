@@ -1,3 +1,8 @@
+<?php
+    use garageparrot\model\Brand;
+    use garageparrot\model\Model;
+?>
+
 <form action="" method="post">
 
     <!-- input hidden csrf -->

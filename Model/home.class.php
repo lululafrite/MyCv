@@ -143,13 +143,7 @@
 											`home`.`home_id`,
 											`home`.`home_title`,
 											`home`.`home_subtitle`,
-											`home`.`home_title_page`,
-											`home`.`home_article1_title`,
-											`home`.`home_article1`,
-											`home`.`home_article1_img`,
-											`home`.`home_article2_title`,
-											`home`.`home_article2`,
-											`home`.`home_article2_img`
+											`home`.`home_title_page`
 										FROM `home`
 										WHERE `home`.`home_id` = :idHome");
 				$stmt->bindParam(':idHome', $idHome, PDO::PARAM_INT);
@@ -183,13 +177,7 @@
 											`home`.`home_id`,
 											`home`.`home_title`,
 											`home`.`home_subtitle`,
-											`home`.`home_title_page`,
-											`home`.`home_article1_title`,
-											`home`.`home_article1`,
-											`home`.`home_article1_img`,
-											`home`.`home_article2_title`,
-											`home`.`home_article2`,
-											`home`.`home_article2_img`
+											`home`.`home_title_page`
 										FROM `home`
 										WHERE $whereClause
 										ORDER BY $orderBy $ascOrDesc
@@ -223,25 +211,13 @@
 				$stmt = $bdd->prepare("UPDATE `home`
 										SET `home_title` = :homeTitle,
 											`home_subtitle` = :homeSubtitle,
-											`home_title_page` = :homeTitlePage,
-											`home_article1_title` = :homeArticle1Title,
-											`home_article1` = :homeArticle1,
-											`home_article1_img` = :homeArticle1Img,
-											`home_article2_title` = :homeArticle2Title,
-											`home_article2` = :homeArticle2,
-											`home_article2_img` = :homeArticle2Img
+											`home_title_page` = :homeTitlePage
 											
 										WHERE `home_id` = :homeId");
 				
 				$stmt->bindParam(':homeTitle', $this->homeTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeSubtitle', $this->homeSubtitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeTitlePage', $this->homeTitlePage, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle1Title', $this->homeArticle1Title, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle1', $this->homeArticle1, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle1Img', $this->homeArticle1Img, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle2Title', $this->homeArticle2Title, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle2', $this->homeArticle2, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle2Img', $this->homeArticle2Img, PDO::PARAM_STR);
 				$stmt->bindParam(':homeId', $homeId, PDO::PARAM_INT);
 				
 				$stmt->execute();
@@ -293,31 +269,15 @@
 				$stmt = $bdd->prepare("INSERT INTO `home` (`home_title`,
 															`home_subtitle`,
 															`home_title_page`,
-															`home_article1_title`,
-															`home_article1`,
-															`home_article1_img`,
-															`home_article2_title`,
-															`home_article2`,
-															`home_article2_img`) 
+															`home_article1_title`) 
 										VALUES (:home_title,
 												:home_subtitle,
 												:home_title_page,
-												:home_article1_title,
-												:home_article1,
-												:home_article1_img,
-												:home_article2_title,
-												:home_article2,
-												:home_article2_img)");
+												:home_article1_title)");
 	
 				$stmt->bindParam(':home_title', $this->homeTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':home_subtitle', $this->homeSubtitle, PDO::PARAM_STR);
 				$stmt->bindParam(':home_title_page', $this->homeTitlePage, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article1_title', $this->homeArticle1Title, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article1', $this->homeArticle1, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article1_img', $this->homeArticle1Img, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article2_title', $this->homeArticle2Title, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle2', $this->homeArticle2, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article2_img', $this->homeArticle2Img, PDO::PARAM_STR);
 	
 				$stmt->execute();
 				$bdd = null;

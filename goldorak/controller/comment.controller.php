@@ -1,5 +1,6 @@
 <?php
 
+    use \Goldorak\Model\Comment;
     use \Firebase\JWT\JWT;
 
     require_once('../../common/utilies.php');
