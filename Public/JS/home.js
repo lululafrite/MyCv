@@ -8,7 +8,7 @@ function initFormDataHeader(button){
 
     formData.append(button, document.querySelector('input[name="' + button + '"]').value);
 
-    formData.append('csrfHeader', document.querySelector('input[name="csrfHome"]').value);
+    formData.append('csrf', document.querySelector('input[name="csrf"]').value);
 
     formData.append('text_home_title', document.querySelector('input[name="text_home_title"]').value);
     formData.append('text_home_subtitle', document.querySelector('input[name="text_home_subtitle"]').value);
@@ -36,7 +36,7 @@ function initFormDataHome(button){
 
     formData.append(button, document.querySelector('input[name="' + button + '"]').value);
 
-    formData.append('csrfHome', document.querySelector('input[name="csrfHome"]').value);
+    formData.append('csrf', document.querySelector('input[name="csrf"]').value);
 
     formData.append('text_home_title', document.querySelector('input[name="text_home_title"]').value);
     formData.append('text_home_subtitle', document.querySelector('input[name="text_home_subtitle"]').value);

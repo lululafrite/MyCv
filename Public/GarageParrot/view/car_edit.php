@@ -7,7 +7,7 @@
     <form action="" method="post" id="formCarEdit" enctype="multipart/form-data">
 
         <!-- input hidden csrf -->
-        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
         <table class="w-100">
 

@@ -1,6 +1,7 @@
 <?php
 
 	namespace MyCv\Model;
+	
 	use \PDO;
 	use \PDOException;
 

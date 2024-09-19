@@ -1,8 +1,8 @@
 <?php
-    use garageparrot\model\Car;
-    use garageparrot\model\Brand;
-    use garageparrot\model\Model;
-    use garageparrot\model\Motorization;
+    use GarageParrot\Model\Car;
+    use GarageParrot\Model\Brand;
+    use GarageParrot\Model\Model;
+    use GarageParrot\Model\Motorization;
 
 //***********************************************************************************************
 // Daclaration de variables
@@ -95,9 +95,9 @@
     //***********************************************************************************************
     
     // Vérification du token CSRF
-    if(verifCsrf('tokenCsrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        if(isset($_POST['bt_carEdit_save']) && $_SESSION['errorFormCar'] === false)
+        if(isset($_POST['bt_carEdit_save']) && $_SESSION['errorForm'] === false)
         {
             //Récupération et filtrage des caratères des valeurs des inputs du formulaire
             $MyCar->setBrand(isset($_POST["list_carEdit_brand"]) ? filterInput('list_carEdit_brand') : '');
@@ -155,7 +155,7 @@
 
         }else if(isset($_POST['nav_new_car']) || isset($_POST['bt_carEdit_new'])){
             
-            if ($_SESSION['errorFormCar'] === false){
+            if ($_SESSION['errorForm'] === false){
                 // Vide le tableau pour que les input du formulaire soient vides après avoir cliqué sur le bouton nouveau
                 $car = array(
                     "id_car" => '',
@@ -194,7 +194,7 @@
 
     }
 
-    if($_SESSION['errorFormCar']===false){
+    if($_SESSION['errorForm']===false){
 
         if($_SESSION['newCar'] != true){
             // Traitement de récupération de l'id du véhicule en fonction des conditions

@@ -3,7 +3,7 @@
     <form class="d-flex align-items-center" id="form__nbOfLine" method="post" action=<?php $pageActive ?>>
 
         <!-- input hidden csrf -->
-        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['csrfPage'];?>">
+        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
         <label class="form-label text-light me-3" for="nbOfLine">Réf.<span style="color:#343a40">_</span>par<span style="color:#343a40">_</span>page<span style="color:#343a40">_</span>:</label>
 
@@ -34,7 +34,7 @@
     <form class="d-flex mt-3 mt-sm-0" method="post">
         
         <!-- input hidden csrf -->
-        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['csrfPage'];?>">
+        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
         <input class="BtPage rounded-2" type="submit" name="previous" value="<"/>
         <label class="labelPage text-light text-end ps-3"><?php echo $laPage; ?></label>

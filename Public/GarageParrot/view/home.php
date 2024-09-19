@@ -4,7 +4,7 @@
 <form action="" method="post">
 
 	<!-- input hidden csrf -->
-	<input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+	<input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
 	<div class="container pt-3">
 

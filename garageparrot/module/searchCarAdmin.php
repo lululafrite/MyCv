@@ -6,7 +6,7 @@
 <form action="" method="post">
 
     <!-- input hidden csrf -->
-    <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
     <div class="d-sm-flex justify-content-sm-between p-3 mx-2 mb-2 mt-2 mx-md-5 bgDark border border-secondary border-3 rounded-4">
 
@@ -23,7 +23,7 @@
                 <option value='Selectionnez une marque'>Selectionnez une marque</option>
             <?php
 
-                include('../../garageparrot/model/brand.class.php');
+                require_once('../../garageparrot/model/brand.class.php');
                 $Brands = new Brand();
                 $MyBrand = $Brands->get(1,'name', 'ASC', 0, 50);
                 unset($Brands);
@@ -47,7 +47,7 @@
                 <option value='Selectionnez un modele'>Selectionnez un modele</option>";
             <?php
 
-                include('../../garageparrot/model/model.class.php');
+                require_once('../../garageparrot/model/model.class.php');
                 $Models = new Model();
                 if($_SESSION['criteriaBrand'] != 'Selectionnez une marque'){
                     $MyModel = $Models->get('`model`.`id_brand` = (SELECT `brand`.`id_brand` FROM `brand` WHERE `brand`.`name` = \'' . $_SESSION['criteriaBrand'] . '\')','name', 'ASC', 0, 50);

@@ -23,7 +23,7 @@
 
     if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
 */
-        if(verifCsrf('csrfHome') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
             
             if($btn_home_save){
                 $btn_home_save = false;

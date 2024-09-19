@@ -1,5 +1,5 @@
 <?php
-    use garageparrot\model\Car;
+    use GarageParrot\Model\Car;
 
 //---Load model car--------------------
     require_once('../../common/utilies.php');
@@ -169,11 +169,11 @@
 
 
     // Executer la requete SELECT pour rechercher les contacts en fonction de la clause WHERE
-    if($_SESSION['errorFormCar']===false && $MyCar->getNewCar() === false ){
+    if($_SESSION['errorForm']===false && $MyCar->getNewCar() === false ){
         
         require_once('../../garageparrot/controller/page.controller.php');
         // Vérification du token CSRF
-        if(verifCsrf('tokenCsrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
             $Cars = $MyCar->get($whereClause, 'price', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
         

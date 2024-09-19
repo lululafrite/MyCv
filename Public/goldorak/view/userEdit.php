@@ -1,4 +1,4 @@
-<?php require_once('../../goldorak/controller/userEdit.controller.php'); ?>
+<?php require_once('../../controller/userEdit.controller.php'); ?>
 
 <section class="container">
     
@@ -11,7 +11,7 @@
             <!-- input hidden csrf -->
             <tr style="display: none;">
                 <td colspan="2">
-                    <input type="hidden" name="csrfUser" value="<?php echo $_SESSION['csrfUser'];?>">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
                 </td>
             </tr>
 

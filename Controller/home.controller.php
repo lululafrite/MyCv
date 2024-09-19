@@ -17,7 +17,7 @@
         $btn_delete_home_article = "btn_delete_home_article_" . $home_article_id;
         $btn_save_home_article = "btn_save_home_article_" . $home_article_id;
 
-        if(verifCsrf('csrfHome') || verifCsrf('csrfHeader')){
+        if(verifCsrf('csrf')){
             
             if(isset($_POST['btn_save_header'])){
                 

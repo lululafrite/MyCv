@@ -1,8 +1,24 @@
 <?php
 
-	namespace MyCv\Model;
+	namespace User\Model;
+	
+    $current_url = $_SERVER['REQUEST_URI'];
+    $goldorak = '/goldorak/';
+    $garageParrot = '/garageparrot/';
+
+    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
+
+		require_once('../../model/dbConnect.class.php');
+
+    }else{
+
+		require_once('../model/dbConnect.class.php');
+
+    }
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Type
 	{
@@ -33,7 +49,6 @@
 		private $theType;
 		public function getType($idType)
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
 			unset($myDbConnect);
@@ -68,7 +83,6 @@
 		private $userTypeList;
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
 			unset($myDbConnect);
@@ -105,7 +119,6 @@
 
 		public function addUserType()
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
 			unset($myDbConnect);
@@ -130,7 +143,6 @@
 
 		public function updateUserType($idType)
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
 			unset($myDbConnect);
@@ -160,7 +172,6 @@
 
 		public function deleteUserType($id)
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
 			unset($myDbConnect);

@@ -223,38 +223,6 @@
         }
     }
 
-    // Route to home page
-    function routeToHomePageGarageParrot(){
-            
-        if($_SESSION['local']){
-            
-            echo '<script>window.location.href = "http://mycv/garageparrot/index.php?page=home";</script>';
-        
-
-        }else{
-
-            echo '<script>window.location.href = "https://www.follaco.fr/garageparrot/index.php?page=home";</script>';
-
-        }
-        exit();
-    }
-
-    // Route to home page
-    function routeToHomePageGoldorak(){
-            
-        if($_SESSION['local']){
-            
-            echo '<script>window.location.href = "http://mycv/goldorak/index.php?page=home";</script>';
-        
-
-        }else{
-
-            echo '<script>window.location.href = "https://www.follaco.fr/goldorak/index.php?page=home";</script>';
-
-        }
-        //exit();
-    }
-
     // Route to user page
     function routeToUserPage(){
 
@@ -422,7 +390,7 @@
         $_SESSION['newCars'] = false;
         $_SESSION['whereClause'] =  '1';
 
-        $_SESSION['errorFormCar'] = false;
+        $_SESSION['errorForm'] = false;
 
     }
 
@@ -430,13 +398,13 @@
 
         $_SESSION['whereClause'] =  '1';
 
-        $_SESSION['criteriaName'] = '';
-        $_SESSION['criteriaPseudo'] = '';
-        $_SESSION['criteriaType'] = 'Selectionnez un type';
+        $_SESSION['user']['criteriaName'] = '';
+        $_SESSION['user']['criteriaPseudo'] = '';
+        $_SESSION['user']['criteriaType'] = 'Selectionnez un type';
 
         //$_SESSION['newUser'] = false;
 
-        $_SESSION['errorFormUser'] = false;
+        $_SESSION['errorForm'] = false;
 
     }
 

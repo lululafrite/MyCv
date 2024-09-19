@@ -3,7 +3,7 @@
 <form method="post" id="formHome"  enctype="multipart/form-data">
     
     <!-- input hidden csrf -->
-    <input type="hidden" name="csrfHome" value="<?php echo $_SESSION['csrfHome'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
     <!-- start of data save message -->
 

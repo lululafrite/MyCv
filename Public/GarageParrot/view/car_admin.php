@@ -14,7 +14,7 @@
     <form action="/index.php?page=car_edit" method="post">
 
     <!-- input hidden csrf -->
-    <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
         
         <div class="d-flex justify-content-center div__Car--img">
 

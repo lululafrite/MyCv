@@ -1,8 +1,20 @@
 <?php
 
-	namespace Goldorak\Model;
+	namespace User\Model;
+	
+    $current_url = $_SERVER['REQUEST_URI'];
+    $goldorak = '/goldorak/';
+    $garageParrot = '/garageparrot/';
 
-	require_once('../../model/dbConnect.class.php');
+    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
+
+		require_once('../../model/dbConnect.class.php');
+
+    }else{
+
+		require_once('../model/dbConnect.class.php');
+
+    }
 
 	use \PDO;
 	use \PDOException;

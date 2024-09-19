@@ -1,6 +1,6 @@
 <?php
-    include('../../garageparrot/controller/user.controller.php');
-    include('../../garageparrot/module/select_page.php');
+    include('../../controller/user.controller.php');
+    include('../../module/select_page.php');
 ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-around">

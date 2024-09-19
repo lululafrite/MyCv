@@ -2,7 +2,16 @@
 
     use MyCv\Model\Page;
 
-    require('../model/page.class.php');
+    $current_url = $_SERVER['REQUEST_URI'];
+    $goldorak = '/goldorak/';
+    $garageParrot = '/garageparrot/';
+
+    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
+        require('../../model/page.class.php');
+
+    }else{
+        require('../model/page.class.php');
+    }
     
     $MyPage = new Page();
 

@@ -1,4 +1,7 @@
-<?php use \Goldorak\Model\Type; ?>
+<?php
+    use \User\Model\Type;
+    include('../../model/type.class.php');
+?>
 
 <div class="container">
 
@@ -12,9 +15,9 @@
                     value=
                     "<?php
                         if(isset($_POST['Text_User_Nom'])){
-                            $_SESSION['criteriaName'] = $_POST['Text_User_Nom'];
+                            $_SESSION['user']['criteriaName'] = $_POST['Text_User_Nom'];
                         }
-                        echo $_SESSION['criteriaName'];
+                        echo $_SESSION['user']['criteriaName'];
                     ?>"
                 >
             </div>
@@ -26,9 +29,9 @@
                     value=
                     "<?php
                         if(isset($_POST['Text_User_Pseudo'])){
-                            $_SESSION['criteriaPseudo'] = $_POST['Text_User_Pseudo'];
+                            $_SESSION['user']['criteriaPseudo'] = $_POST['Text_User_Pseudo'];
                         }
-                        echo $_SESSION['criteriaPseudo'];
+                        echo $_SESSION['user']['criteriaPseudo'];
                     ?>"
                 >
 
@@ -40,15 +43,14 @@
                 <select class="form-select fw-bolder rounded-3" id="Select_User_Type" name="Select_User_Type">
                     <?php
                         if(isset($_POST['Select_User_Type'])){
-                            $_SESSION['criteriaType'] = $_POST['Select_User_Type'];
+                            $_SESSION['user']['criteriaType'] = $_POST['Select_User_Type'];
                         }
                     ?>
 
-                        <option value='<?php echo $_SESSION['criteriaType']; ?>'><?php echo $_SESSION['criteriaType']; ?></option>";
+                        <option value='<?php echo $_SESSION['user']['criteriaType']; ?>'><?php echo $_SESSION['user']['criteriaType']; ?></option>";
                         <option value='Selectionnez un type'>Selectionnez un type</option>
                         
                     <?php
-                        include('../../goldorak/model/type.class.php');
                         $Types = new Type();
                         $MyType = $Types->get(1,'type', 'ASC', 0, 50);
                         unset($Types);

@@ -102,7 +102,7 @@
                             <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo'] != 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}else{echo 'Hello Guest !';} ?></span></span>
                         </a>
                         <ul class="dropdown-menu">
-                        <?php if(!$_SESSION['connexion']){ ?>
+                        <?php if(!$_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="index.php?page=connexion">
                                     <img class="p-2" src="img/icon/login_25x25.png" alt="icone du bouton s'identifier">    
@@ -110,7 +110,7 @@
                                 </a>
                             </li>
                         <?php } ?>
-                        <?php if($_SESSION['connexion']){ ?>
+                        <?php if($_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="index.php?page=disconnect">
                                     <img class="p-2" src="img/icon/logout_25x25.png" alt="icone du bouton s'identifier">    

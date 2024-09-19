@@ -11,8 +11,8 @@
                 <!-- input hidden csrf -->
                 <input
                     type="hidden"
-                    name="csrfHome"
-                    value="<?php echo $_SESSION['csrfHome'];?>"
+                    name="csrf"
+                    value="<?php echo $_SESSION['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">
@@ -63,8 +63,8 @@
                 <!-- input hidden csrf -->
                 <input
                     type="hidden"
-                    name="csrfHome"
-                    value="<?php echo $_SESSION['csrfHome'];?>"
+                    name="csrf"
+                    value="<?php echo $_SESSION['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">
@@ -111,8 +111,8 @@
                 <!-- input hidden csrf -->
                 <input
                     type="hidden"
-                    name="csrfHome"
-                    value="<?php echo $_SESSION['csrfHome'];?>"
+                    name="csrf"
+                    value="<?php echo $_SESSION['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">

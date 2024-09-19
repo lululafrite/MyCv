@@ -11,14 +11,14 @@
     if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
         
         require_once('../../model/connexion.class.php');
-        require_once('../../common/utilies.php');
         require_once('../../model/dbConnect.class.php');
+        require_once('../../common/utilies.php');
 
     }else{
 
         require_once('../model/connexion.class.php');
-        require_once('../common/utilies.php');
         require_once('../model/dbConnect.class.php');
+        require_once('../common/utilies.php');
 
     }
     

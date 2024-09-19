@@ -31,7 +31,7 @@ function sendDataOfComment(button, id = ''){
     let formData = new FormData();
 
     formData.append(button, button);
-    formData.append('csrfComment', document.querySelector('input[name="csrfComment"]').value);
+    formData.append('csrf', document.querySelector('input[name="csrf"]').value);
     formData.append('txt_comment_id', id);
 
     if(button === 'bt_save_comment'){

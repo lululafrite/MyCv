@@ -29,7 +29,7 @@
 
         if($jwt1->{'pseudo'} === $jwt2->{'pseudo'} && $jwt1->{'key'} === $jwt2->{'key'}){
 
-            if(verifCsrf('csrfComment') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+            if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
                 
                 $idComment = filterInput('txt_comment_id');
 

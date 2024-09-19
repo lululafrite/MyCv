@@ -1,7 +1,7 @@
-<?php include('../../goldorak/controller/user.controller.php'); ?>
+<?php include('../../controller/user.controller.php'); ?>
 
 <div class="mt-5">
-    <?php include('../../goldorak/module/searchUser.php'); ?>
+    <?php include('../../module/searchUser.php'); ?>
 </div>
 
 <div class="mt-5">

@@ -1,11 +1,6 @@
 <?php
 
-	namespace Goldorak\Model;
-
-	require_once('../../model/dbConnect.class.php');
-	use \PDO;
-	use \PDOException;
-	use MyCv\Model\dbConnect;
+	namespace User\Model;
 
 	class UserForm
 	{

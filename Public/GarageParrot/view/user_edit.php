@@ -1,5 +1,5 @@
 <?php
-    require_once('../../garageparrot/controller/userEdit.controller.php');
+    require_once('../../controller/userEdit.controller.php');
 ?>
 
 <section class="container">

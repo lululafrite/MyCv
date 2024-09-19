@@ -1,8 +1,24 @@
 <?php
 
 	namespace MyCv\Model;
+	
+    $current_url = $_SERVER['REQUEST_URI'];
+    $goldorak = '/goldorak/';
+    $garageParrot = '/garageparrot/';
+
+    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
+
+		require_once('../../model/dbConnect.class.php');
+
+    }else{
+
+		require_once('../model/dbConnect.class.php');
+
+    }
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Home
 	{
@@ -55,10 +71,8 @@
 		//-----------------------------------------------------------------------
 
 		private $theHome;
-		public function getHome($idHome)
-		{
-			require_once('../model/dbConnect.class.php');
-			
+		public function getHome($idHome){
+						
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
             unset($myDbConnect);
@@ -93,7 +107,6 @@
 		private $homeList;
 		public function get($whereClause, $orderBy = 'home_id', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
             unset($myDbConnect);
@@ -126,9 +139,8 @@
 
 		//-----------------------------------------------------------------------
 
-		public function updateHome($homeId)
-		{
-			require_once('../model/dbConnect.class.php');
+		public function updateHome($homeId){
+
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
             unset($myDbConnect);
@@ -160,7 +172,7 @@
 		//-----------------------------------------------------------------------
 
 		public function deleteHome($id): bool{
-			require_once('../model/dbConnect.class.php');
+
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
             unset($myDbConnect);
@@ -186,7 +198,6 @@
 
 		public function newHome(): bool{
 
-			require_once('../model/dbConnect.class.php');
 			$myDbConnect = new dbConnect();
 			$bdd = $myDbConnect->connectionDb();
             unset($myDbConnect);

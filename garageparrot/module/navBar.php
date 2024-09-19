@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <?php
-                    if ($_SESSION['dataConnect']['avatar'] === "Administrator")
+                    if ($_SESSION['dataConnect']['type'] === "Administrator")
                     {
                     ?>
                     <li class="nav-item dropdown custom-border-md-bottom">
@@ -57,7 +57,7 @@
                                     <form action="index.php?page=user_edit" method="post">
 
                                         <!-- input hidden csrf -->
-                                        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+                                        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
                                         <button class="dropdown-item Nav_Span1" id="nav_new_user" name="nav_new_user" type="submit">
                                             <img class="p-2 h-75" src="img/icon/person-plus.svg" alt="icone du bouton s'identifier">
@@ -71,7 +71,7 @@
                     </li>
                     <?php
                     }
-                    if ($_SESSION['dataConnect']['avatar'] === "Administrator" || $_SESSION['dataConnect']['avatar'] === "User" || $_SESSION['dataConnect']['avatar'] ==="Guest" || $_SESSION['dataConnect']['avatar'] ==="Member")
+                    if ($_SESSION['dataConnect']['type'] === "Administrator" || $_SESSION['dataConnect']['type'] === "User" || $_SESSION['dataConnect']['type'] ==="Guest" || $_SESSION['dataConnect']['type'] ==="Member")
                     {
                     ?>
                         <li class="nav-item dropdown custom-border-md-bottom">
@@ -90,13 +90,13 @@
                                 </li>
                     <?php
                     }
-                            if ($_SESSION['dataConnect']['avatar'] ==="Administrator" || $_SESSION['dataConnect']['avatar'] ==="User")
+                            if ($_SESSION['dataConnect']['type'] ==="Administrator" || $_SESSION['dataConnect']['type'] ==="User")
                             {
                             ?>
                                 <form action="index.php?page=car_edit" method="post">
 
                                     <!-- input hidden csrf -->
-                                    <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+                                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
 
                                     <li>
                                         <button class="dropdown-item Nav_Span1" id="nav_new_car" name="nav_new_car" type="submit">
@@ -145,7 +145,7 @@
                     <li class="nav-item dropdown custom-border-md-bottom" style="width: 200px;">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- <img class="p-2 h-75" src="img/icon/person.svg" alt="icone du menu s'identifier"> -->
-                            <img class="p-2 h-75" src="img/avatar/<?php echo htmlspecialchars($_SESSION['avatarConnect'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
+                            <img class="p-2 h-75" src="img/avatar/<?php echo htmlspecialchars($_SESSION['dataConnect']['avatar'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
                             <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">

@@ -11,8 +11,8 @@
         <!-- input hidden csrf -->
         <input
             type="hidden"
-            name="csrfHome"
-            value="<?php echo $_SESSION['csrfHome'];?>"
+            name="csrf"
+            value="<?php echo $_SESSION['csrf'];?>"
         >
 
         <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">

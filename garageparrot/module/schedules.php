@@ -1,5 +1,5 @@
 <?php
-    include('../../garageparrot/controller/schedules.controller.php');
+    require_once('../../garageparrot/controller/schedules.controller.php');
 ?>
 
 <table class="table table-dark table-bordered fs-4">

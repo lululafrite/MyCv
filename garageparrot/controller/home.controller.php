@@ -2,12 +2,12 @@
     use GarageParrot\Model\Home;
 
     require_once('../../common/utilies.php');
-    include('../../garageparrot/model/home.class.php');
+    require_once('../../garageparrot/model/home.class.php');
 
     $homes = new Home();
 
     // Vérification du token CSRF
-    if(verifCsrf('tokenCsrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if(isset($_POST['bt_home'])){
             

@@ -4,7 +4,8 @@
         require_once('../../common/utilies.php');
 
         if (isset($_POST['next']) || isset($_POST['previous'])){
-            require_once('../../garageparrot/controller/page.controller.php');
+            //require_once('../../garageparrot/controller/page.controller.php');
+            require_once('../../controller/page.controller.php');
         }
 
         use \Firebase\JWT\JWT;
@@ -131,7 +132,8 @@
                         
                         if($_SESSION['dataConnect']['avatar'] === 'Administrator'){
 
-                            require_once('../../garageparrot/module/searchUser.php');
+                            //require_once('../../garageparrot/module/searchUser.php');
+                            require_once('../../module/searchUser.php');
                             require_once 'view/user.php';
 
                             if($page === 'userBtn'){
@@ -176,11 +178,18 @@
 
         }else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
-            $_SESSION['dataConnect']['type'] = 'Guest';
-            $_SESSION['dataConnect']['pseudo'] = 'Guest';
-            $_SESSION['dataConnect']['avatar'] = 'black_person.svg';
-            $_SESSION['dataConnect']['subscription'] = 'Vénusia';
-            $_SESSION['dataConnect']['connexion'] = false;
+            $dataConnect = array(); settype($dataConnect, 'array');
+            $dataConnect['idUser'] = 0;
+            $dataConnect['pseudo'] = 'Guest';
+            $dataConnect['avatar'] = 'black_person.svg';
+            $dataConnect['type'] = 'Guest';
+            $dataConnect['subscription'] = 'Vénusia';
+            $dataConnect['password'] = '';
+            $dataConnect['error'] = false;
+            $dataConnect['message'] = '';
+            $dataConnect['connexion'] = false;
+    
+            $_SESSION['dataConnect'] = $dataConnect;
             
             timeExpired();
     

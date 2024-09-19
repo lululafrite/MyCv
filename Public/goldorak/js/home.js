@@ -47,7 +47,7 @@ function sendDataOfHome(button){
 
     formData.append(button, document.querySelector('input[name="' + button + '"]').value);
 
-    formData.append('csrfHome', document.querySelector('input[name="csrfHome"]').value);
+    formData.append('csrf', document.querySelector('input[name="csrf"]').value);
 
     formData.append('txt_titre1', document.querySelector('input[name="txt_titre1"]').value);
 

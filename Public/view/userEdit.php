@@ -11,7 +11,7 @@
             <!-- input hidden csrf -->
             <tr style="display: none;">
                 <td colspan="2">
-                    <input type="hidden" name="csrfUSer" value="<?php echo $_SESSION['csrfUSer'];?>">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
                 </td>
             </tr>
 

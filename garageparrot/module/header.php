@@ -16,7 +16,8 @@
     <?php
         
         if (isset($_POST['next']) || isset($_POST['previous'])){
-            require_once('../../garageparrot/controller/page.controller.php');
+            //require_once('../../garageparrot/controller/page.controller.php');
+            require_once('../../controller/page.controller.php');
         }
 
     ?>
