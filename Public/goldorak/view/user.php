@@ -78,11 +78,11 @@
             </div>
 
         <?php
-        if($_SESSION['typeConnect'] != 'Guest'){
+        if($_SESSION['dataConnect']['type'] != 'Guest'){
 
         ?>
             <div class="d-flex justify-content-center my-2">
-                <button type="submit" class='btn btn-primary fs-3 mt-3' name='bt_user_edit'>Editer</button>
+                <button type="submit" class='btn btn-primary fs-3 mt-3' name='btn_userEdit'>Editer</button>
             </div>
 
         <?php
@@ -90,11 +90,11 @@
         ?>
     </form>
         <?php
-        if($_SESSION['typeConnect'] === 'Guest'){
+        if($_SESSION['dataConnect']['type'] === 'Guest'){
 
         ?>
             <div class="d-flex justify-content-center my-2">
-                <button type="submit" class='btn btn-primary fs-3 mt-3' name='bt_user_editMember'>Editer</button>
+                <button type="submit" class='btn btn-primary fs-3 mt-3' name='btn_user_editMember'>Editer</button>
             </div>
             
         <?php

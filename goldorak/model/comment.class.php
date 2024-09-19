@@ -1,9 +1,12 @@
 <?php
 
 	namespace Goldorak\Model;
+	
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
-	use \Goldorak\Model\dbConnect_;
+	use MyCv\Model\dbConnect;
 
 	class Comment
 	{
@@ -82,12 +85,11 @@
 		private $theComment;
 		public function getComments($idComment)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
-            date_default_timezone_set($_SESSION['timeZone']);
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -140,10 +142,11 @@
 		private $CommentList;
 		public function get($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -197,10 +200,11 @@
 		private $idComment;
 		public function addComment()
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try{
 
@@ -262,10 +266,11 @@
 
 		public function updateComment($idComment)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{
@@ -301,10 +306,11 @@
 
 		public function modereComment($idComment, $publication)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{
@@ -335,10 +341,11 @@
 		
 		public function deleteComment($id)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try {
 				// Requête préparée pour la sélection

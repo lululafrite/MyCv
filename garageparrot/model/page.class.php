@@ -24,17 +24,17 @@
         
         public function getFirstLine()
         {
-            if(is_null($_SESSION['firstLine']))
+            if(is_null($_SESSION['pagination']['firstLine']))
             {
-                $_SESSION['firstLine']=0;
+                $_SESSION['pagination']['firstLine']=0;
             }
-            return $_SESSION['firstLine'];
+            return $_SESSION['pagination']['firstLine'];
         }
         public function setFirstLine($newFirstLine)
         {
-            $_SESSION['firstLine']=$newFirstLine;
-            if ($_SESSION['firstLine'] < 0){
-                $_SESSION['firstLine'] = 0;
+            $_SESSION['pagination']['firstLine']=$newFirstLine;
+            if ($_SESSION['pagination']['firstLine'] < 0){
+                $_SESSION['pagination']['firstLine'] = 0;
             }
         }
         
@@ -43,9 +43,9 @@
         private $nbLinePerPage;
         public function getNbDeLigneParPage()
         {
-            if (is_null($_SESSION['ligneParPage']))
+            if (is_null($_SESSION['pagination']['productPerPage']))
             {
-                $_SESSION['ligneParPage']=2;
+                $_SESSION['pagination']['productPerPage']=2;
                 $this->nbLinePerPage =2;
             }
             return $this->nbLinePerPage;
@@ -53,40 +53,40 @@
         public function setNbDeLigneParPage($new)
         {
             $this->nbLinePerPage=$new;
-            $_SESSION['ligneParPage']=$new;
+            $_SESSION['pagination']['productPerPage']=$new;
         }
         
         // __La page active__________________________________________
         
         public function getLaPage()
         {
-            if (is_null($_SESSION['laPage'])) {
-                $_SESSION['laPage'] = 1;
+            if (is_null($_SESSION['pagination']['thePage'])) {
+                $_SESSION['pagination']['thePage'] = 1;
             }
-            return $_SESSION['laPage'];
+            return $_SESSION['pagination']['thePage'];
         }
         public function setLaPage($new)
         {
-            $_SESSION['laPage'] = $new; //$this->thePage;
-            if ($_SESSION['laPage'] <= 0){
-                $_SESSION['laPage'] = 1;
+            $_SESSION['pagination']['thePage'] = $new; //$this->thePage;
+            if ($_SESSION['pagination']['thePage'] <= 0){
+                $_SESSION['pagination']['thePage'] = 1;
             }
         }
         
         public function getnbOfPage()
         {
-            if(is_null($_SESSION['nbOfPage']))
+            if(is_null($_SESSION['pagination']['nbOfPage']))
             {
-                $_SESSION['nbOfPage']=1;
+                $_SESSION['pagination']['nbOfPage']=1;
             }
-            return $_SESSION['nbOfPage'];
+            return $_SESSION['pagination']['nbOfPage'];
         }
         public function SetnbOfPage($nbOfPage)
         {
             if ($nbOfPage===0){
                 $nbOfPage=1;
             }
-            $_SESSION['nbOfPage']=$nbOfPage;
+            $_SESSION['pagination']['nbOfPage']=$nbOfPage;
         }
 
         private $countLine;

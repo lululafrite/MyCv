@@ -3,7 +3,8 @@
     require_once '../common/utilies.php';
 
     $page = isset($_GET['page']) ? escapeInput($_GET['page']) : 'home';
-
+    
+    $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
     
     if ($page === 'home'){
 

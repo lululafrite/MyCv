@@ -1,6 +1,8 @@
 <?php
 
     use MyCv\Model\User;
+    use Goldorak\Model\Type;
+    use Goldorak\Model\Subscription;
 
     require_once('../model/user.class.php');
     require_once('../common/utilies.php');
@@ -67,11 +69,8 @@
     $MyUser = new User();
     $MyUser->setNewUser($_SESSION['newUser']);
 
-    $user = array(
-        "id_user" => ''
-    );
-    $users = array();
-    $users[0] = $user;
+    $users = array("id_user" => ''); settype($users, 'array');
+    $data = array(); settype($data, 'array');
 
     //***********************************************************************************************
     // traitement CRUD
@@ -106,7 +105,7 @@
             $MyUser->setEmail($_SESSION['email']);
             $MyUser->setPhone($_SESSION['phone']);
 
-            if($_SESSION['typeConnect'] ==='Administrator'){
+            if($_SESSION['dataConnect']['type'] ==='Administrator'){
 
                 $MyUser->setType($_SESSION['type']);
 
@@ -129,11 +128,22 @@
                 if($_SESSION['newMember']){
 
                     $_SESSION['newMember'] = false;
-                    $_SESSION['typeConnect'] = 'Member';
-                    $_SESSION['pseudoConnect'] = $_SESSION['pseudo'];
-                    $_SESSION['avatarConnect'] = $_SESSION['avatarConnect'];
-                    $_SESSION['subscriptionConnect'] = $_SESSION['subscription'];
-                    $_SESSION['connexion'] = true;
+                    $_SESSION['dataConnect']['type'] = 'Member';
+                    //$_SESSION['pseudoConnect'] = $_SESSION['pseudo'];
+                    $_SESSION['dataConnect']['avatar'] = $_SESSION['avatar'];
+                    $_SESSION['dataConnect']['subscription'] = $_SESSION['subscription'];
+                    $_SESSION['dataConnect']['connexion'] = true;
+                    
+
+                    $data['id_user'] = 0;
+                    $data['pseudo'] = "Guest";
+                    $data['avatar'] = 'black_person.svg';
+                    $data['type'] = "Guest";
+                    $data['subscription'] = "Vénusia";
+                    $data['message'] = "";
+                    $data['connexion'] = false;
+
+                    $_SESSION['dataConnect'] = $data;
 
                     routeToHomePage();
 
@@ -149,9 +159,9 @@
 
                 if ($_SESSION['updateMoncompte']){
 
-                    $_SESSION['pseudoConnect'] = $_SESSION['pseudo'];
-                    $_SESSION['avatarConnect'] = $_SESSION['avatarConnect'];
-                    $_SESSION['subscriptionConnect'] = $_SESSION['subscription'];
+                    $_SESSION['dataConnect']['pseudo'] = $_SESSION['pseudo'];
+                    $_SESSION['dataConnect']['avatar'] = $_SESSION['avatarConnect'];
+                    $_SESSION['dataConnect']['subscription'] = $_SESSION['subscription'];
 
                 }
 
@@ -198,7 +208,7 @@
         
         if ($MyUser->deleteUser($_SESSION['id_user'])){
 
-            if($_SESSION['typeConnect'] === 'Member'){
+            if($_SESSION['dataConnect']['type'] === 'Member'){
 
                 $_SESSION['id_user'] = '';
                 $_SESSION['name'] = '';
@@ -254,7 +264,7 @@
             
             if($btn_monCompte){
 
-                $users = $MyUser->get('`pseudo` = \'' . $_SESSION['pseudoConnect'] . '\'');
+                $users = $MyUser->get('`pseudo` = \'' . $_SESSION['dataConnect']['pseudo'] . '\'');
                 $_SESSION['updateMoncompte'] = true;
 
             }else{

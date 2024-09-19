@@ -10,146 +10,132 @@
     $homes = new Home();
     $homeArticles = new HomeArticle();
 
-    $btn_save_header = isset($_POST['btn_save_header']) ? true : false;
-    unset($_POST['btn_save_header']);
-
-    $btn_home_save = isset($_POST['btn_home_save']) ? true : false;
-    unset($_POST['btn_home_save']);
-
-    $btn_home_article1_img = isset($_POST['btn_home_article1_img']) ? true : false;
-    unset($_POST['btn_home_article1_img']);
-
-    $btn_home_article2_img = isset($_POST['btn_home_article2_img']) ? true : false;
-    unset($_POST['btn_home_article2_img']);
-
-
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        
+        $home_article_id = isset($_POST['home_article_id']) ? filterInput('home_article_id') : '';
+        $btn_home_article_img = "btn_home_article_img_" . $home_article_id;
+        $btn_delete_home_article = "btn_delete_home_article_" . $home_article_id;
+        $btn_save_home_article = "btn_save_home_article_" . $home_article_id;
 
         if(verifCsrf('csrfHome') || verifCsrf('csrfHeader')){
             
-            if($btn_home_save || $btn_save_header){
+            if(isset($_POST['btn_save_header'])){
                 
-                saveHome($homes,'');
+                varHome($homes);
+                $homes->updateHome(1);
+                unset($_POST['btn_save_header']);
 
-            }else if($btn_home_article1_img || $btn_home_article2_img){
+            }else if(isset($_POST['btn_new_home_article'])){
                 
-                $home = $homes->get(1,'home_id','DESC','0','10');
+                varHomeArticle($homeArticles, 'new');
+                $homeArticles->newHomeArticle();
+                unset($_POST['btn_new_home_article']);
 
-                $homes->setHomeTitle($home[0]['home_title']);
-                $homes->setHomeSubtitle($home[0]['home_subtitle']);
-        
-                $homes->setHomeTitlePage($home[0]['home_title_page']);
-        
-                $homes->setHomeArticle1Title($home[0]['home_article1_title']);
-                $homes->setHomeArticle1($home[0]['home_article1']);
-                $homes->setHomeArticle1Img( $home[0]['home_article1_img']);
-        
-                $homes->setHomeArticle2Title($home[0]['home_article2_title']);
-                $homes->setHomeArticle2($home[0]['home_article2']);
-                $homes->setHomeArticle2Img($home[0]['home_article2_img']);
+            }else if(isset($_POST[$btn_save_home_article])){
 
-                if($btn_home_article1_img){
+                varHomeArticle($homeArticles, $home_article_id);                
+                $homeArticles->updateHomeArticle($home_article_id);
+                unset($_POST['btn_save_home_article']);
 
-                    if (uploadImg('newImgChapter1','text_home_article1_img','file_home_article1_img','./img/picture/')){
+            }else if(isset($_POST[$btn_delete_home_article])){
+                
+                $homeArticles->deleteHomeArticle($home_article_id);
+                unset($_POST[$btn_delete_home_article]);
+                unset($_POST['btn_delete_home_article']);
 
-                        $home[0]['home_article1_img'] = $_SESSION['newImgChapter1'];
-                        $homes->setHomeArticle1Img($_SESSION['newImgChapter1']);
-                        $homes->updateHome(1);
+            }else if(isset($_POST[$btn_home_article_img])){
 
-                    }else{
+                varHomeArticle($homeArticles, $home_article_id);
 
-                        echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
+                if (uploadImg("newImgChapter1","text_home_article_img_" . $home_article_id,"file_home_article_img_" . $home_article_id,"./img/picture/")){
 
-                    }
+                    $arrayHomeArticle['homeArticleImg'] = $_SESSION['newImgChapter1'];
+                    $homeArticles->setHomeArticleImg($_SESSION['newImgChapter1']);
+                    $homeArticles->updateHomeArticle($home_article_id);
 
-                }else if($btn_home_article2_img){
+                }else{
 
-                    if (uploadImg('newImgChapter2','text_home_article2_img','file_home_article2_img','./img/picture/')){
-
-                        $home[0]['home_article2_img'] = $_SESSION['newImgChapter2'];
-                        $homes->setHomeArticle2Img($_SESSION['newImgChapter2']);
-                        $homes->updateHome(1);
-
-                    }else{
-
-                        echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
-
-                    }
+                    echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
 
                 }
+
+                unset($_POST[$btn_home_article_img]);
             
             }
 
         }
 
     }
+    
+    $current_url = $_SERVER['REQUEST_URI'];
+    settype($current_url, "string");
+    
+    $monParcours = "/mycv/";
+    settype($monParcours, "string");
 
-    if(
-        /*($btn_home_article1_img || $btn_home_article2_img && (!$btn_save_header && !$btn_home_save))
-        ||
-        (!$btn_home_article1_img && !$btn_home_article2_img && !$btn_save_header && !$btn_home_save)*/
-        /*($btn_save_header || $btn_home_save)
-        ||*/
-        (!$btn_home_article1_img && !$btn_home_article2_img && !$btn_save_header && !$btn_home_save)
-    ){
-        
-        $home = $homes->get(1,'home_id','DESC','0','2');
-        $homeArticle = $homeArticles->get(1,'home_article_sort','ASC','0','20');
- 
+    $home = $homes->get(1,'home_id','DESC','0','2');
+
+    if(preg_match($monParcours, $current_url)){
+        $home[0]['home_title_page'] = "Mon parcours";
+    }
+    
+    $homeArticle = $homeArticles->get(1,'home_article_sort','ASC','0','20');
+
+//----------------------------------------------------------------------------------------------------------------------
+// FUNCTIONS
+//----------------------------------------------------------------------------------------------------------------------
+
+    function varHomeArticle($homeArticles, $home_article_id): array{
+
+        $homeArticleTitle = isset($_POST["text_home_article_title_" . $home_article_id]) ? filterInput("text_home_article_title_" . $home_article_id) : '';
+        $homeArticle = isset($_POST["textarea_home_article_" . $home_article_id]) ? filterInput("textarea_home_article_" . $home_article_id) : '';
+        $homeArticleImg = isset($_POST["text_home_article_img_" . $home_article_id]) ? filterInput("text_home_article_img_" . $home_article_id) : '';
+        $homeArticleImgYesOrNo = isset($_POST["home_article_img_yesOrNo_" . $home_article_id]) ? filterInput("home_article_img_yesOrNo_" . $home_article_id) : '';
+        $homeArticleImgRightOrLeft = isset($_POST["home_article_img_rightOrLeft_" . $home_article_id]) ? filterInput("home_article_img_rightOrLeft_" . $home_article_id) : '';
+        $homeArticleImgWidth = isset($_POST["home_article_img_width_" . $home_article_id]) ? filterInput("home_article_img_width_" . $home_article_id) : '';
+        $homeArticleImgHeight = isset($_POST["home_article_img_height_" . $home_article_id]) ? filterInput("home_article_img_height_" . $home_article_id) : '';
+        $homeArticleImgObjectFit = isset($_POST["home_article_img_objectFit_" . $home_article_id]) ? filterInput("home_article_img_objectFit_" . $home_article_id) : '';
+        $homeArticleSort = isset($_POST["home_article_sort_" . $home_article_id]) ? filterInput("home_article_sort_" . $home_article_id) : '';
+
+        $homeArticles->setHomeArticleTitle($homeArticleTitle);
+        $homeArticles->setHomeArticle($homeArticle);
+        $homeArticles->setHomeArticleImg($homeArticleImg);
+        $homeArticles->setHomeArticleImgYesOrNo($homeArticleImgYesOrNo);
+        $homeArticles->setHomeArticleImgRightOrLeft($homeArticleImgRightOrLeft);
+        $homeArticles->setHomeArticleImgWidth($homeArticleImgWidth);
+        $homeArticles->setHomeArticleImgHeight($homeArticleImgHeight);
+        $homeArticles->setHomeArticleImgObjectFit($homeArticleImgObjectFit);
+        $homeArticles->setHomeArticleSort($homeArticleSort);
+
+        return array(
+            'homeArticleTitle' => $homeArticleTitle,
+            'homeArticle' => $homeArticle,
+            'homeArticleImg' => $homeArticleImg,
+            'homeArticleImgYesOrNo' => $homeArticleImgYesOrNo,
+            'homeArticleImgRightOrLeft' => $homeArticleImgRightOrLeft,
+            'homeArticleImgWidth' => $homeArticleImgWidth,
+            'homeArticleImgHeight' => $homeArticleImgHeight,
+            'homeArticleImgObjectFit' => $homeArticleImgObjectFit,
+            'homeArticleSort' => $homeArticleSort
+        );
+
     }
 
-    if ($btn_home_save || $btn_save_header || $btn_home_article1_img || $btn_home_article2_img ){
-
-        $btn_home_save = false;
-        $btn_save_header = false;
-        $btn_home_article1_img = false;
-        $btn_home_article2_img = false;
-
-    }
-
-    function saveHome($object, $button = ''){
+    function varHome($home): array{
 
         $homeTitle = isset($_POST['text_home_title']) ? filterInput('text_home_title') : '';
         $homeSubtitle = isset($_POST['text_home_subtitle']) ? filterInput('text_home_subtitle') : '';
-
         $homeTitlePage = isset($_POST['text_home_title_page']) ? filterInput('text_home_title_page') : '';
-        
-        $homeArticle1Title = isset($_POST['text_home_article1_title']) ? filterInput('text_home_article1_title') : '';
-        $homeArticle1 = isset($_POST['textarea_home_article1']) ? filterInput('textarea_home_article1') : '';
-        
-        if($button === 'btn_home_article1_img'){
-            $homeArticle1Img = $_SESSION['newImgChapter1'];
-        }else{
-            $homeArticle1Img = isset($_POST['text_home_article1_img']) ? filterInput('text_home_article1_img') : '';
-        }
 
-        $homeArticle2Title = isset($_POST['text_home_article2_title']) ? filterInput('text_home_article2_title') : '';
-        $homeArticle2 = isset($_POST['textarea_home_article2']) ? filterInput('textarea_home_article2') : '';
-        
-        if($button === 'btn_home_article2_img'){
-            $homeArticle2Img = $_SESSION['newImgChapter2'];
-        }else{
-            $homeArticle2Img = isset($_POST['text_home_article2_img']) ? filterInput('text_home_article2_img') : '';
-        }
+        $home->setHomeTitle($homeTitle);
+        $home->setHomeSubtitle($homeSubtitle);
+        $home->setHomeTitlePage($homeTitlePage);
 
-        $object->setHomeTitle($homeTitle);
-        $object->setHomeSubtitle($homeSubtitle);
-
-        $object->setHomeTitlePage($homeTitlePage);
-
-        $object->setHomeArticle1Title($homeArticle1Title);
-        $object->setHomeArticle1($homeArticle1);
-        $object->setHomeArticle1Img($homeArticle1Img);
-
-        $object->setHomeArticle2Title($homeArticle2Title);
-        $object->setHomeArticle2($homeArticle2);
-        $object->setHomeArticle2Img($homeArticle2Img);
-
-        $object->updateHome(1);
-       
-        if($button === 'btn_home_article1_img' || $button === 'btn_home_article2_img'){
-            //routeToHomePage();
-        }
+        return array(
+            'homeTitle' => $homeTitle,
+            'homeSubtitle' => $homeSubtitle,
+            'homeTitlePage' => $homeTitlePage
+        );
 
     }
 

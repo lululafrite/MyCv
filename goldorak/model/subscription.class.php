@@ -1,9 +1,12 @@
 <?php
 
 	namespace Goldorak\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
-	use \Goldorak\Model\dbConnect_;
+	use MyCv\Model\dbConnect;
 
 	class Subscription
 	{
@@ -34,12 +37,11 @@
 		private $theSubscription;
 		public function getSubscription_($îdSubscription)
 		{
-			require_once('../../goldorak/model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
-            date_default_timezone_set($_SESSION['timeZone']);
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -68,10 +70,11 @@
 		private $userSubscriptionList;
 		public function get($whereClause, $orderBy = 'subscription', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -100,10 +103,11 @@
 
 		public function addUserSubscription()
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try{
 				$bdd->exec("INSERT INTO `subscription`(`subscription`)
@@ -128,10 +132,11 @@
 
 		public function updateUserSubscription($idSubscription)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{
@@ -153,10 +158,11 @@
 
 		public function deleteUsersubscription($id)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{

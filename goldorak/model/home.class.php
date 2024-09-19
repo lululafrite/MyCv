@@ -1,8 +1,11 @@
 <?php
 	namespace Goldorak\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
-	use \Goldorak\Model\dbConnect_;
+	use MyCv\Model\dbConnect;
 
 	class Home
 	{
@@ -105,10 +108,9 @@
 		private $theHome;
 		public function getHome($idHome)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -145,11 +147,11 @@
 		private $homeList;
 		public function get($whereClause, $orderBy = 'id_home', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			//require_once('../model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -186,10 +188,11 @@
 
 		public function updateHome($idHome)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home`
@@ -226,10 +229,11 @@
 
 		public function deleteHome($id)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -249,10 +253,11 @@
 
 		public function newHome()
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 	
 			try
 			{

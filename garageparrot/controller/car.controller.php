@@ -1,5 +1,5 @@
 <?php
-    use GarageParrot\Model\Car;
+    use garageparrot\model\Car;
 
 //---Load model car--------------------
     require_once('../../common/utilies.php');
@@ -15,10 +15,10 @@
 //---------------------------------------------------------------
     
     if (isset($_POST['btn-SearchCar'])){
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine'] = 0;
-        $_SESSION['ligneParPage'] = 3;
-        $_SESSION['nbOfPage'] = 1;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine'] = 0;
+        $_SESSION['pagination']['productPerPage'] = 3;
+        $_SESSION['pagination']['nbOfPage'] = 1;
 
         $_SESSION['criteriaBrand'] = isset($_POST['select_car_brand']) ? filterInput('select_car_brand') : '';
         unset($_POST['select_car_brand']);
@@ -34,8 +34,8 @@
         unset($_POST['select_car_price']);
 
     }else if(isset($_POST['nbOfPage'])){
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine']=0;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine']=0;
     }
 
     // Initialiser les variables pour paramètrer la clause where afin d'executer la requete SELECT pour rechercher le ou les contacts
@@ -175,11 +175,11 @@
         // Vérification du token CSRF
         if(verifCsrf('tokenCsrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
-            $Cars = $MyCar->get($whereClause, 'price', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
+            $Cars = $MyCar->get($whereClause, 'price', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
         
         }else{
 
-            $Cars = $MyCar->get('1', 'price', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
+            $Cars = $MyCar->get('1', 'price', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
 
         }
         

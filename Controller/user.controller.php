@@ -15,10 +15,10 @@
 
     if (isset($_POST['btn-SearchUser'])){
         
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine'] = 0;
-        $_SESSION['ligneParPage'] = 3;
-        $_SESSION['nbOfPage'] = 1;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine'] = 0;
+        $_SESSION['pagination']['productPerPage'] = 3;
+        $_SESSION['pagination']['nbOfPage'] = 1;
 
         $_SESSION['criteriaName'] = isset($_POST['Text_User_Nom']) ? escapeInput($_POST['Text_User_Nom']) : '';
         unset($_POST['Text_User_Nom']);
@@ -30,8 +30,8 @@
         unset($_POST['Select_User_Type']);
 
     }else if(isset($_POST['nbOfPage'])){
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine']=0;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine']=0;
     }
 
     // Initialiser les variables pour paramètrer la clause where afin d'executer la requete SELECT pour rechercher le ou les contacts
@@ -112,7 +112,7 @@
     if(!$_SESSION['errorFormUser'] && !$_SESSION['newUser']){
         
         require_once('../../goldorak/controller/page.controller.php');
-        $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
+        $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
     }
 
     if (isset($_POST['nbOfLine'])){

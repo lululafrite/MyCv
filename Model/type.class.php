@@ -34,9 +34,9 @@
 		public function getType($idType)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -69,9 +69,9 @@
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 			
 			try
 			{
@@ -106,9 +106,9 @@
 		public function addUserType()
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 
 			try {
 				$stmt = $bdd->prepare("INSERT INTO `user_type`(`type`) VALUES(:type)");
@@ -131,9 +131,9 @@
 		public function updateUserType($idType)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 
 			try
 			{
@@ -161,9 +161,9 @@
 		public function deleteUserType($id)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 
 			try
 			{

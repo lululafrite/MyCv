@@ -78,7 +78,7 @@
             </div>
 
         <?php
-        if($_SESSION['typeConnect'] != 'Guest'){
+        if($_SESSION['dataConnect']['type'] != 'Guest'){
 
         ?>
             <div class="d-flex justify-content-center my-2">
@@ -90,7 +90,7 @@
         ?>
     </form>
         <?php
-        if($_SESSION['typeConnect'] === 'Guest'){
+        if($_SESSION['dataConnect']['type'] === 'Guest'){
 
         ?>
             <div class="d-flex justify-content-center my-2">

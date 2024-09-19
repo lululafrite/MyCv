@@ -115,9 +115,9 @@
 		private function getSubscriptionId() {
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 			
 			$stmt = $bdd->prepare("SELECT `id_subscription` FROM `subscription` WHERE `subscription` = ?");
 			$stmt->execute([$this->subscription]);
@@ -141,9 +141,9 @@
 		private function getUserTypeId() {
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			$stmt = $bdd->prepare("SELECT `id_type` FROM `user_type` WHERE `type` = ?");
 			$stmt->execute([$this->type]);
@@ -170,9 +170,9 @@
 		public function getPseudoUser()
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try {
 				// Utilisation d'une requête préparée pour améliorer la sécurité même si aucun paramètre n'est utilisé ici
@@ -196,13 +196,13 @@
 
 		//-----------------------------------------------------------------------
 
-		private $theUser;
-		public function getUser($idUser)
+		private $getCurrentUser;
+		public function getCurrentUser($idUser)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 
@@ -234,13 +234,13 @@
 
 				$stmt->execute();
 
-				$this->theUser = $stmt->fetch(PDO::FETCH_ASSOC);
+				$this->getCurrentUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
-				return $this->theUser;
+				return $this->getCurrentUser;
 
 			} catch (PDOException $e) {
 
-				echo "Erreur de la requete : function getUser(\$idUser) :" . $e->GetMessage();
+				echo "Erreur de la requete : function getCurrentUser(\$idUser) :" . $e->GetMessage();
 
 			}
 
@@ -253,9 +253,9 @@
 		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try
 			{
@@ -313,9 +313,9 @@
 		public function addUser(){
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+			unset($myDbConnect);
 		
 			try{
 		
@@ -413,9 +413,9 @@
 		public function updateUser($idUser){
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try
 			{
@@ -461,9 +461,9 @@
 		{
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `id_user` = :id_user");
 			$stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
@@ -496,13 +496,13 @@
 
 		}
 		
-		private $userExist;
+		private $verifUser;
 		public function verifUser($email)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try
 			{
@@ -515,9 +515,9 @@
 
 				$stmt->execute();
 
-				$this->userExist = $stmt->fetch(PDO::FETCH_ASSOC);
+				$this->verifUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
-				return $this->userExist['number'];
+				return $this->verifUser['number'];
 
 			}
 			catch (PDOException $e)

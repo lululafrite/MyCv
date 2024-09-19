@@ -4,8 +4,8 @@
     
     use \Firebase\JWT\JWT;
     
-    $jwt1 = JWT::jsondecode($_SESSION['jwt']);
-    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']));
+    $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
+    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
 
     $page = isset($_GET['page']) ? escapeInput($_GET['page']) : 'home';
     
@@ -34,8 +34,8 @@
         
         resetVariableGoldorak();
 
-        if($_SESSION['typeConnect'] != "Guest"){
-            require_once 'view/disconnect.php';
+        if($_SESSION['dataConnect']['type'] != "Guest"){
+            require_once '../view/disconnect.php';
         }else{
             pageUnavailable();
         }
@@ -72,17 +72,19 @@
 
     }
     
-    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['delay']){
+    if($jwt2->{'delay'} - $jwt1->{'delay'} < $_SESSION['jwt']['delay']){
 
         if($jwt2->{'key'} === $jwt1->{'key'}){
 
-            if($jwt2->{'user_pseudo'} === $jwt1->{'user_pseudo'}){
+            if($jwt2->{'pseudo'} === $jwt1->{'pseudo'}){
+
+                $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
 
                 if ($page === 'user'){
         
                     resetVariableGoldorak();
 
-                    if($_SESSION['typeConnect'] === "Administrator"){
+                    if($_SESSION['dataConnect']['type'] === "Administrator"){
 
                         require_once 'view/user.php';
 
@@ -94,16 +96,13 @@
 
                 }elseif ($page === 'userEdit'){
 
-                    $_SESSION['updateMoncompte'] = false;
-                    //$_SESSION['btn_monCompte'] = false;
-                    //$_SESSION['newUser'] = false;
                     require_once 'view/userEdit.php';
 
                 }elseif($page === 'media'){
         
                     resetVariableGoldorak();
 
-                    if($_SESSION['typeConnect'] != "Guest"){
+                    if($_SESSION['dataConnect']['type'] != "Guest"){
 
                         require_once 'view/media.php';
 
@@ -117,7 +116,7 @@
         
                     resetVariableGoldorak();
 
-                    if($_SESSION['subscriptionConnect'] === "Goldorak" ){
+                    if($_SESSION['dataConnect']['subscription'] === "Goldorak" ){
 
                         require_once 'view/commander.php';
 
@@ -131,7 +130,7 @@
         
                     resetVariableGoldorak();
 
-                    if($_SESSION['subscriptionConnect'] != "Vénusia" ){
+                    if($_SESSION['dataConnect']['subscription'] != "Vénusia" ){
 
                         require_once 'view/goldorakgo.php';
 
@@ -154,19 +153,19 @@
             
         }
 
-    }else if($_SESSION['pseudoConnect'] != 'Guest'){
+    }else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
-        $_SESSION['typeConnect'] = 'Guest';
-        $_SESSION['pseudoConnect'] = 'Guest';
-        $_SESSION['avatarConnect'] = 'black_person.svg';
-        $_SESSION['subscriptionConnect'] = 'Vénusia';
-        $_SESSION['connexion'] = false;
+        $_SESSION['dataConnect']['type'] = 'Guest';
+        $_SESSION['dataConnect']['pseudo'] = 'Guest';
+        $_SESSION['dataConnect']['avatar'] = 'black_person.svg';
+        $_SESSION['dataConnect']['subscription'] = 'Vénusia';
+        $_SESSION['dataConnect']['connexion'] = false;
         
         timeExpired();
 
-    }else {
+    }else{
         
-        resetVariableGoldorak();
+        //resetVariableGoldorak();
         
         //require_once 'errorPage/unknownPage.php';
         //timeExpired();

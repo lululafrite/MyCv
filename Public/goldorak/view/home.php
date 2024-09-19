@@ -17,10 +17,10 @@
 
     <div class="text-center">
         </br>
-        <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+        <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
             <h2><?php echo escapeInput($home[0]['titre1']); ?></h2>
         <?php } ?>
-        <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
+        <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
             <h2><input class="text-center" type="text" name="txt_titre1" id="txt_titre1" value="<?php echo escapeInput($home[0]['titre1']); ?>"></h2>
         <?php } ?>
         </br>
@@ -42,10 +42,10 @@
 
                             <!-- Start Titre chapter1 -->
 
-                            <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+                            <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
                                 <h3><?php echo escapeInput($home[0]['titre_chapter1']); ?></h3>
                             <?php } ?>
-                            <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
+                            <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
                                 <h3><input type="text" id="txt_titre_chapter1"  name="txt_titre_chapter1" value="<?php echo escapeInput($home[0]['titre_chapter1']); ?>"></h3>
                             <?php } ?>
 
@@ -53,7 +53,7 @@
 
                             <!-- Start Chapter 1 -->
 
-                            <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+                            <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
                                 <p class="p-0" style="text-align: justify;">
                                     <?php echo escapeInput($home[0]['chapter1']); ?>
@@ -61,7 +61,7 @@
 
                             <?php } ?>
 
-                            <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
+                            <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
                                 
                                 <p class="p-0" style="text-align: justify;">
 <textarea name="txt_chapter1" id="txt_chapter1" cols="1" rows="12">
@@ -174,10 +174,10 @@
 
                 <!-- Start Titre Chapter 2 -->
 
-                    <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+                    <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
                         <h3><?php echo escapeInput($home[0]['titre_chapter2']); ?></h3>
                     <?php } ?>
-                    <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
+                    <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
                         <h3><input type="text" name="txt_titre_chapter2" id="txt_titre_chapter2" value="<?php echo escapeInput($home[0]['titre_chapter2']); ?>"></h3>
                     <?php } ?>
 
@@ -185,12 +185,12 @@
 
                 <!-- Début Chapter 2 -->
 
-                    <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+                    <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
                         <p class="p-0 m-0" style="text-align: justify;">
                             <?php echo escapeInput($home[0]['chapter2']); ?>
                         </p>
                     <?php } ?>
-                    <?php if ($_SESSION['typeConnect']==='Administrator'){ ?>
+                    <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
                         <p class="p-0" style="text-align: justify;">
 <textarea name="txt_chapter2" id="txt_chapter2" cols="1" rows="5">
 <?php echo escapeInput($home[0]['chapter2']); ?>
@@ -229,7 +229,7 @@
 
                     <!-- Start button subscription -->
 
-                    <div class="d-flex justify-content-end p-0 m-3 m-md-0 me-md-5 <?php echo ($_SESSION['typeConnect'] === 'Administrator') ? 'd-none' : ''; ?>">
+                    <div class="d-flex justify-content-end p-0 m-3 m-md-0 me-md-5 <?php echo ($_SESSION['dataConnect']['type'] === 'Administrator') ? 'd-none' : ''; ?>">
                         <button class="btn btn-primary btn-lg mt-0 btAdherer"><a class="text-light" href="index.php?page=adherer">Adhérer</a></button>
                     </div>
 
@@ -243,7 +243,7 @@
 
     </div>
 
-    <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
+    <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
 
     <div class="container">
 

@@ -1,4 +1,6 @@
-<?php require_once '../../common/utilies.php'; ?>
+<?php 
+    require_once '../../common/utilies.php';
+?>
 
 <nav class="navbar navbar-expand-lg mx-auto mt-auto mb-3 ">
 
@@ -47,7 +49,7 @@
                     </ul>
                 </li>
 
-            <?php if($_SESSION['typeConnect'] === 'Administrator' || $_SESSION['typeConnect'] === 'Member'){ ?>
+            <?php if($_SESSION['dataConnect']['type'] === 'Administrator' || $_SESSION['dataConnect']['type'] === 'Member'){ ?>
                 <li class="nav-item d-flex justify-content-center align-items-center">
                     <a class="nav-link active text-light" aria-current="page" href="index.php?page=media">
                         <img class="p-0 px-2 mb-1" src="img/icon/card-image.svg" alt="icone événements">
@@ -56,7 +58,7 @@
                 </li>
             <?php } ?>
             
-            <?php if($_SESSION['subscriptionConnect'] != 'Vénusia' && $_SESSION['typeConnect'] != 'User'){ ?>
+            <?php if($_SESSION['dataConnect']['subscription'] != 'Vénusia' && $_SESSION['dataConnect']['type'] != 'User'){ ?>
                 <li class="nav-item dropdown d-flex justify-content-center align-items-center">
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="p-0 px-2 mb-1" src="img/icon/joystick.svg" alt="icone joystick du menu jeux">  
@@ -69,7 +71,7 @@
                                 Goldorak Go
                             </a>
                         </li>
-                    <?php if($_SESSION['subscriptionConnect'] === 'Goldorak' ){ ?>
+                    <?php if($_SESSION['dataConnect']['subscription'] === 'Goldorak' ){ ?>
                         <li>
                             <a class="dropdown-item text-light" href="index.php?page=commander">
                                 <img class="p-0 pe-2 mb-1" src="img/icon/dice-6.svg" alt="icone du menu s'identifier">    
@@ -81,7 +83,7 @@
                 </li>
             <?php } ?>
                 
-            <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
+            <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
                 <li class="nav-item dropdown d-flex justify-content-center align-items-center">
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="px-2 mb-1" src="img/icon/people.svg" alt="icone du bouton s'identifier">    
@@ -96,8 +98,7 @@
                         </li>
                         <li>
                             <form action="index.php?page=userEdit" method="post">
-                                <!-- <input class="dropdown-item text-light nav_new_user" type="button" name="nav_new_user" id="nav_new_user" value="Nouveau">  -->
-                                <button class="dropdown-item text-light" id="nav_new_user" name="nav_new_user" type="submit">
+                                <button class="dropdown-item text-light" id="btn_navBar_new" name="btn_navBar_new" type="submit">
                                     <img class="pe-2 mb-1" src="img/icon/person-plus.svg" alt="icone nouveau profil">
                                     Nouveau
                                 </button>
@@ -111,16 +112,16 @@
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="p-0 px-2 mb-1" alt="icone du menu s'identifier" style="width: 30px;" src=
                             "<?php
-                                if($_SESSION['typeConnect'] != 'Guest'){
-                                    echo "img/avatar/" . $_SESSION['avatarConnect']; 
+                                if($_SESSION['dataConnect']['type'] != 'Guest'){
+                                    echo "img/avatar/" . $_SESSION['dataConnect']['avatar']; 
                                 }else{
                                     echo "img/icon/person.svg"; 
                                 }
                             ?>">
-                            <span class="Nav_Span1"><?php if($_SESSION['pseudoConnect']!= 'Guest'){echo 'Bonjour';}else{echo 'Se connecter';}?></span></br><span class="Nav_Span2 text-warning"><?php if($_SESSION['pseudoConnect']!= 'Guest'){echo $_SESSION['pseudoConnect'] . ' !';}else{echo "à votre compte";}?></span>
+                            <span class="Nav_Span1"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Bonjour';}else{echo 'Se connecter';}?></span></br><span class="Nav_Span2 text-warning"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo $_SESSION['dataConnect']['pseudo'] . ' !';}else{echo "à votre compte";}?></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <?php if($_SESSION['typeConnect'] === 'Guest'){ ?>
+                        <?php if($_SESSION['dataConnect']['type'] === 'Guest'){ ?>
                         <li>
                             <a class="dropdown-item text-light" href="index.php?page=connexion">
                                 <img class="p-0 m-0 pe-2" src="img/icon/box-arrow-in-left.svg" alt="icone du bouton connexion">    
@@ -128,7 +129,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                        <?php if($_SESSION['typeConnect'] != 'Guest'){ ?>
+                        <?php if($_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <li>
                             <a class="dropdown-item text-light" href="index.php?page=disconnect">
                                 <img class="p-0 m-0 pe-2" src="img/icon/box-arrow-right.svg" alt="icone du bouton déconnexion">    
@@ -136,7 +137,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                    <?php if($_SESSION['typeConnect'] != 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <li>
                             <form action="index.php?page=userEdit" method="post">
                                 <button class="dropdown-item text-light" type="submit" name="btn_monCompte">
@@ -147,7 +148,7 @@
                         </li>
                     <?php } ?>
                     
-                    <?php if($_SESSION['typeConnect'] === 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] === 'Guest'){ ?>
                         <li>
                             <a class="dropdown-item text-light" href="index.php?page=adherer">
                                 <img class="p-0 m-0 pe-2" src="img/icon/pencil-square.svg" alt="icone du bouton adhérer">    

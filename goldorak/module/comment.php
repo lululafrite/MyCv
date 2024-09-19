@@ -61,7 +61,7 @@
                     </div>
 
                     <?php
-                    if($_SESSION['typeConnect'] != 'Guest' && $_SESSION['typeConnect'] != 'Member'){
+                    if($_SESSION['dataConnect']['type'] != 'Guest' && $_SESSION['dataConnect']['type'] != 'Member'){
                     ?>
 
                         <div class="card-footer d-flex flex-wrap justify-content-center">

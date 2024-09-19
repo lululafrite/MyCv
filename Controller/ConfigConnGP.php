@@ -58,9 +58,9 @@
 				$BD_PORT = '3307';
 			}
 			else{
-				$DB_HOST = 'xx';
-				$DB_NAME = 'xx';
-				$DB_USER = 'xx';
+				$DB_HOST = 'db5016299008.hosting-data.io';
+				$DB_NAME = 'dbs13260004';
+				$DB_USER = 'dbu510923';
 				$DB_PASS = 'MarLud7772!';
 				$BD_PORT = '3306';
 			}

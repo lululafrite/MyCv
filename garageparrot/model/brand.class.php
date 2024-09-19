@@ -1,6 +1,6 @@
 <?php
 
-	namespace GarageParrot\Model;
+	namespace garageparrot\model;
 	use \PDO;
 	use \PDOException;
 

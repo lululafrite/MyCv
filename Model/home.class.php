@@ -54,86 +54,14 @@
 
 		//-----------------------------------------------------------------------
 
-		private $homeArticle1Title;
-		public function getHomeArticle1Title()
-		{
-			return $this->homeArticle1Title;
-		}
-		public function setHomeArticle1Title($new)
-		{
-			$this->homeArticle1Title = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle1;
-		public function getHomeArticle1()
-		{
-			return $this->homeArticle1;
-		}
-		public function setHomeArticle1($new)
-		{
-			$this->homeArticle1 = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle1Img;
-		public function getHomeArticle1Img()
-		{
-			return $this->homeArticle1Img;
-		}
-		public function setHomeArticle1Img($new)
-		{
-			$this->homeArticle1Img = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle2Title;
-		public function getHomeArticle2Title()
-		{
-			return $this->homeArticle2Title;
-		}
-		public function setHomeArticle2Title($new)
-		{
-			$this->homeArticle2Title = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle2;
-		public function getHomeArticle2()
-		{
-			return $this->homeArticle2;
-		}
-		public function setHomeArticle2($new)
-		{
-			$this->homeArticle2 = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle2Img;
-		public function getHomeArticle2Img()
-		{
-			return $this->homeArticle2Img;
-		}
-		public function setHomeArticle2Img($new)
-		{
-			$this->homeArticle2Img = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
 		private $theHome;
 		public function getHome($idHome)
 		{
 			require_once('../model/dbConnect.class.php');
 			
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -160,16 +88,15 @@
 			$bdd = null;
 		}
 
-
 		//-----------------------------------------------------------------------
 
 		private $homeList;
 		public function get($whereClause, $orderBy = 'home_id', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 			
 			try
 			{
@@ -197,15 +124,14 @@
 			$bdd = null;
 		}
 
-
 		//-----------------------------------------------------------------------
 
 		public function updateHome($homeId)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home`
@@ -222,7 +148,6 @@
 				
 				$stmt->execute();
 							
-				//echo '<script>alert("Les modifications sont enregistrées!");</script>';
 			}
 			catch (PDOException $e)
 			{
@@ -236,9 +161,9 @@
 
 		public function deleteHome($id): bool{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 			
 			try
 			{
@@ -257,12 +182,14 @@
 
 		}
 
+		//-----------------------------------------------------------------------
+
 		public function newHome(): bool{
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 	
 			try
 			{

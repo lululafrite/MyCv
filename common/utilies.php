@@ -3,21 +3,16 @@
     use Firebase\JWT\JWT;
 
     // Creating of JWT token
-
-    function tokenJwt ($pseudo, $key){
+    function tokenJwt(string $pseudo, string $key, int $delay = 3600):string{
             
-        $payload = array(
+        $tokenJwt = array(); settype($tokenJwt, "array");
+        $tokenJwt['pseudo'] = $pseudo;
+        $tokenJwt['delay'] = time() + $delay;
+        $tokenJwt['key'] = $key;
 
-            "user_pseudo" => $pseudo,
-            "delay" => time() + 3600,
-            "key" => $key
-
-        );
-
-        $value = JWT::jsonEncode($payload);
+        $value = JWT::jsonEncode($tokenJwt); settype($value, "string");
 
         return $value;
-
     }
 
     // Create and verification of CSRF token
@@ -58,9 +53,10 @@
     }
 
     //upload image
-    function uploadImg($session,$post,$file,$directory = './img/vehicle/'){
+    function uploadImg(string $session,string $post,string $file,string $directory = "./img/vehicle/"){
         
-        $uploadDirectory = $directory;
+        $uploadDirectory = $directory; settype($uploadDirectory, "string");
+        $result = ""; settype($result, "string");
 
         $_SESSION[$session] = isset($_POST[$post]) ? escapeInput($_POST[$post]) : false;
 
@@ -75,17 +71,25 @@
 
         }else{
 
-            echo "<script>alert('Aucune image n\'a été sélectionnée ou une erreur s_'est produite.');</script>";
-            return false;
+            echo("<script>alert('Aucune image n\'a été sélectionnée ou une erreur s\'est produite.');</script>");
+
+            $message = "pas d'image selectionnée";
+            $results = array();
+            $results['state'] = false;
+            $results['message'] = $message;
+            return $results;
             
         }
 
         if(move_uploaded_file($sourceFile, $destinationFile)){
             
+            $result = $_SESSION[$session];
             return true;
 
         }else{
 
+            $result = "erreur lors de l'upload de l'image";
+            echo("<script>alert('" . $result . "');</script>");
             return false;
         
         }
@@ -179,18 +183,44 @@
 
     // Route to home page
     function routeToHomePage(){
-            
-        if($_SESSION['local']){
-            
-            echo '<script>window.location.href = "http://mycv/index.php?page=home";</script>';
         
+        $local = isset($_SESSION['local']) ? $_SESSION['local'] : false;
+        settype($local, "boolean");
 
+        $current_url = $_SERVER['REQUEST_URI'];
+        $goldorak = '/goldorak/';
+        $garageParrot = '/garageparrot/';
+
+        if($local){
+
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "http://mycv/goldorak/index.php?page=home";</script>';
+                die();
+
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "http://mycv/garageparrot/index.php?page=home";</script>';
+                die();
+
+            }else{
+                echo '<script>window.location.href = "http://mycv/index.php?page=home";</script>';
+                die();
+            }
+            
         }else{
+                
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/goldorak/index.php?page=home";</script>';
+                die();
 
-            echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=home";</script>';
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/garageparrot/index.php?page=home";</script>';
+                die();
 
+            }else{
+                echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=home";</script>';
+                die();
+            }
         }
-        exit();
     }
 
     // Route to home page
@@ -227,17 +257,44 @@
 
     // Route to user page
     function routeToUserPage(){
-        if($_SESSION['local']){
 
-            echo '<script>window.location.href = "http://mycv/index.php?page=user";</script>';
+        $local = isset($_SESSION['local']) ? $_SESSION['local'] : false;
+        settype($local, "boolean");
+
+        $current_url = $_SERVER['REQUEST_URI'];
+        $goldorak = '/goldorak/';
+        $garageParrot = '/garageparrot/';
+
+        if($local){
+
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "http://mycv/goldorak/index.php?page=user";</script>';
+                die();
+
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "http://mycv/garageparrot/index.php?page=user";</script>';
+                die();
+
+            }else{
+                echo '<script>window.location.href = "http://mycv/index.php?page=user";</script>';
+                die();
+            }
         
+        }else{
+                
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/goldorak/index.php?page=user";</script>';
+                die();
+
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/garageparrot/index.php?page=user";</script>';
+                die();
+
+            }else{
+                echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=user";</script>';
+                die();
+            }
         }
-        else{
-            
-            echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=user";</script>';
-        
-        }
-        exit();
     }
 
     // Route to carEdit page
@@ -287,17 +344,44 @@
 
     // Route to disconnect page
     function routeToDisconnectPage(){
-        if($_SESSION['local']){
+        
+        $local = isset($_SESSION['local']) ? $_SESSION['local'] : false;
+        settype($local, "boolean");
 
-            echo '<script>window.location.href = "http://mycv/index.php?page=disconnect";</script>';
+        $current_url = $_SERVER['REQUEST_URI'];
+        $goldorak = '/goldorak/';
+        $garageParrot = '/garageparrot/';
+
+        if($local){
+
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "http://mycv/goldorak/index.php?page=disconnect";</script>';
+                die();
+
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "http://mycv/garageparrot/index.php?page=disconnect";</script>';
+                die();
+
+            }else{
+                echo '<script>window.location.href = "http://mycv/index.php?page=disconnect";</script>';
+                die();
+            }
         
+        }else{
+                
+            if(preg_match($goldorak, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/goldorak/index.php?page=disconnect";</script>';
+                die();
+
+            }else if(preg_match($garageParrot, $current_url)){
+                echo '<script>window.location.href = "https://www.follaco.fr/garageparrot/index.php?page=disconnect";</script>';
+                die();
+
+            }else{
+                echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=disconnect";</script>';
+                die();
+            }
         }
-        else{
-            
-            echo '<script>window.location.href = "https://www.follaco.fr/index.php?page=disconnect";</script>';
-        
-        }
-        exit();
     }
 
     // Route to disconnect page
@@ -317,7 +401,7 @@
     // Route after delete
     function routeAfterDelete(){
 
-        if($_SESSION['typeConnect'] === 'Administrator'){
+        if($_SESSION['dataConnect']['typeConnect'] === 'Administrator'){
 
             routeToUserPage();
 
@@ -358,10 +442,10 @@
 
     function resetVariablePage(){
 
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine'] = 0;
-        $_SESSION['ligneParPage'] = 3;
-        $_SESSION['nbOfPage'] = 1;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine'] = 0;
+        $_SESSION['pagination']['productPerPage'] = 3;
+        $_SESSION['pagination']['nbOfPage'] = 1;
 
         
     }

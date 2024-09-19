@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <?php
-                    if ($_SESSION['typeConnect'] === "Administrator")
+                    if ($_SESSION['dataConnect']['avatar'] === "Administrator")
                     {
                     ?>
                     <li class="nav-item dropdown custom-border-md-bottom">
@@ -71,46 +71,46 @@
                     </li>
                     <?php
                     }
-                    if ($_SESSION['typeConnect'] ==="Administrator" || $_SESSION['typeConnect'] === "User" || $_SESSION['typeConnect'] ==="Guest")
+                    if ($_SESSION['dataConnect']['avatar'] === "Administrator" || $_SESSION['dataConnect']['avatar'] === "User" || $_SESSION['dataConnect']['avatar'] ==="Guest" || $_SESSION['dataConnect']['avatar'] ==="Member")
                     {
                     ?>
-                    <li class="nav-item dropdown custom-border-md-bottom">
+                        <li class="nav-item dropdown custom-border-md-bottom">
 
-                        <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="p-2 h-75" src="img/icon/car-icon_71x75.png" alt="icone du bouton s'identifier">    
-                            <span class="Nav_Span1">Nos véhicules<br><span class="Nav_Span2">d'occasions</span></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>    
-                                <a class="dropdown-item Nav_Span1" href="index.php?page=carBtn">
-                                    <img class="p-2 h-75" src="img/icon/car-front.svg" alt="icone du bouton s'identifier">
-                                    Nos occasions
-                                </a>
-                            </li>
-                    <?php
-                    }
-                    if ($_SESSION['typeConnect'] ==="Administrator" || $_SESSION['typeConnect'] ==="User")
-                    {
-                    ?>
-                            <form action="index.php?page=car_edit" method="post">
-
-                                <!-- input hidden csrf -->
-                                <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
-
-                                <li>
-                                    <button class="dropdown-item Nav_Span1" id="nav_new_car" name="nav_new_car" type="submit">
-                                        <img class="p-2" src="img/icon/car-front-fill.svg" alt="icone du bouton s'identifier">
-                                        Nouveau
-                                    </button>
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="p-2 h-75" src="img/icon/car-icon_71x75.png" alt="icone du bouton s'identifier">    
+                                <span class="Nav_Span1">Nos véhicules<br><span class="Nav_Span2">d'occasions</span></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>    
+                                    <a class="dropdown-item Nav_Span1" href="index.php?page=carBtn">
+                                        <img class="p-2 h-75" src="img/icon/car-front.svg" alt="icone du bouton s'identifier">
+                                        Nos occasions
+                                    </a>
                                 </li>
-
-                            </form>
                     <?php
                     }
-                    ?>
+                            if ($_SESSION['dataConnect']['avatar'] ==="Administrator" || $_SESSION['dataConnect']['avatar'] ==="User")
+                            {
+                            ?>
+                                <form action="index.php?page=car_edit" method="post">
+
+                                    <!-- input hidden csrf -->
+                                    <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+
+                                    <li>
+                                        <button class="dropdown-item Nav_Span1" id="nav_new_car" name="nav_new_car" type="submit">
+                                            <img class="p-2" src="img/icon/car-front-fill.svg" alt="icone du bouton s'identifier">
+                                            Nouveau
+                                        </button>
+                                    </li>
+
+                                </form>
+                            <?php
+                            }
+                            ?>
                             
-                    </ul>
+                            </ul>
 
                     </li>
 
@@ -142,11 +142,11 @@
                         </a>
                     </li>
 
-                    <li class="nav-item dropdown custom-border-md-bottom">
+                    <li class="nav-item dropdown custom-border-md-bottom" style="width: 200px;">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- <img class="p-2 h-75" src="img/icon/person.svg" alt="icone du menu s'identifier"> -->
                             <img class="p-2 h-75" src="img/avatar/<?php echo htmlspecialchars($_SESSION['avatarConnect'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
-                            <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['pseudoConnect']!= 'Guest'){echo 'Hello ' . $_SESSION['pseudoConnect'] . ' !';}?></span></span>
+                            <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>

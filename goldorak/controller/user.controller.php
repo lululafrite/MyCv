@@ -1,24 +1,23 @@
 <?php
 
+    require_once("../../goldorak/model/user.class.php");
+    require_once("../../goldorak/model/userForm.class.php");
+    require_once("../../common/utilies.php");
+    
     use \Goldorak\Model\User;
-
-    include('../../goldorak/model/user.class.php');
-    require_once '../../common/utilies.php';
+    use \Goldorak\Model\UserForm;
 
     $MyUser = new User();
+    $MyUserForm = new UserForm();
 
     $_SESSION['theTable'] = "user";
 
-//---------------------------------------------------------------
-//---Management criterias of search--------------------------
-//---------------------------------------------------------------
-
     if (isset($_POST['btn-SearchUser'])){
         
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine'] = 0;
-        $_SESSION['ligneParPage'] = 3;
-        $_SESSION['nbOfPage'] = 1;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine'] = 0;
+        $_SESSION['pagination']['productPerPage'] = 3;
+        $_SESSION['pagination']['nbOfPage'] = 1;
 
         $_SESSION['criteriaName'] = isset($_POST['Text_User_Nom']) ? escapeInput($_POST['Text_User_Nom']) : '';
         unset($_POST['Text_User_Nom']);
@@ -30,8 +29,8 @@
         unset($_POST['Select_User_Type']);
 
     }else if(isset($_POST['nbOfPage'])){
-        $_SESSION['laPage'] = 1;
-        $_SESSION['firstLine']=0;
+        $_SESSION['pagination']['thePage'] = 1;
+        $_SESSION['pagination']['firstLine']=0;
     }
 
     // Initialiser les variables pour paramètrer la clause where afin d'executer la requete SELECT pour rechercher le ou les contacts
@@ -58,7 +57,7 @@
     }
     
     // Paramètrage de la clause WHERE pour executer la requete SELECT pour rechercher un ou plusieurs contacts
-
+    
     $whereClause = "";
 
     if($name_umpty === true && $pseudo_umpty === true && $userType_umpty === true){
@@ -100,10 +99,10 @@
 
     }
     
-    if($MyUser->getNewUser() === true){
+    if($MyUserForm->getNewUser() === true){
         $_SESSION['newUser'] = false;
         $whereClause = 1;
-        $MyUser->setNewUser(false);
+        $MyUserForm->setNewUser(false);
     }
     
     $_SESSION['whereClause'] =  $whereClause;
@@ -111,8 +110,8 @@
     // Executer la requete SELECT pour rechercher les contacts en fonction de la clause WHERE
     if(!$_SESSION['errorFormUser'] && !$_SESSION['newUser']){
         
-        require_once('../../goldorak/controller/page.controller.php');
-        $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['ligneParPage']);
+        require_once("../../goldorak/controller/page.controller.php");
+        $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
     }
 
     if (isset($_POST['nbOfLine'])){

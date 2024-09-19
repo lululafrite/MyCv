@@ -18,10 +18,10 @@
         $homes = new Home();
     }
 
-/*    $jwt1 = JWT::jsondecode($_SESSION['jwt']);
-    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']));
+/*  $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
+    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
 
-    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['delay']){
+    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
 */
         if(verifCsrf('csrfHome') && $_SERVER['REQUEST_METHOD'] === 'POST'){
             
@@ -66,13 +66,13 @@
 
         }
 
-    /*}else if($_SESSION['pseudoConnect'] != 'Guest'){
+    /*}else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
-        $_SESSION['typeConnect'] = 'Guest';
-        $_SESSION['pseudoConnect'] = 'Guest';
-        $_SESSION['avatarConnect'] = 'avatar_membre_white.webp';
-        $_SESSION['subscriptionConnect'] = 'Vénusia';
-        $_SESSION['connexion'] = false;
+        $_SESSION['dataConnect']['type'] = 'Guest';
+        $_SESSION['dataConnect']['pseudo'] = 'Guest';
+        $_SESSION['dataConnect']['avatar'] = 'avatar_membre_white.webp';
+        $_SESSION['dataConnect']['subscription'] = 'Vénusia';
+        $_SESSION['dataConnect']['connexion'] = false;
         
         timeExpired();
 

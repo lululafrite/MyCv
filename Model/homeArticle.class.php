@@ -3,6 +3,7 @@
 	namespace MyCv\Model;
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class HomeArticle
 	{
@@ -50,6 +51,18 @@
 		public function setHomeArticleImg($new)
 		{
 			$this->homeArticleImg = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $homeArticleImgYesOrNo;
+		public function getHomeArticleImgYesOrNo()
+		{
+			return $this->homeArticleImgYesOrNo;
+		}
+		public function setHomeArticleImgYesOrNo($new)
+		{
+			$this->homeArticleImgYesOrNo = $new;
 		}
 
 		//-----------------------------------------------------------------------
@@ -120,9 +133,9 @@
 		{
 			require_once('../model/dbConnect.class.php');
 			
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -134,6 +147,7 @@
 											`home_article`.`home_article_subtitle`,
 											`home_article`.`home_article`,
 											`home_article`.`home_article_img`,
+											`home_article`.`home_article_img_yesOrNo`,
 											`home_article`.`home_article_img_rightOrLeft`,
 											`home_article`.`home_article_img_width`,
 											`home_article`.`home_article_img_height`,
@@ -163,9 +177,9 @@
 		public function get($whereClause, $orderBy = 'home_article_sort', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 			
 			try
 			{
@@ -174,6 +188,7 @@
 											`home_article`.`home_article_title`,
 											`home_article`.`home_article`,
 											`home_article`.`home_article_img`,
+											`home_article`.`home_article_img_yesOrNo`,
 											`home_article`.`home_article_img_rightOrLeft`,
 											`home_article`.`home_article_img_width`,
 											`home_article`.`home_article_img_height`,
@@ -205,15 +220,16 @@
 		public function updateHomeArticle($homeArticleId)
 		{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
 			try{
-				$stmt = $bdd->prepare("UPDATE `home_articlee`
+				$stmt = $bdd->prepare("UPDATE `home_article`
 										SET `home_article_title` = :homeArticleTitle,
 											`home_article` = :homeArticle,
 											`home_article_img` = :homeArticleImg,
+											`home_article_img_yesOrNo` = :homeArticleImgYesOrNo,
 											`home_article_img_rightOrLeft` = :homeArticleImgRightOrLeft,
 											`home_article_img_width` = :homeArticleImgWidth,
 											`home_article_img_height` = :homeArticleImgHeight,
@@ -225,16 +241,16 @@
 				$stmt->bindParam(':homeArticleTitle', $this->homeArticleTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticle', $this->homeArticle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImg', $this->homeArticleImg, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticleImgYesOrNo', $this->homeArticleImgYesOrNo, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgRightOrLeft', $this->homeArticleImgRightOrLeft, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImg', $this->homeArticleImgWidth, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImg', $this->homeArticleImgHeight, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticleImgWidth', $this->homeArticleImgWidth, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticleImgHeight', $this->homeArticleImgHeight, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgObjectFit', $this->homeArticleImgObjectFit, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleSort', $this->homeArticleSort, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleId', $homeArticleId, PDO::PARAM_INT);
 				
 				$stmt->execute();
-							
-				//echo '<script>alert("Les modifications sont enregistrées!");</script>';
+				
 			}
 			catch (PDOException $e)
 			{
@@ -246,11 +262,11 @@
 
 		//-----------------------------------------------------------------------
 
-		public function deleteHome($id): bool{
+		public function deleteHomeArticle($id): bool{
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 			
 			try
 			{
@@ -269,18 +285,19 @@
 
 		}
 
-		public function newHome(): bool{
+		public function newHomeArticle(): bool{
 
 			require_once('../model/dbConnect.class.php');
-			$dbConnect_ = new dbConnect();
-			$bdd = $dbConnect_->connectionDb();
-            unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 	
 			try
 			{
 				$stmt = $bdd->prepare("INSERT INTO `home_article` (`home_article_title`,
 															`home_article`,
 															`home_article_img`,
+															`home_article_img_yesOrNo`,
 															`home_article_img_rightOrLeft`,
 															`home_article_img_width`,
 															`home_article_img_height`,
@@ -288,7 +305,8 @@
 															`home_article_sort`) 
 										VALUES (:homeArticleTitle,
 												:homeArticle,
-												:homeArticle_img,
+												:homeArticleImg,
+												:homeArticleImgYesOrNo,
 												:homeArticleImgRightOrLeft,
 												:homeArticleImgWidth,
 												:homeArticleImgHeight,
@@ -297,7 +315,8 @@
 	
 				$stmt->bindParam(':homeArticleTitle', $this->homeArticleTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticle', $this->homeArticle, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle_img', $this->homeArticleImg, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticleImg', $this->homeArticleImg, PDO::PARAM_STR);
+				$stmt->bindParam(':homeArticleImgYesOrNo', $this->homeArticleImgYesOrNo, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgRightOrLeft', $this->homeArticleImgRightOrLeft, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgWidth', $this->homeArticleImgWidth, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgHeight', $this->homeArticleImgHeight, PDO::PARAM_STR);

@@ -211,7 +211,7 @@
                                     </div>
 
                                     <?php
-                                    if($_SESSION['typeConnect'] != 'Guest'){
+                                    if($_SESSION['dataConnect']['type'] != 'Guest'){
                                     ?>
 
                                         <div class="card-footer">

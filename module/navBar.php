@@ -42,7 +42,7 @@
                     <li class="nav-item dropdown custom-border-md-bottom">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="p-2 h-75" src="img/icon/columns_black.svg" alt="icone du menu my apps">
-                            <span class="Nav_Span1">My apps<br><span class="Nav_Span2">Testez les!<?php //if($_SESSION['pseudoConnect']!= 'Guest'){echo 'Hello ' . $_SESSION['pseudoConnect'] . ' !';}?></span></span>
+                            <span class="Nav_Span1">My apps<br><span class="Nav_Span2">Testez les!<?php //if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
@@ -53,7 +53,7 @@
                             </li>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot/index.php?page=home" target="_blank">
-                                    <img class="p-2" src="GarageParrot\img\icon\garage_black_75x75.png" alt="icone du bouton garage parrot" style="width:30px;">    
+                                    <img class="p-2" src="garageParrot\img\icon\garage_black_75x75.png" alt="icone du bouton garage parrot" style="width:30px;">    
                                     Garage Parrot
                                 </a>
                             </li>
@@ -96,10 +96,10 @@
                     
                     <li class="nav-item dropdown custom-border-md-bottom">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- <img class="p-2 h-75" src="img/icon/<?php //echo $_SESSION['avatarConnect']; ?>" alt="icone du menu s'identifier"> -->
-                            <img class="p-2 h-75" src="img/avatar/<?php echo htmlspecialchars($_SESSION['avatarConnect'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
+                            <!-- <img class="p-2 h-75" src="img/icon/<?php //echo $_SESSION['dataConnect']['avatar']; ?>" alt="icone du menu s'identifier"> -->
+                            <img class="p-2 h-75" src="img/avatar/<?php echo htmlspecialchars($_SESSION['dataConnect']['avatar'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
 
-                            <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['pseudoConnect'] != 'Guest'){echo 'Hello ' . $_SESSION['pseudoConnect'] . ' !';}else{echo 'Hello Guest !';} ?></span></span>
+                            <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo'] != 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}else{echo 'Hello Guest !';} ?></span></span>
                         </a>
                         <ul class="dropdown-menu">
                         <?php if(!$_SESSION['connexion']){ ?>

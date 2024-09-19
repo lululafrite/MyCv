@@ -1,9 +1,12 @@
 <?php
 
 	namespace Goldorak\Model;
+		
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
-	use \Goldorak\Model\dbConnect_;
+	use MyCv\Model\dbConnect;
 
 	class Type
 	{
@@ -34,10 +37,11 @@
 		private $theType;
 		public function getType($idType)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			date_default_timezone_set($_SESSION['timeZone']);
 			
@@ -69,10 +73,11 @@
 		private $userTypeList;
 		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 			
 			try
 			{
@@ -106,10 +111,11 @@
 
 		public function addUserType()
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try {
 				$stmt = $bdd->prepare("INSERT INTO `user_type`(`type`) VALUES(:type)");
@@ -131,10 +137,11 @@
 
 		public function updateUserType($idType)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{
@@ -161,10 +168,11 @@
 
 		public function deleteUserType($id)
 		{
-			require_once('../../goldorak/model/dbConnect_.class.php');
-			$dbConnect_ = new dbConnect_();
-			$bdd = $dbConnect_->connectionDb();
-			unset($dbConnect_);
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
 
 			try
 			{

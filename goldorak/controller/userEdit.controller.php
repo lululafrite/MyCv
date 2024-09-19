@@ -1,334 +1,360 @@
 <?php
+    require_once('../../goldorak/model/user.class.php');
+    require_once('../../goldorak/model/userForm.class.php');
+    require_once('../../common/utilies.php');
 
     use \Goldorak\Model\User;
+    use \Goldorak\Model\UserForm;
     use \Goldorak\Model\Type;
     use \Goldorak\Model\Subscription;
-
-    require_once('../../goldorak/model/user.class.php');
-    require_once '../../common/utilies.php';
-
-//***********************************************************************************************
-// Echapper les variables
-//***********************************************************************************************
-    
-    $nav_new_user = isset($_POST['nav_new_user']) ? true : false;
-    $bt_userEdit_new = isset($_POST['bt_userEdit_new']) ? true : false;
-    $bt_userEdit_delete = isset($_POST['bt_userEdit_delete']) ? true : false;
-    $bt_userEdit_cancel = isset($_POST['bt_userEdit_cancel']) ? true : false;
-    $bt_userEdit_save = isset($_POST['bt_userEdit_save']) ? true : false;
-    $_SESSION['bt_userEdit_save'] = $bt_userEdit_save;
-
-    $btn_monCompte = isset($_POST['btn_monCompte']) ? true : false;
-    if(!$_SESSION['btn_monCompte']){
-        $btn_monCompte ? $_SESSION['btn_monCompte'] = true : $_SESSION['btn_monCompte'] = false;
-    }
-
-    $btn_avatar = isset($_POST['btn_avatar']) ? true : false;
-    $btn_venusia = isset($_POST['btn_venusia']) ? true : false;
-    $btn_actarus = isset($_POST['btn_actarus']) ? true : false;
-    $btn_goldorak = isset($_POST['btn_goldorak']) ? true : false;
-
-    $newError = isset($_GET['newError']) ? filter_input('newError', INPUT_GET) : false;
-
-//***********************************************************************************************
-// Daclaration et paramètrage des variables
-//***********************************************************************************************
-
-    if($nav_new_user){
-
-        $_SESSION['newUser'] = true;
-
-    }else if ($bt_userEdit_new){
-
-        $_SESSION['newUser'] = true;
-
-    }else if($btn_venusia){
-        
-        $_SESSION['subscription'] = 'Vénusia';
-        $_SESSION['newMember'] = true;
-        $_SESSION['newUser'] = true;
-
-    }else if($btn_actarus){
-        
-        $_SESSION['subscription'] = 'Actarus';
-        $_SESSION['newMember'] = true;
-        $_SESSION['newUser'] = true;
-
-    }else if($btn_goldorak){
-        
-        $_SESSION['subscription'] = 'Goldorak';
-        $_SESSION['newMember'] = true;
-        $_SESSION['newUser'] = true;
-
-    }
-    
-    $_SESSION['theTable'] = 'user';
-    
-    $changeAvatar = false;
     
     $MyUser = new User();
-    $MyUser->setNewUser($_SESSION['newUser']);
+    $MyUserForm = new UserForm();
+    
+    $users = array("id_user" => 0);
+    $MyTypes = array();
+    $MySubscription = array();
+    $btnUpdate = false; settype($btnUpdate, 'boolean');
 
-    $user = array(
-        "id_user" => ''
-    );
-    $users = array();
-    $users[0] = $user;
+//***********************************************************************************************
+// Echapper les variables $_POST
+//***********************************************************************************************
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+        $MyUserForm->setBtnUserEdit(isset($_POST['btn_userEdit']) ? true : false); //Button in the table to edit a user (user.php)
+        
+        $MyUserForm->setBtnNavBarInsert(isset($_POST['btn_navBar_new']) ? true : false); //Button in the navigation bar to insert a new user
+        $MyUserForm->setBtnMonCompte(isset($_POST['btn_monCompte']) ? true : false); //Button in the navigation bar
+
+        $MyUserForm->setBtnInsert(isset($_POST['btn_userEdit_new']) ? true : false); //Button in the form to user (userEdit.php)
+        $MyUserForm->setBtnDelete(isset($_POST['btn_userEdit_delete']) ? true : false); //Button in the form to user (userEdit.php)
+        $MyUserForm->setBtnCancel(isset($_POST['btn_userEdit_cancel']) ? true : false); //Button in the form to user (userEdit.php)
+
+        $MyUserForm->setBtnUpdate(isset($_POST['btn_userEdit_save']) ? true : false); //Button in the form to user (userEdit.php)
+        $MyUserForm->setBtnUpdate1(isset($_POST['btn_userEdit_save_1']) ? true : false); //Button in the form to user (userEdit.php)
+        $btnUpdate = $MyUserForm->getBtnUpdate1() ? true : $MyUserForm->getBtnUpdate();
+        
+        $MyUserForm->setBtnAvatar(isset($_POST['btn_avatar']) ? true : false); //Button in the form to suscribe a new user (adherer.php)
+        $MyUserForm->setBtnVenusia(isset($_POST['btn_venusia']) ? true : false); //Button in the form to suscribe a new user (adherer.php)
+        $MyUserForm->setBtnActarus(isset($_POST['btn_actarus']) ? true : false); //Button in the form to suscribe a new user (adherer.php)
+        $MyUserForm->setBtnGoldorak(isset($_POST['btn_goldorak']) ? true : false); //Button in the form to suscribe a new user (adherer.php)
+        
+        $MyUserForm->setNewError(isset($_GET['newError']) ? filter_input('newError', INPUT_GET) : false);
+
+        //Récupération des valeurs des inputs du formulaire
+        $MyUser->setId(isset($_POST['txt_userEdit_id']) ? intval(filterInput('txt_userEdit_id')) : 0); //input in the form to user (userEdit.php)
+        $MyUser->setName(isset($_POST['txt_userEdit_name']) ? filterInput('txt_userEdit_name') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setSurname(isset($_POST['txt_userEdit_surname']) ? filterInput('txt_userEdit_surname') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setPseudo(isset($_POST['txt_userEdit_pseudo']) ? filterInput('txt_userEdit_pseudo') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setEmail(isset($_POST['txt_userEdit_email']) ? filterInput('txt_userEdit_email') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setPhone(isset($_POST['txt_userEdit_phone']) ? filterInput('txt_userEdit_phone') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setType(isset($_POST['list_userEdit_type']) ? filterInput('list_userEdit_type') : ''); //input in the form to user (userEdit.php)
+        if(empty($MyUser->getType())){ $MyUser->setType('Member');}
+        $MyUser->setAvatar(isset($_POST['txt_userEdit_avatar']) ? filterInput('txt_userEdit_avatar') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setSubscription(isset($_POST['list_userEdit_subscription']) ? filterInput('list_userEdit_subscription') : ''); //input in the form to user (userEdit.php)
+        $MyUser->setPassword(isset($_POST['txt_userEdit_password']) ? filterInput('txt_userEdit_password') : ''); //input in the form to user (userEdit.php)
+        
+        $MyUserForm->setMessage(isset($_POST['txt_userEdit_message']) ? filterInput('txt_userEdit_message') : ''); //input in the form to user (userEdit.php)
+    }
+
+//***********************************************************************************************
+// Déclaration et paramètrage des variables
+//***********************************************************************************************
+
+    if($MyUserForm->getBtnVenusia()){
+        
+        $_SESSION['subscription'] = 'Vénusia';
+        $MyUser->setSubscription('Vénusia');
+
+        $_SESSION['newMember'] = true;
+        $MyUserForm->setNewMember(true);
+
+        $MyUserForm->setBtnInsert(true);
+
+    }else if($MyUserForm->getBtnActarus()){
+        
+        $_SESSION['subscription'] = 'Actarus';
+        $MyUser->setSubscription('Actarus');
+
+        $_SESSION['newMember'] = true;
+        $MyUserForm->setNewMember(true);
+
+        $MyUserForm->setBtnInsert(true);
+
+    }else if($MyUserForm->getBtnGoldorak()){
+        
+        $_SESSION['subscription'] = 'Goldorak';
+        $MyUser->setSubscription('Goldorak');
+
+        $_SESSION['newMember'] = true;
+        $MyUserForm->setNewMember(true);
+
+        $MyUserForm->setBtnInsert(true);
+    }
 
     //***********************************************************************************************
     // traitement CRUD
     //***********************************************************************************************
+        
+    if($MyUserForm->getBtnUserEdit()){
 
-    //Récupération des valeurs des input du formulaire
+        $users = $MyUser->getCurrentUser($MyUser->getId());
+        $users['message'] = "";
 
-    $_SESSION['id_user'] = isset($_POST['txt_userEdit_id']) ? filterInput('txt_userEdit_id') : '';
-    $_SESSION['name'] = isset($_POST['txt_userEdit_name']) ? filterInput('txt_userEdit_name') : '';
-    $_SESSION['surname'] = isset($_POST['txt_userEdit_surname']) ? filterInput('txt_userEdit_surname') : '';
-    $_SESSION['pseudo'] = isset($_POST['txt_userEdit_pseudo']) ? filterInput('txt_userEdit_pseudo') : '';
-    $_SESSION['email'] = isset($_POST['txt_userEdit_email']) ? filterInput('txt_userEdit_email') : '';
-    $_SESSION['phone'] = isset($_POST['txt_userEdit_phone']) ? filterInput('txt_userEdit_phone') : '';
-    $_SESSION['type'] = isset($_POST['list_userEdit_type']) ? filterInput('list_userEdit_type') : '';
-    $_SESSION['avatarConnect'] = isset($_POST['txt_userEdit_avatar']) ? filterInput('txt_userEdit_avatar') : '';
-    $_SESSION['subscription'] = isset($_POST['list_userEdit_subscription']) ? filterInput('list_userEdit_subscription') : '';
-    $_SESSION['password'] = isset($_POST['txt_userEdit_password']) ? filterInput('txt_userEdit_password') : '';
+        $MyType = myType();
+        $MySubscription = mySubscription();
 
-    if(empty($_SESSION['csrfUSer'])){ verifCsrf('csrfUSer'); }
+        return;
 
-    if($bt_userEdit_save && !$_SESSION['errorFormUser']){
+    }else if($btnUpdate){
 
-        if(verifCsrf('csrfUSer') && $_SERVER['REQUEST_METHOD'] === 'POST'){
-
-            $MyUser->setName(strtoupper($_SESSION['name']));
-            $MyUser->setSurname(ucfirst(strtolower($_SESSION['surname'])));
-            //$MyUser->setPseudo(preg_replace('/[^a-zA-Z0-9_#]/', '', $_SESSION['pseudo']));
-            $MyUser->setPseudo($_SESSION['pseudo']);
-            $MyUser->setEmail($_SESSION['email']);
-            $MyUser->setPhone($_SESSION['phone']);
-
-            if($_SESSION['typeConnect'] ==='Administrator'){
-
-                $MyUser->setType($_SESSION['type']);
-
-            }else{
-
-                $MyUser->setType('Member');
-
-            }
-
-            $MyUser->setAvatar($_SESSION['avatarConnect']);
-            $MyUser->setSubscription($_SESSION['subscription']);
-            $MyUser->setPassword($_SESSION['password']);
+        if(verifCsrf('csrfUser')){
             
-            if($_SESSION['newUser']){
+            if($MyUser->getId() === 0){
+                //$_SESSION['dataConnect']['type'] != 'Guest'
+                if(empty($MyUser->getType())){
+                    $MyUser->setType('member');
+                }
+                $newUser = $MyUser->insertUser();
+
+                if(!$newUser['erreur']){
+
+                    $MyUser->setId($newUser['id_user']);
+                    $MyUserForm->setMessage($newUser['message']);
+
+                    $users = initTabUser($users, $MyUser, $MyUserForm);
+                    $users['message'] = $MyUserForm->getMessage();
                     
-                $MyUser->setId($MyUser->addUser());
-                $_SESSION['newUser'] = false;
-                $MyUser->setNewUser(false);
+                    $MyType = myType();
+                    $MySubscription = mySubscription();
 
-                if($_SESSION['newMember']){
+                    if($_SESSION['newMember']){
 
-                    $_SESSION['newMember'] = false;
-                    $_SESSION['typeConnect'] = 'Member';
-                    $_SESSION['pseudoConnect'] = $_SESSION['pseudo'];
-                    $_SESSION['avatarConnect'] = $_SESSION['avatarConnect'];
-                    $_SESSION['subscriptionConnect'] = $_SESSION['subscription'];
-                    $_SESSION['connexion'] = true;
-
-                    routeToHomePage();
+                        $_SESSION['newMember'] = false;
+                        $MyUserForm->setNewMember(false);
+    
+                        $_SESSION['dataConnect']['type'] = 'Member';
+                        $_SESSION['dataConnect']['pseudo'] = $MyUser->getPseudo();
+                        $_SESSION['dataConnect']['avatar'] = $MyUser->getAvatar();
+                        $_SESSION['dataConnect']['subscription'] = $MyUser->getSubscription();
+                        $_SESSION['dataConnect']['connexion'] = true;
+    
+                        routeToHomePage();
+    
+                    }
+                    
+                    return;
 
                 }else{
 
-                    echo '<script>alert("L\'enregistrement est effectué!");</script>';
+                    $users = initTabUser($users, $MyUser, $MyUserForm);
 
+                    $MyUserForm->setMessage($newUser['message']);
+                    $users['message'] = $MyUserForm->getMessage();
+                    
+                    $MyType = myType();
+                    $MySubscription = mySubscription();
+
+                    return;
                 }
 
             }else{
+                /*if($_SESSION['updateMoncompte']){
+                    $MyUser->setType("member");
+                }*/
+                $updateUser = $MyUser->updateUser($MyUser->getId());
+                $users = initTabUser($users, $MyUser, $MyUserForm);
 
-                $MyUser->updateUser($_SESSION['id_user']);
+                $MyUserForm->setMessage($updateUser['message']);
+                $users['message'] = $MyUserForm->getMessage();
+                
+                $MyType = myType();
+                $MySubscription = mySubscription();
 
                 if ($_SESSION['updateMoncompte']){
 
-                    $_SESSION['pseudoConnect'] = $_SESSION['pseudo'];
-                    $_SESSION['avatarConnect'] = $_SESSION['avatarConnect'];
-                    $_SESSION['subscriptionConnect'] = $_SESSION['subscription'];
-
+                    $_SESSION['dataConnect']['pseudo'] = $MyUser->getPseudo();
+                    $_SESSION['dataConnect']['avatar'] = $MyUser->getAvatar();
+                    $_SESSION['dataConnect']['subscription'] = $MyUser->getSubscription();
+                    $_SESSION['updateMoncompte'] = false;
                 }
 
+                return;
             }
-
         }
 
-    }else if($bt_userEdit_cancel){
+    }else if($MyUserForm->getBtnMonCompte()){ //Button in the navigation bar
         
-        $_SESSION['newUser'] = false;
+        $MyUser->setId($_SESSION['dataConnect']['id_user']);
+
+        $users = $MyUser->getCurrentUser($MyUser->getId());
         
-        routeToUserPage();
+        $MyUserForm->setMessage($users['message']);
+        $users['message'] = $MyUserForm->getMessage();
 
-    }else if($_SESSION['newUser'] && !$_SESSION['errorFormUser']){
+        $MyType = myType();
+        $MySubscription = mySubscription();
+
+        $_SESSION['updateMoncompte'] = true;
+
+        return;
+
+    }else if($MyUserForm->getBtnInsert() || $MyUserForm->getBtnNavBarInsert()){
         
-        $_SESSION['subscription'] = !empty($_SESSION['subscription']) ? $_SESSION['subscription'] : 'Vénusia';
-
-        if($nav_new_user){
-            $user = array(
-                "id_user" => '',
-                "name" => '',
-                "surname" => '',
-                "pseudo" => '',
-                "email" => '',
-                "phone" => '',
-                "type" => 'Member',
-                "avatar" => 'avatar_membre_white.webp',
-                "subscription" => $_SESSION['subscription'],
-                "password" => '',
-                "message" => ''
-            );
-            $users[0] = $user;
-        }
-        
-        if(!$btn_avatar && !$nav_new_user){
-
-            exit();
-
+        $subscription = 'Vénusia'; settype($subscription, 'string');
+        if(empty($MyUser->getSubscription())){
+            $subscription = 'Vénusia';
+        }else{
+            $subscription = $MyUser->getSubscription();
         }
 
-    }else if($bt_userEdit_delete){
+        resetUserVar($MyUser, $MyUserForm);
+        $users = initTabUser($users, $MyUser, $MyUserForm);
+        $users['subscription'] = $subscription;
         
-        $_SESSION['id_user'] = isset($_POST['txt_userEdit_id']) ? filterInput('txt_userEdit_id') : '';
+        $MyType = myType();
+        $MySubscription = mySubscription();
+
+        return;
+
+    }else if($MyUserForm->getBtnDelete()){
+
+        $deleteUser = $MyUser->deleteUser($MyUser->getId());
         
-        if ($MyUser->deleteUser($_SESSION['id_user'])){
+        if (!$deleteUser['erreur']){
+                
+            resetUserVar($MyUser, $MyUserForm);
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            $users['message'] = $deleteUser['message'];
 
-            if($_SESSION['typeConnect'] === 'Member'){
+            if($_SESSION['dataConnect']['type'] === 'Member'){
 
-                $_SESSION['id_user'] = '';
-                $_SESSION['name'] = '';
-                $_SESSION['surname'] = '';
-                $_SESSION['pseudo'] = 'Guest';
-                $_SESSION['email'] = '';
-                $_SESSION['phone'] = '## ## ## ## ##';
-                $_SESSION['type'] = 'Guest';
-                $_SESSION['avatarConnect'] = 'avatar_membre_white.webp';
-                $_SESSION['subscription'] = 'Vénusia';
-                $_SESSION['password'] =  '';
-                $_SESSION['message'] =  '';
                 $_SESSION['connexion'] = false;
 
             }
-            
             routeAfterDelete();
 
         }else{
-
-            $_SESSION['message'] = 'Il y a une erreur, cet enregistrement n\'a pas pu être supprimé de la base de données!';
-
-        }
-
-    }else if($newError && !$_SESSION['errorFormUser']){
-
-        $user = array(
-
-            "id_user" => $_SESSION['id_user'],
-            "name" => $_SESSION['name'],
-            "surname" => $_SESSION['surname'],
-            "pseudo" => $_SESSION['pseudo'],
-            "email" => $_SESSION['email'],
-            "phone" => $_SESSION['phone'],
-            "type" => $_SESSION['type'],
-            "avatar" => $_SESSION['avatarConnect'],
-            "subscription" => $_SESSION['subscription'],
-            "password" => $_SESSION['password'],
-            "message" => $_SESSION['message']
-
-        );
-
-        $users[0] = $user;
-
-        $_SESSION['newUser'] = true;
-        $newError = false;
-
-    }
-
-    if($_SESSION['errorFormUser'] === false){
-
-        if(!$_SESSION['newUser']){
             
-            if($btn_monCompte){
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            $users['message'] = $deleteUser['message'];
+            
+            $MyType = myType();
+            $MySubscription = mySubscription();
 
-                $users = $MyUser->get('`pseudo` = \'' . $_SESSION['pseudoConnect'] . '\'');
-                $_SESSION['updateMoncompte'] = true;
-
-            }else{
-
-                $_SESSION['id_user'] = isset($_POST['txt_userEdit_id']) ? filterInput('txt_userEdit_id') : '';
-                if(!empty($_SESSION['id_user'])){
-                    
-                    $MyUser->setId($_SESSION['id_user']);
-
-                }else if($users[0]['id_user'] != ''){
-
-                    $MyUser->setId($users[0]['id_user']);
-
-                }
-                // Requete SELECT permettant de récupérer les données de l'utilisateur en fonction de l'id traité ci-dessus
-                $users = $MyUser->get('`id_user` = \'' . $MyUser->getId() . '\'');
-                $users[0]['message'] = $_SESSION['message'];
-
-            }
-
+            return;
         }
 
-    }
+    }else if($MyUserForm->getBtnCancel()){
+        
+        routeToUserPage();
 
-    //***********************************************************************************************
-    // traitement du téléchargement des images 
-    //***********************************************************************************************
-    
-    if($btn_avatar){
+    }else if($MyUserForm->getBtnAvatar()){
 
         if (uploadImg('uploadAvatar','txt_userEdit_avatar','fileAvatar','./img/avatar/')){
             
-            if($_SESSION['btn_monCompte']){
-                $_SESSION['avatarConnect'] = $_SESSION['uploadAvatar'];
+            if($MyUserForm->getBtnMonCompte()){
+                $_SESSION['dataConnect']['avatar'] = $_SESSION['uploadAvatar'];
             }
 
-            $users[0]['avatar'] = ($_SESSION['uploadAvatar']);
-            $_SESSION['avatarConnect'] = $_SESSION['uploadAvatar'];
+            $MyUser->setAvatar($_SESSION['uploadAvatar']);
+            $_SESSION['dataConnect']['avatar'] = $_SESSION['uploadAvatar'];
+            
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            $users['message'] = "L'image a été téléchargée avec succès.";
+        
+            $MyType = myType();
+            $MySubscription = mySubscription();
 
-            if($_SESSION['newUser']){
-
-                $users[0]['name'] = $_SESSION['name'];
-                $users[0]['surname'] = $_SESSION['surname'];
-                $users[0]['pseudo'] = $_SESSION['pseudo'];
-                $users[0]['email'] = $_SESSION['email'];
-                $users[0]['phone'] = $_SESSION['phone'];
-                $users[0]['type'] = $_SESSION['type'];
-                $users[0]['subscription'] = $_SESSION['subscription'];
-                $users[0]['password'] = $_SESSION['password'];
-                $users[0]['message'] = $_SESSION['message'];
-
-            }
+            return;
 
         }else{
 
-            echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            $users['message'] = "Une erreur s'est produite lors de l'upload de l'image.";
+        
+            $MyType = myType();
+            $MySubscription = mySubscription();
 
+            return;
         }
-
     }
-    
-    if($btn_avatar || !$bt_userEdit_new){
 
-        //Traiment de la BD pour récupérer les données destinées à l'input liste type
-        include('../../goldorak/model/type.class.php');
+    if($MyUserForm->getNewError() && !$_SESSION['errorFormUser']){
+
+        $users = initTabUser($users, $MyUser, $MyUserForm);
+        $users['message'] = "Veuillez remplir tous les champs du formulaire.";
+
+        $MyType = myType();
+        $MySubscription = mySubscription();
+
+        $MyUserForm->setNewError(false);
+        return;
+    }
+
+    /*$users = $MyUser->get($MyUser->getId());
+    $MyType = myType();
+    $MySubscription = mySubscription();*/
+
+    //Fonction traitement de la BD pour récupérer les données destinées à l'input liste type
+    function myType():array{
+        
+        require_once('../../goldorak/model/type.class.php');
         $Types = new Type();
-        $MyType = $Types->get(1,'type', 'ASC', 0, 50);
+        $myType = array();
+
+        $myType = $Types->get(1,'type', 'ASC', 0, 50);
         unset($Types);
 
-        //Traiment de la BD pour récupérer les données destinées à l'input liste subscription
-        include('../../goldorak/model/subscription.class.php');
-        $Subscriptions = new Subscription();
-        $MySubscription = $Subscriptions->get(1,'subscription', 'ASC', 0, 50);
-        unset($Subscriptions);
-
+        return $myType;
     }
 
+    //Fonction de traitement de la BD pour récupérer les données destinées à l'input liste subscription
+    function mySubscription():array{
+
+        require_once('../../goldorak/model/subscription.class.php');
+        $Subscriptions = new Subscription();
+        $mySubscription = array();
+
+        $mySubscription = $Subscriptions->get(1,'subscription', 'ASC', 0, 50);
+        unset($Subscriptions);
+
+        return $mySubscription;
+    }
+
+    //Fonction d'initialisation du tableau des données de l'utilisateur
+    function initTabUser(array $users, object $MyUser, object $MyUserForm):array{
+        
+        $users['id_user'] = $MyUser->getId();
+        $users['name'] = $MyUser->getName();
+        $users['surname'] = $MyUser->getSurname();
+        $users['pseudo'] = $MyUser->getPseudo();
+        $users['email'] = $MyUser->getEmail();
+        $users['phone'] = $MyUser->getPhone();
+        $users['type'] = $MyUser->getType();
+        $users['avatar'] = $MyUser->getAvatar();
+        $users['subscription'] = $MyUser->getSubscription();
+        $users['password'] = $MyUser->getPassword();
+        $users['message'] = $MyUserForm->getMessage();
+
+        return $users;
+    }
+
+    //Fonction de réinitialisation des variables de l'utilisateur
+    function resetUserVar(object $MyUser, object $MyUserForm):void{
+        
+        $MyUser->setId(0);
+        $MyUser->setName('');
+        $MyUser->setSurname('');
+        $MyUser->setPseudo('');
+        $MyUser->setEmail('');
+        $MyUser->setPhone('## ## ## ## ##');
+        $MyUser->setType('Member');
+        $MyUser->setAvatar('avatar_membre_white.webp');
+        $MyUser->setSubscription('Vénusia');
+        $MyUser->setPassword('');
+        
+        $MyUserForm->setMessage('');
+    }
 ?>

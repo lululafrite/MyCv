@@ -103,7 +103,7 @@
         divCarData.appendChild(table);
         form.appendChild(divCarData);
 
-        <?php if ($_SESSION['typeConnect'] != 'Guest') { ?>
+        <?php if ($_SESSION['dataConnect']['type'] != 'Guest') { ?>
             const editButtonDiv = document.createElement('div');
             editButtonDiv.className = 'd-flex justify-content-center my-2';
 
@@ -118,7 +118,7 @@
             form.appendChild(editButtonDiv);
         <?php } ?>
 
-        <?php if ($_SESSION['typeConnect'] === 'Guest') { ?>
+        <?php if ($_SESSION['dataConnect']['type'] === 'Guest') { ?>
             const contactButtonDiv = document.createElement('div');
             contactButtonDiv.className = 'd-flex justify-content-center my-2';
 

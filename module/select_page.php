@@ -3,7 +3,7 @@
     <form class="d-flex align-items-center" id="form__nbOfLine" method="post" action=<?php $pageActive ?>>
 
         <!-- input hidden csrf -->
-        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['csrfPage'];?>">
 
         <label class="form-label text-light me-3" for="nbOfLine">Réf.<span style="color:#343a40">_</span>par<span style="color:#343a40">_</span>page<span style="color:#343a40">_</span>:</label>
 
@@ -12,9 +12,9 @@
             <option value="<?php
                 if(isset($_POST['nbOfLine']) && !isset($_POST['nbOfLine'])){
                     $value = $_POST['nbOfLine'];
-                    $_SESSION['ligneParPage'] = $_POST['nbOfLine'];
+                    $_SESSION['pagination']['productPerPage'] = $_POST['nbOfLine'];
                 }else{
-                    $value = $_SESSION['ligneParPage'];
+                    $value = $_SESSION['pagination']['productPerPage'];
                 }
                 echo $value ;
             ?>">
@@ -34,7 +34,7 @@
     <form class="d-flex mt-3 mt-sm-0" method="post">
         
         <!-- input hidden csrf -->
-        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['tokenCsrf'];?>">
+        <input type="hidden" name="tokenCsrf" value="<?php echo $_SESSION['csrfPage'];?>">
 
         <input class="BtPage rounded-2" type="submit" name="previous" value="<"/>
         <label class="labelPage text-light text-end ps-3"><?php echo $laPage; ?></label>
@@ -43,7 +43,7 @@
     </form>
 
     <div class="d-flex justify-content-center align-items-center p-0 m-0 ps-md-3 mt-3 mt-md-0">
-        <label class="text-light text-center text-end p-0 m-0">Total réf. <?php echo $_SESSION['nbOfProduct']; ?></label> 
+        <label class="text-light text-center text-end p-0 m-0">Total réf. <?php echo $_SESSION['pagination']['nbOfProduct']; ?></label> 
     </div>
     
 </section>

@@ -1,159 +1,245 @@
 <?php
 
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class User
 	{
-
-		private $id_user;
-		public function getId()
-		{
+		private $id_user = 0;
+		public function getId():int{
 			return $this->id_user;
 		}
-		public function setId($new)
-		{
+		public function setId(int $new):void{
 			$this->id_user = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $name;
-		public function getName()
-		{
+		public function getName():string{
 			return $this->name;
 		}
-		public function setName($new)
-		{
+		public function setName(string $new):void{
 			$this->name = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $surname;
-		public function getSurname()
-		{
+		public function getSurname():string{
 			return $this->surname;
 		}
-		public function setSurname($new)
-		{
+		public function setSurname(string $new):void{
 			$this->surname = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $pseudo;
-		public function getPseudo()
-		{
+		public function getPseudo():string{
 			return $this->pseudo;
 		}
-		public function setPseudo($new)
-		{
+		public function setPseudo(string $new):void{
 			$this->pseudo = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $email;
-		public function getEmail()
-		{
+		public function getEmail():string{
 			return $this->email;
 		}
-		public function setEmail($new)
-		{
+		public function setEmail(string $new):void{
 			$this->email = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $phone;
-		public function getPhone()
-		{
+		public function getPhone():string{
 			return $this->phone;
 		}
-		public function setPhone($new)
-		{
+		public function setPhone(string $new):void{
 			$this->phone = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $password;
-		public function getPassword()
-		{
+		public function getPassword():string{
 			return $this->password;
 		}
-		public function setPassword($new)
-		{
+		public function setPassword(string $new):void{
 			$this->password = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
+		private $avatar;
+		public function getAvatar():string{
+			return $this->avatar;
+		}
+		public function setAvatar(string $new):void{
+			$this->avatar = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $subscription;
+		public function getSubscription():string{
+			return $this->subscription;
+		}
+		public function setSubscription(string $new):void{
+			$this->subscription = $new;
+		}
+
+		//-----------------------------------------------------------------------
+		
+		private $idSubscription;
+		public function getSubscriptionId():int{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+            date_default_timezone_set($_SESSION['timeZone']);
+			
+			try{
+				$stmt = $bdd->prepare("SELECT `id_subscription` FROM `subscription` WHERE `subscription` = :subscription");
+				$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$this->idSubscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$bdd=null;
+				return $this->idSubscription['id_subscription'];
+
+			}catch(PDOException $e){
+				$bdd=null;
+				echo "Erreur de la requete : function getSubscriptionId() :" . $e->getMessage();
+				return 0;
+			}
+		}
+
+		//-----------------------------------------------------------------------
+		
 		private $type;
-		public function getType()
-		{
+		public function getType():string{
 			return $this->type;
 		}
-		public function setType($new)
-		{
+		public function setType(string $new):void{
 			$this->type = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $newUser;
-		public function getNewUser()
-		{
-			if(empty($_SESSION['newUser'])){
-				$_SESSION['newUser'] = false;
-				$this->newUser = false;
+		private $idUserType;
+		public function getUserTypeId():int{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			try{
+				$stmt = $bdd->prepare("SELECT `id_type` FROM `user_type` WHERE `type` = :idUserType");
+				$stmt->bindParam(':idUserType', $this->type, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$this->idUserType =  $stmt->fetch(PDO::FETCH_ASSOC);
+				$bdd=null;
+				return $this->idUserType['id_type'];
+				
+			}catch(PDOException $e){
+				$bdd=null;
+				echo "Erreur de la requete : function getUserTypeId() :" . $e->getMessage();
+				return 0;
 			}
-			return $_SESSION['newUser'];
 		}
-		public function setNewUser($new)
-		{
-			$_SESSION['newUser'] = $new;
+
+		//-----------------------------------------------------------------------
+
+		private $pw;
+		public function getPw():string{
+			return $this->pw;
+		}
+		public function setPw(string $new):void{
+			$this->pw = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $newUser = false;
+		public function getNewUser():bool{
+			return $this->newUser;
+		}
+		public function setNewUser(bool $new):void{
 			$this->newUser = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
+		private $addUser;
+        public function getAddUser():bool{
+            if(is_null($_SESSION['addUser']))
+            {
+                $_SESSION['addUser']=false;
+				$this->addUser = false;
+            }
+            return $this->addUser;
+        }
+        public function setAddUser(bool $new):void{
+            $_SESSION['addUser']=$new;
+			$this->addUser = $new;
+        }
+
+		//-----------------------------------------------------------------------
+        
 		private $listPseudo;
-		public function getPseudoUser()
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+		public function getPseudoUser():array{
 
-			try
-			{
-			    $sql = $conn->query("SELECT `pseudo` FROM `user` ORDER BY `pseudo` ASC");
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
 
-				while ($this->listPseudo[] = $sql->fetch());
-				return $this->listPseudo;
+			try{
+
+				$stmt = $bdd->prepare("SELECT `pseudo` FROM `user` ORDER BY `pseudo` ASC");
+
+				$stmt->execute();
+
+				$this->listPseudo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$bdd = null;
+				return $this->listPseudo['pseudo'];
+
+			}catch(PDOException $e){
+				$bdd = null;
+				echo "Erreur de la requete : function getPseudoUser() :" . $e->getMessage();
+				return false;
 			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
 
-			$conn=null;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $theUser;
-		public function getUser($îdUser)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
-			
-			try
-			{
-			    $sql = $conn->query("SELECT
+		private $currentUser = array();
+		public function getCurrentUser($idUser):array{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			date_default_timezone_set($_SESSION['timeZone']);
+
+			try{
+				$stmt = $bdd->prepare("SELECT
 										`user`.`id_user`,
 										`user`.`name`,
 										`user`.`surname`,
@@ -161,87 +247,210 @@
 										`user`.`email`,
 										`user`.`phone`,
 										`user`.`password`,
+										`user`.`avatar`,
+										`subscription`.`subscription` AS 'subscription',
 										`user_type`.`type` AS `type`
 
 									FROM `user`
 
+									LEFT JOIN `subscription`
+										ON `user`.`id_subscription` = `subscription`.`id_subscription`
+
 									LEFT JOIN `user_type`
 										ON `user`.`id_type` = `user_type`.`id_type`
-									
-									WHERE `user`.`id_user`=$îdUser
-								");
 
-				
-				/*while ($this->theContact[] = $sql->fetch());*/
-				$this->theUser[] = $sql->fetch();
-				return $this->theUser;
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
+									WHERE `user`.`id_user` = :idUser");
 
-			$conn=null;
+				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
+
+				$stmt->execute();
+
+				$this->currentUser[] = $stmt->fetch(PDO::FETCH_ASSOC);
+				$bdd=null;
+				return $this->currentUser[0];
+
+			}catch(PDOException $e){
+				$bdd=null;
+				echo "Erreur de la requete : function getCurrentUser(\$idUser) :" . $e->GetMessage();
+				return $this->currentUser[0];
+			}
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $userList;
-		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
+		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13):array{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
             date_default_timezone_set($_SESSION['timeZone']);
-			
-			try
-			{
-			    $sql = $conn->query("SELECT
-										`user`.`id_user`,
-										`user`.`name`,
-										`user`.`surname`,
-										`user`.`pseudo`,
-										`user`.`email`,
-										`user`.`phone`,
-										`user`.`password`,
-										`user_type`.`type` AS `type`
-									FROM
-										`user`
-									LEFT JOIN `user_type` ON `user`.`id_type` = `user_type`.`id_type`
-									WHERE $whereClause
-									ORDER BY $orderBy $ascOrDesc
-									LIMIT $firstLine, $linePerPage
-								");
 
-				while ($this->userList[] = $sql->fetch());
+			try{
+				$stmt = $bdd->prepare("SELECT
+											`user`.`id_user`,
+											`user`.`name`,
+											`user`.`surname`,
+											`user`.`pseudo`,
+											`user`.`email`,
+											`user`.`phone`,
+											`user`.`password`,
+											`user`.`avatar`,
+											`subscription`.`subscription` AS 'subscription',
+											`user_type`.`type` AS `type`
+
+										FROM `user`
+
+										LEFT JOIN `subscription` ON `user`.`id_subscription` = `subscription`.`id_subscription`
+										LEFT JOIN `user_type` ON `user`.`id_type` = `user_type`.`id_type`
+
+										WHERE :whereClause 
+										ORDER BY :orderBy :ascOrDesc 
+										LIMIT :firstLine, :linePerPage");
+
+				$stmt->bindParam(':whereClause', $whereClause, PDO::PARAM_STR);
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
+				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
+				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+
+				$stmt->execute();
+
+				$this->userList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				$bdd = null;
 				return $this->userList;
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
 
-			$conn=null;
+			}catch (PDOException $e){
+				$bdd = null;
+				echo "Erreur de la requete : function get() dans user.class.php : " . $e->GetMessage();
+				return false;
+			}
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function addUser()
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+		private $idUser;
+		public function addUser():int{
 
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+		
 			try{
-					
-				$stmt = $conn->prepare("INSERT INTO `user`(`name`,`surname`,`pseudo`,`email`,`phone`,`password`,`id_type`, `pw`)
-										VALUES(:name,
-												:surname,
-												:pseudo,
-												:email,
-												:phone,
-												:password,
-												(SELECT `id_type` FROM `user_type` WHERE `type`=:type),
-												:pw)");
+		
+				// Vérifier si l'email existe déjà
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `email` = :email");
+				$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+				$stmt->execute();
+				$result = $stmt->fetchColumn();
+		
+				if($result === 0){
+
+					// L'email n'existe pas, vérifier si le pseudonyme est existant
+					$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `pseudo` = :pseudo");
+					$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+					$stmt->execute();
+					$result = $stmt->fetchColumn();
+		
+					if($result === 0){
+
+						// Le pseudonyme n'existe pas, insérer un nouvel utilisateur
+						$stmt = $bdd->prepare("INSERT INTO `user`(`name`,
+																	`surname`,
+																	`pseudo`,
+																	`email`,
+																	`phone`,
+																	`password`,
+																	`avatar`,
+																	`id_subscription`,
+																	`id_type`,
+																	`pw`)
+												VALUES(:name,
+														:surname,
+														:pseudo,
+														:email,
+														:phone,
+														:password,
+														:avatar,
+														(SELECT `id_subscription` FROM `user_subscription` WHERE `subscription`=:subscription),
+														(SELECT `id_type` FROM `user_type` WHERE `type`=:type),
+														:pw)");
+		
+						$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+						$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
+						$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+						$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+						$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
+						$stmt->bindParam(':password', $this->password, PDO::PARAM_STR);
+						$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+						$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+						$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+						$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
+		
+						$stmt->execute();
+		
+						// Récupérer l'ID de l'utilisateur nouvellement inséré
+						$stmt = $bdd->prepare("SELECT MAX(`id_user`) AS id FROM `user`");
+						$stmt->execute();
+						$this->idUser = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+						$bdd = null;
+						return intval($this->idUser['id']);
+
+					}else{
+
+						// Le pseudonyme existe déjà
+						//$_SESSION['message'] = 'Ce pseudonyme est existant! Saisissez un autre pseudonyme';
+						echo("Ce pseudonyme est existant!!! fonction addUser() dans user.class.php ");
+						$bdd = null;
+						return false;
+
+					}
+
+				}else{
+
+					//$_SESSION['message'] = 'Ce courriel est existant! Saisissez un autre courriel';
+					//require_once '../../common/utilies.php';
+					//returnNewError();
+					echo("Ce courriel est existant!!! fonction addUser() dans user.class.php ");
+					$bdd = null;
+					return false;
+
+				}
+
+			}catch(PDOException $e){
+				$bdd = null;
+				echo("Erreur de la requête!!! fonction addUser() dans user.class.php " . $e->getMessage());
+				return false;
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		public function updateUser($idUser):bool{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+            date_default_timezone_set($_SESSION['timeZone']);
+			
+			try{
+				$stmt = $bdd->prepare("UPDATE `user`
+										SET `name` = :name,
+											`surname` = :surname,
+											`pseudo` = :pseudo,
+											`email` = :email,
+											`phone` = :phone,
+											`password` = :password,
+											`avatar` = :avatar,
+											`id_subscription` = (SELECT `id_subscription` FROM `user_subscription` WHERE `subscription`=:subscription),
+											`id_type` = (SELECT `id_type` FROM `user_type` WHERE `type`=:type,
+											`pw` = :password)
+
+										WHERE `id_user` = :idUser");
 				
 				$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
 				$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
@@ -249,121 +458,88 @@
 				$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
 				$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
 				$stmt->bindParam(':password', $this->password, PDO::PARAM_STR);
+				$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+				$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
 				$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
 				$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
+				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
+				
 				$stmt->execute();
+
+				$bdd=null;
+				return true;
+
+			}catch (PDOException $e){
+				echo "Erreur de la requete dans la fonction updateUser() dans user.class.php :" . $e->GetMessage();
+				$bdd=null;
+				return false;
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		public function deleteUser($id):bool{
+			
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
+			$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `id_user` = :id_user");
+			$stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
+			$stmt->execute();
+			$resultat = $stmt->fetchColumn();
+
+			if($resultat > 0){
+
+				try{
+					$stmt = $bdd->prepare('DELETE FROM user WHERE id_user = :id_user');
+					$stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
+					$stmt->execute();
 					
-				$stmt = $conn->query("SELECT `id_user` FROM `user` WHERE `email`='" . $this->email . "'");
-				$id_user = $stmt->fetch();
-				$this->id_user = intval($id_user['id_user']);
-				return intval($id_user['id_user']);
+					$bdd=null;
+					return true;
 
-			} catch (PDOException $e) {
-				
-				echo "Erreur de la requête : " . $e->getMessage();
+				}catch (PDOException $e){
+					echo "Erreur de la requete!!! fonction deleteUser() dans user.class.php :" . $e->GetMessage();
+					$bdd=null;
+					return false;
+				}
 
+			}else{
+				$bdd=null;
+				return false;
 			}
-
-			$conn=null;
-		}
-
-		//-----------------------------------------------------------------------
-
-		public function updateUser($idUser)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
-
-			try
-			{
-				$conn->exec("UPDATE `user` SET
-								`name` = '" . $this->name . "',
-								`surname` = '" . $this->surname . "',
-								`pseudo` = '" . $this->pseudo . "',
-								`email` = '" . $this->email . "',
-								`phone` = '" . $this->phone . "',
-								`password` = '" . $this->password . "',
-								`id_type` = (SELECT `id_type` FROM `user_type` WHERE `type`='" . $this->type . "')
-							WHERE `id_user` = " . intval($idUser) . "
-							");
-				
-				echo '<script>alert("Les modifications sont enregistrées!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
-
-			$this->setType('Administrator');
-
-			$conn=null;
-		}
-
-		//-----------------------------------------------------------------------
-
-		public function deleteUser($id)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
-
-			try
-			{
-			    $conn->exec('DELETE FROM user WHERE id_user=' . $id);
-				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
-				echo '<script>window.location.href = "http://garageparrot/index.php?page=user";</script>';
-				echo '<script>window.location.href = "http://www.follaco.fr/index.php?page=user";</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
-
-			$conn=null;
 		}
 		
-		private $userExist;
-		public function verifUser($email)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
+		private $verifUser;
+		public function verifUser($email):int{
+
+			$myDbConnect = new dbConnect();
+			$bdd = $myDbConnect->connectionDb();
+            unset($myDbConnect);
+
             date_default_timezone_set($_SESSION['timeZone']);
+			
+			try{
+			    $stmt = $bdd->prepare("SELECT COUNT(*) AS `number`
+										FROM `user`
+										WHERE `email` = :email");
 
-			try
-			{
-			    $sql = $conn->query("SELECT COUNT(*) AS `number`
-									FROM
-										`user`
-									WHERE
-										`email` = '" . $email . "'
-								");
+				$stmt->bindParam(':email', $email, PDO::PARAM_STR);
 
-				while ($this->userExist[] = $sql->fetch());
-				return $this->userExist[0][0];
+				$stmt->execute();
+
+				$this->verifUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$bdd=null;
+				return $this->verifUser['number'];
+
+			}catch (PDOException $e){
+				$bdd=null;
+				echo "Erreur de la requete : function verifUser(\$email) :" . $e->GetMessage();
+				return false;
 			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-			}
-
-			$conn=null;
 		}
-
-        //__Ajouter user?___________________________________________
-        
-        public function getAddUser()
-        {
-            if(is_null($_SESSION['addUser']))
-            {
-                $_SESSION['addUser']=false;
-            }
-            return $_SESSION['addUser'];
-        }
-        public function setAddUser($new)
-        {
-            $_SESSION['addUser']=$new;
-        }
 
 	}
 	

@@ -11,7 +11,7 @@
             <!-- input hidden csrf -->
             <tr style="display: none;">
                 <td colspan="2">
-                    <input type="hidden" name="csrfUSer" value="<?php echo $_SESSION['csrfUSer'];?>">
+                    <input type="hidden" name="csrfUser" value="<?php echo $_SESSION['csrfUser'];?>">
                 </td>
             </tr>
 
@@ -25,27 +25,27 @@
 
                         <div class="me-2">
 
-                        <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
-                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
+                        <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
+                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
                         <?php } ?>
                         
-                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="button" name="bt_userEdit_save" id="bt_userEdit_save" style="width: 100px;" value="Enregistrer">
+                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_save" id="btn_userEdit_save" style="width: 100px;" value="Enregistrer">
                         
                         </div>
 
-                    <?php if($_SESSION['typeConnect'] != 'Administrator' && $_SESSION['typeConnect'] != 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] != 'Administrator' && $_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <div>
 
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_delete">Supprimer mon compte</button>
+                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete">Supprimer mon compte</button>
                         
                         </div>
                     <?php } ?>
 
-                    <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
                         <div>
 
-                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="button" name="bt_userEdit_new" id="bt_userEdit_new" style="width: 100px;" value="Nouveau">
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_delete"style="width: 100px;">Supprimer</button>
+                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_new" id="btn_userEdit_new" style="width: 100px;" value="Nouveau">
+                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete"style="width: 100px;">Supprimer</button>
                         
                         </div>
                     <?php } ?>
@@ -56,7 +56,7 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message1" id="message1"><?php if(!empty($users[0]['message'])){echo $users[0]['message'];} ?></div>
+                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message1" id="message1"><?php if(!empty($users['message'])){echo $users['message'];} ?></div>
                 </td>
             </tr>
 
@@ -70,11 +70,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 bg-dark text-light" id="txt_userEdit_id" name="txt_userEdit_id" type="text" readonly style="font-size: 1.6rem;"
                         value=
                         "<?php
-                            if(!empty($MyUser->getId())){
-                                echo $MyUser->getId();
-                            }else{
-                                echo escapeInput($users[0]['id_user']);
-                            }
+                            echo escapeInput($users['id_user']);
                         ?>"
                     >
                 </td>
@@ -104,7 +100,7 @@
                     <input list="datalist_userEdit_subscription" name="list_userEdit_subscription" id="list_userEdit_subscription" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez une formule" oninput="validateInput('list_userEdit_subscription','datalist_userEdit_subscription','labelMessageSubscription','Selectionnez votre formule dans la liste de choix.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['subscription']);
+                            echo escapeInput($users['subscription']);
                         ?>"
                     >
                     <datalist id="datalist_userEdit_subscription">
@@ -140,7 +136,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_name" name="txt_userEdit_name" type="text" placeholder="Saisissez votre NOM" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_name','','labelMessageName','Saisissez votre Nom d\'une longueur de 50 caractères maximum.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['name']);
+                            echo escapeInput($users['name']);
                         ?>"
                     >
                 </td>
@@ -170,7 +166,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_surname" name="txt_userEdit_surname" type="text" placeholder="Saisissez votre Prénom" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_surname','','labelMessageSurname','Saisissez votre Prénom d\'une longueur de 50 caractères maximum.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['surname']);
+                            echo escapeInput($users['surname']);
                         ?>"
                     >
                 </td>
@@ -197,10 +193,10 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['typeConnect'] === 'Member' || $_SESSION['typeConnect'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_pseudo" name="txt_userEdit_pseudo" type="text" placeholder="Saisissez votre Pseudo" <?php echo ($_SESSION['typeConnect'] === 'Member' || $_SESSION['typeConnect'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_pseudo')"
+                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_pseudo" name="txt_userEdit_pseudo" type="text" placeholder="Saisissez votre Pseudo" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_pseudo')"
                     value=
                         "<?php
-                            echo escapeInput($users[0]['pseudo']);
+                            echo escapeInput($users['pseudo']);
                         ?>"
                     >
                 </td>
@@ -226,10 +222,10 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['typeConnect'] === 'Member' || $_SESSION['typeConnect'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_email" name="txt_userEdit_email" type="email" placeholder="Saisissez votre courriel" <?php echo ($_SESSION['typeConnect'] === 'Member' || $_SESSION['typeConnect'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_email','','labelMessageEmail','Saisissez votre adresse de courriel d\'une longueur maximum de 255 caractères.')"
+                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_email" name="txt_userEdit_email" type="email" placeholder="Saisissez votre courriel" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_email','','labelMessageEmail','Saisissez votre adresse de courriel d\'une longueur maximum de 255 caractères.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['email']);
+                            echo escapeInput($users['email']);
                         ?>"
                     > 
                 </td>
@@ -259,7 +255,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_phone" name="txt_userEdit_phone" type="tel" placeholder="## ## ## ## ##" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_phone','','labelMessagePhone','Saisissez votre N° de téléphone.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['phone']);
+                            echo escapeInput($users['phone']);
                         ?>"
                     >
                 </td>
@@ -279,7 +275,7 @@
 
             </tr>
 
-    <?php if($_SESSION['typeConnect'] ==='Administrator'){ ?>
+    <?php if($_SESSION['dataConnect']['type'] ==='Administrator'){ ?>
             <tr class="m-0 p-0">
 
                 <td class="text-end m-0 p-0">
@@ -290,7 +286,7 @@
                     <input list="datalist_userEdit_type" name="list_userEdit_type" id="list_userEdit_type" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez un type" oninput="validateInput('list_userEdit_type','datalist_userEdit_type','labelMessageType','Selectionnez le type d\'utilisateur dans la liste de choix.')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['type']);
+                            echo escapeInput($users['type']);
                         ?>"
                     >
                     <datalist id="datalist_userEdit_type">
@@ -336,7 +332,7 @@
                                         <input class="form-control-lg bg-dark text-light border border-black m-0 p-0 " id="txt_userEdit_avatar" name="txt_userEdit_avatar" type="text" placeholder="Saisissez le nom de l'avatar" readonly style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_avatar','','labelMessageavatar','Saisissez le nom de l\'avatar (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une avatar depuis votre disque local. ATTENTION!!! Dimmentions avatar au ratio de 70px sur 70px.')"
                                             value=
                                             "<?php
-                                                echo escapeInput($users[0]['avatar']);
+                                                echo escapeInput($users['avatar']);
                                             ?>"
                                         >
                                     </div>
@@ -384,7 +380,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_password" name="txt_userEdit_password" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_password')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['password']);
+                            echo escapeInput($users['password']);
                         ?>"
                     >
                 </td>
@@ -416,7 +412,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_confirm" name="txt_userEdit_confirm" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_confirm')"
                         value=
                         "<?php
-                            echo escapeInput($users[0]['password']);
+                            echo escapeInput($users['password']);
                         ?>"
                     >
                 </td>
@@ -445,27 +441,27 @@
 
                         <div class="me-2">
 
-                        <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
-                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
+                        <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
+                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
                         <?php } ?>
                         
-                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="button" name="bt_userEdit_save" id="bt_userEdit_save_1" style="width: 100px;" value="Enregistrer">
+                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_save_1" id="btn_userEdit_save_1" style="width: 100px;" value="Enregistrer">
                         
                         </div>
 
-                    <?php if($_SESSION['typeConnect'] != 'Administrator' && $_SESSION['typeConnect'] != 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] != 'Administrator' && $_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <div>
 
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_delete">Supprimer mon compte</button>
+                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete">Supprimer mon compte</button>
                         
                         </div>
                     <?php } ?>
 
-                    <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
                         <div>
 
-                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="button" name="bt_userEdit_new" id="bt_userEdit_new_1" style="width: 100px;" value="Nouveau">
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="bt_userEdit_delete"style="width: 100px;">Supprimer</button>
+                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_new" id="btn_userEdit_new_1" style="width: 100px;" value="Nouveau">
+                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete"style="width: 100px;">Supprimer</button>
                         
                         </div>
                     <?php } ?>
@@ -477,7 +473,7 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message2" id="message2"><?php if(!empty($users[0]['message'])){echo $users[0]['message'];} ?></div>
+                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message2" id="message2"><?php if(!empty($users['message'])){echo $users['message'];} ?></div>
                 </td>
             </tr>
 
@@ -487,9 +483,9 @@
 
 </section>
 
-<?php $_SESSION['message'] =''; ?>
+<?php //$_SESSION['message'] =''; ?>
 
-<script src="js/function.js"></script>
-<script src="js/fetch.js"></script>
-<script src="js/user_edit.js"></script>
+<script src="../../js/function.js"></script>
+<script src="../../js/fetch.js"></script>
+<script src="../../js/user_edit.js"></script>
 

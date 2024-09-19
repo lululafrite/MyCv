@@ -25,19 +25,19 @@
                     
                     <div class="carousel-caption d-flex justify-content-center align-items-center">
 
-                        <div class="divHeader text-white text-center p-0 px-3 pt-2">
+                        <div class="divHeader text-white text-center p-0 px-3 pt-2 w-100">
 
-                            <?php if ($_SESSION['typeConnect']!='Administrator'){ ?>
+                            <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
                                 <h2 class="titleHeader"><?php echo escapeInput($home[0]['home_title']); ?></h2>
                                 <p class="subTitleHeader"><?php echo escapeInput($home[0]['home_subtitle']); ?></p>
 
-                            <?php }else if ($_SESSION['typeConnect']==='Administrator'){ ?>
+                            <?php }else if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
 
                                 <h2>
 
                                     <input
-                                        class="h1Header"
+                                        class="h1Header text-center"
                                         type="text"
                                         id="text_home_title"
                                         name="text_home_title"
@@ -49,7 +49,7 @@
                                 <p>
 
                                     <input
-                                        class="h2Header"
+                                        class="h2Header text-center"
                                         type="text"
                                         id="text_home_subtitle"
                                         name="text_home_subtitle"
@@ -114,19 +114,49 @@
 
         </div>
 
-        <?php if($_SESSION['typeConnect'] === 'Administrator'){ ?>
+        <div class="container d-flex justify-content-center mt-5">
 
-            <div class="container d-flex justify-content-center mt-5">
+            <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
-                <div class="row">
+                <h2 class="pb-5"><?php echo escapeInput($home[0]['home_title_page']); ?></h2>
+
+            <?php } ?>
+
+        </div>
+
+        <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
+
+            <div class="container d-flex justify-content-center p-0">
+
+                <div class="row w-100">
+
+                    <div class="container d-flex justify-content-center pb-5">
+
+                        <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
+
+                            <h2 class="w-100">
+                                <input
+                                    class="text-center fs-2"
+                                    type="text"
+                                    name="text_home_title_page"
+                                    id="text_home_title_page"
+                                    style="width:100%; height: 40px;"
+                                    value="<?php echo escapeInput($home[0]['home_title_page']); ?>"
+                                >
+                            </h2>
+
+                        <?php } ?>
+
+                    </div>
+                    
 
                     <!-- Start button Save -->
 
-                    <div class="container d-flex justify-content-center mb-2">
+                    <div class="container d-flex justify-content-center pb-5">
 
                         <input
                             class="btn btn-lg btn-success w-100"
-                            type="button"
+                            type="submit"
                             name="btn_save_header"
                             id="btn_save_header"
                             value="Enregistrer"
@@ -140,6 +170,10 @@
 
             </div>
 
+            <hr><br>
+
         <?php } ?>
+
+    </form>
 
 </header>

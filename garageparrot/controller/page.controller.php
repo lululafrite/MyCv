@@ -7,17 +7,17 @@
 
     if(isset($_POST['next']))
     {
-        if ($_SESSION['laPage'] >= $_SESSION['nbOfPage'])
+        if ($_SESSION['pagination']['thePage'] >= $_SESSION['pagination']['nbOfPage'])
         {
-            $MyPage->setLaPage($_SESSION['nbOfPage']);
+            $MyPage->setLaPage($_SESSION['pagination']['nbOfPage']);
         }
         else
         {
-            $MyPage->setFirstLine($_SESSION['firstLine'] + $_SESSION['ligneParPage']);
-            $_SESSION['laPage'] = $_SESSION['laPage'] + 1;
-            $MyPage->setLaPage($_SESSION['laPage']);
+            $MyPage->setFirstLine($_SESSION['pagination']['firstLine'] + $_SESSION['pagination']['productPerPage']);
+            $_SESSION['pagination']['thePage'] = $_SESSION['pagination']['thePage'] + 1;
+            $MyPage->setLaPage($_SESSION['pagination']['thePage']);
         }
-        $_SESSION['NextOrPrevious'] = true;
+        $_SESSION['pagination']['NextOrPrevious'] = true;
     }
     elseif (isset($_POST['previous']))
     {
@@ -28,10 +28,10 @@
         }
         else
         {
-            $MyPage->setFirstLine($_SESSION['firstLine'] - $_SESSION['ligneParPage']);
+            $MyPage->setFirstLine($_SESSION['pagination']['firstLine'] - $_SESSION['pagination']['productPerPage']);
             $MyPage->setLaPage($MyPage->getLaPage() - 1);
         }
-        $_SESSION['NextOrPrevious'] = true;
+        $_SESSION['pagination']['NextOrPrevious'] = true;
     }
 
     //-----------------------------------------------------------------------------------
@@ -48,12 +48,12 @@
 
     }else{
 
-        FctNbPage ($_SESSION['ligneParPage'], $MyPage, $theTable);
+        FctNbPage ($_SESSION['pagination']['productPerPage'], $MyPage, $theTable);
 
     }
 
-    $laPage = $_SESSION['laPage'];
-    $nbOfPage = $_SESSION['nbOfPage'];
+    $laPage = $_SESSION['pagination']['thePage'];
+    $nbOfPage = $_SESSION['pagination']['nbOfPage'];
 
     //-----------------------------------------------------------------------------------
     
@@ -61,7 +61,7 @@
 
         $MyPage_->setNbDeLigneParPage($leNbDeLigneParPage);
         $MyPage_->setCountLine($theTable_);
-        $_SESSION['nbOfProduct'] = $MyPage_->getCountLine();
+        $_SESSION['pagination']['nbOfProduct'] = $MyPage_->getCountLine();
 
         $totalLigne = $MyPage_->getCountLine();
         

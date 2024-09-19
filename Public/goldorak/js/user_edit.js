@@ -78,7 +78,7 @@ function sendDataOfUserEdit(button){
 
             }else{
 
-                window.location.href = "https://www.follaco.fr/goldorak/public/index.php?page=user";
+                window.location.href = "https://www.follaco.fr/goldorak/index.php?page=user";
 
             }
             
@@ -156,7 +156,7 @@ if(button_Nav_new_user){
 
         }else{
 
-            window.location.href = "https://www.follaco.fr/goldorak/public/index.php?page=userEdit";
+            window.location.href = "https://www.follaco.fr/goldorak/index.php?page=userEdit";
 
         }
         console.log('bouton : nav_new_user')

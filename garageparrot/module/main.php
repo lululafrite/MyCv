@@ -9,8 +9,8 @@
 
         use \Firebase\JWT\JWT;
     
-        $jwt1 = JWT::jsondecode($_SESSION['jwt']);
-        $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['pseudoConnect'], $_SESSION['SECRET_KEY']));
+        $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
+        $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
     
         $page = isset($_GET['page']) ? escapeInput($_GET['page']) : 'home';
         
@@ -38,11 +38,11 @@
             resetVariablePage();
             $_SESSION['message'] = '';
 
-            require_once 'view/disconnect.php';
+            require_once '../view/disconnect.php';
 
         }elseif ($page === 'api'){
 
-            require_once 'view/car.api.php';
+            require_once 'api/car.api.php';
 
         }elseif ($page === 'error_page'){
 
@@ -85,7 +85,7 @@
             resetVariableUser();
             $_SESSION['message'] = '';
 
-            if($_SESSION['typeConnect'] === 'Administrator' || $_SESSION['typeConnect'] === 'User'){
+            if($_SESSION['dataConnect']['avatar'] === 'Administrator' || $_SESSION['dataConnect']['avatar'] === 'User'){
                 
                 include('../../garageparrot/module/searchCarAdmin.php');
                 require_once 'view/car_admin.php';
@@ -99,11 +99,13 @@
 
             }
 
-        }else if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['delay']){
+        }else if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
 
             if($jwt2->{'key'} === $jwt1->{'key'}){
 
-                if($jwt2->{'user_pseudo'} === $jwt1->{'user_pseudo'}){
+                if($jwt2->{'pseudo'} === $jwt1->{'pseudo'}){
+
+                    $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
                 
                     if ($page === 'car_edit'){
 
@@ -112,7 +114,7 @@
                         resetVariablePage();
                         $_SESSION['message'] = '';
 
-                        if($_SESSION['typeConnect'] === 'Administrator' || $_SESSION['typeConnect'] === 'User'){
+                        if($_SESSION['dataConnect']['avatar'] === 'Administrator' || $_SESSION['dataConnect']['avatar'] === 'User'){
                             
                             require_once 'view/car_edit.php';
 
@@ -127,7 +129,7 @@
                         resetVariableCar();
                         $_SESSION['message'] = '';
                         
-                        if($_SESSION['typeConnect'] === 'Administrator'){
+                        if($_SESSION['dataConnect']['avatar'] === 'Administrator'){
 
                             require_once('../../garageparrot/module/searchUser.php');
                             require_once 'view/user.php';
@@ -148,7 +150,7 @@
                         resetVariablePage();
                         $_SESSION['message'] = '';
 
-                        if($_SESSION['typeConnect'] === 'Administrator'){
+                        if($_SESSION['dataConnect']['avatar'] === 'Administrator'){
                             
                             require_once 'view/user_edit.php';
 
@@ -172,13 +174,13 @@
                 
             }
 
-        }else if($_SESSION['pseudoConnect'] != 'Guest'){
+        }else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
-            $_SESSION['typeConnect'] = 'Guest';
-            $_SESSION['pseudoConnect'] = 'Guest';
-            $_SESSION['avatarConnect'] = 'black_person.svg';
-            $_SESSION['subscriptionConnect'] = 'Vénusia';
-            $_SESSION['connexion'] = false;
+            $_SESSION['dataConnect']['type'] = 'Guest';
+            $_SESSION['dataConnect']['pseudo'] = 'Guest';
+            $_SESSION['dataConnect']['avatar'] = 'black_person.svg';
+            $_SESSION['dataConnect']['subscription'] = 'Vénusia';
+            $_SESSION['dataConnect']['connexion'] = false;
             
             timeExpired();
     
@@ -193,7 +195,7 @@
 
         }
 
-        $_SESSION['NextOrPrevious'] = false;
+        $_SESSION['pagination']['NextOrPrevious'] = false;
 
         
     ?>

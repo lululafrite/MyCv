@@ -16,7 +16,7 @@
                 </td>
 
                 <td>
-                    <input class="form-control bg-dark text-light fs-4" type="text" id="txt_comment_pseudo" name="txt_comment_pseudo" placeholder="Saisissez votre pseudonyme" readonly value="<?php echo $_SESSION['pseudoConnect']; ?>">
+                    <input class="form-control bg-dark text-light fs-4" type="text" id="txt_comment_pseudo" name="txt_comment_pseudo" placeholder="Saisissez votre pseudonyme" readonly value="<?php echo $_SESSION['dataConnect']['pseudo']; ?>">
                 </td>
 
             </tr>
@@ -64,7 +64,7 @@
             </tr>
 
                 <td class="text-center" colspan="2">
-                    <?php if($_SESSION['typeConnect'] != 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <input class="btn btn btn-primary comment-action" type="button" data-comment-id="<?php echo '0' ?>" data-action="bt_save_comment" name="bt_save_comment" style="width: 100px;" value="Envoyer">
                     <?php }else{echo "Inscrivez-vous pour laisser un commentaire";}?>
                 </td>

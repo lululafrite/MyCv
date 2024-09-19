@@ -13,11 +13,11 @@
 			<h2 class="px-0 py-3 m-0 w-100">
 
 				<input
-					class="text-center <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'text-light bg-transparent';} ?> "
+					class="text-center <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'text-light bg-transparent';} ?> "
 					type="text"
 					id="txt_titre1"
 					name="txt_home_titre1"
-					<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';}?>
+					<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';}?>
 					value="<?php echo escapeInput($Home[0]['titre1']); ?>"
 				>
 
@@ -36,11 +36,11 @@
 				<p>
 
 					<textarea
-						class="text-left <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>"
+						class="text-left <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>"
 						name="txt_intro_chapter1"
 						id="txt_intro_chapter1"
 						rows="4"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['intro_chapter1']); ?></textarea>
 
@@ -51,11 +51,11 @@
 				<p>
 
 					<textarea
-						class="text-left <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>" 
+						class="text-left <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>" 
 						name="txt_intro_chapter2"
 						id="txt_intro_chapter2"
 						rows="4"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['intro_chapter2']); ?></textarea>
 
@@ -68,7 +68,7 @@
 	</div>
 	
 	<?php
-	if($_SESSION['typeConnect'] === 'Administrator'){
+	if($_SESSION['dataConnect']['type'] === 'Administrator'){
 	?>
 		<div class="container text-center">
 
@@ -91,12 +91,12 @@
 			<h2 class="px-0 py-3 m-0 w-100">
 
 				<input
-					class="text-center <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'text-light bg-transparent';} ?>" 
+					class="text-center <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'text-light bg-transparent';} ?>" 
 					type="text"
 					id="txt_home_titre2"
 					name="txt_home_titre2"
 					value="<?php echo escapeInput($Home[0]['titre2']); ?>"
-					<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+					<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 				>
 
 			</h2>
@@ -113,7 +113,7 @@
 				
 				<div class="col-12 col-lg-8 d-flex flex-column justify-content-center bg-light m-0 pe-0 pe-lg-5">
 
-					<h2 class="text-center <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>">
+					<h2 class="text-center <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>">
 
 						<input
 							class="text-center fw-bold"
@@ -121,17 +121,17 @@
 							name="txt_article1_titre"
 							type="text"
 							value="<?php echo escapeInput($Home[0]['article1_titre']); ?>"
-							<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						>
 
 					</h2>
 
 					<textarea
-						class="text-left m-0 pe-0 pe-lg-5 <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>" 
+						class="text-left m-0 pe-0 pe-lg-5 <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>" 
 						name="txt_article1_chapter1"
 						id="txt_article1_chapter1"
 						rows="6"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['article1_chapter1']); ?></textarea>
 
@@ -165,25 +165,25 @@
 
 				<div class="col-12 col-lg-8 d-flex flex-column justify-content-center bg-light m-0 ps-0 ps-lg-5">
 
-					<h2 class="text-center <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>">
+					<h2 class="text-center <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>">
 
 						<input
 							class="text-center fw-bold"
 							id="txt_article1_titre2"
 							name="txt_article1_titre2"
 							type="text"
-							<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 							value="<?php echo escapeInput($Home[0]['article1_titre2']); ?>"
 						>
 
 					</h2>
 
 					<textarea
-						class="text-left m-0 pe-0 pb-3 pb-lg-0 pe-lg-5 <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>"
+						class="text-left m-0 pe-0 pb-3 pb-lg-0 pe-lg-5 <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>"
 						name="txt_article1_chapter2"
 						id="txt_article1_chapter2"
 						rows="6"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['article1_chapter2']); ?></textarea>
 
@@ -205,25 +205,25 @@
 
 				<div class="col-12 col-lg-8 d-flex flex-column justify-content-center bg-light m-0 pe-0 pe-lg-5">
 
-					<h2 class="text-center pt-3 pt-lg-0 <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>">
+					<h2 class="text-center pt-3 pt-lg-0 <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>">
 
 						<input
 							class="text-center fw-bold"
 							id="txt_article2_titre"
 							name="txt_article2_titre"
 							type="text"
-							<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 							value="<?php echo escapeInput($Home[0]['article2_titre']); ?>"
 						>
 
 					</h2>
 
 					<textarea
-						class="text-left m-0 pe-0 pe-lg-5 <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>" 
+						class="text-left m-0 pe-0 pe-lg-5 <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>" 
 						name="txt_article2_chapter1"
 						id="txt_article2_chapter1"
 						rows="6"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['article2_chapter1']); ?></textarea>
 
@@ -257,25 +257,25 @@
 
 				<div class="col-12 col-lg-8 d-flex flex-column justify-content-center bg-light m-0 ps-0 ps-lg-5">
 					
-					<h2 class="text-center <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>">
+					<h2 class="text-center <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>">
 
 						<input
 							class="text-center fw-bold"
 							id="txt_article2_titre2"
 							name="txt_article2_titre2"
 							type="text"
-							<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 							value="<?php echo escapeInput($Home[0]['article2_titre2']); ?>"
 						>
 
 					</h2>
 
 					<textarea
-						class="text-left m-0 pe-0 pb-3 pb-lg-0 pe-lg-5 <?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'bg-transparent';} ?>"
+						class="text-left m-0 pe-0 pb-3 pb-lg-0 pe-lg-5 <?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'bg-transparent';} ?>"
 						name="txt_article2_chapter2"
 						id="txt_article2_chapter2"
 						rows="6"
-						<?php if($_SESSION['typeConnect'] != 'Administrator'){echo 'readonly disabled';} ?>
+						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
 					><?php echo escapeInput($Home[0]['article2_chapter2']); ?></textarea>
 
@@ -288,7 +288,7 @@
 	</div>
 
 	<?php
-	if($_SESSION['typeConnect'] === 'Administrator'){
+	if($_SESSION['dataConnect']['type'] === 'Administrator'){
 	?>
 
 		<div class="container text-center">

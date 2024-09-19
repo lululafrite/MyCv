@@ -110,14 +110,24 @@
             if(isset($_POST['txt_userEdit_id']) && !empty($_POST['txt_userEdit_id'])){
                 
                 $MyUser->setId($_POST['txt_userEdit_id']);
+                $Users = $MyUser->getCurrentUser($MyUser->getId());
 
             }else if($Users[0]['id_user'] != ''){
 
                 $MyUser->setId($Users[0]['id_user']);
+                $Users = $MyUser->getCurrentUser($MyUser->getId());
 
+            }else{
+
+                $Users[0]['id_user'] = "";
+                $Users[0]['name'] = "";
+                $Users[0]['surname'] = "";
+                $Users[0]['pseudo'] = "";
+                $Users[0]['email'] = "";
+                $Users[0]['phone'] = "";
+                $Users[0]['type'] = "Member";
+                $Users[0]['password'] = "";
             }
-            // Requete SELECT permettant de récupérer les données de l'utilisateur en fonction de l'id traité ci-dessus
-            $Users = $MyUser->getUser($MyUser->getId());
         }
         
         //Traiment de la BD pour récupérer les données destinées à l'input liste type

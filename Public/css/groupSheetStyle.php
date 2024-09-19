@@ -19,8 +19,8 @@
     <?php
         if(preg_match($goldorak, $current_url)){
     ?>
-            <link rel='stylesheet' type='text/css' href='../css/goldorak_style.css'>
-            <link rel='stylesheet' type='text/css' href='../css/goldorak_commander.css'>
+            <link rel='stylesheet' type='text/css' href='../../css/goldorak_style.css'>
+            <link rel='stylesheet' type='text/css' href='../../css/goldorak_commander.css'>
     <?php
         }else if(preg_match($garageParrot, $current_url)){
     ?>
