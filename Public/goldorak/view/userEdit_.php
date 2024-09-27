@@ -2,7 +2,7 @@
 
 <section class="container">
     
-    <div id="sessionValue" data-local="<?php echo isset($_SESSION['local']) ? $_SESSION['local'] : ''; ?>"></div>
+    <div id="sessionValue" data-local="<?php echo isset($_SESSION['other']['local']) ? $_SESSION['other']['local'] : ''; ?>"></div>
 
     <form method="post" id="formUserEdit" enctype="multipart/form-data">
                 
@@ -11,7 +11,7 @@
             <!-- input hidden csrf -->
             <tr style="display: none;">
                 <td colspan="2">
-                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
                 </td>
             </tr>
 
@@ -70,7 +70,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 bg-dark text-light" id="txt_userEdit_id" name="txt_userEdit_id" type="text" readonly style="font-size: 1.6rem;"
                         value=
                         "<?php
-                            echo escapeInput($users['id_user']);
+                            echo Utilities::escapeInput($users['id_user']);
                         ?>"
                     >
                 </td>
@@ -100,7 +100,7 @@
                     <input list="datalist_userEdit_subscription" name="list_userEdit_subscription" id="list_userEdit_subscription" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez une formule" oninput="validateInput('list_userEdit_subscription','datalist_userEdit_subscription','labelMessageSubscription','Selectionnez votre formule dans la liste de choix.')"
                         value=
                         "<?php
-                            echo escapeInput($users['subscription']);
+                            echo Utilities::escapeInput($users['subscription']);
                         ?>"
                     >
                     <datalist id="datalist_userEdit_subscription">
@@ -136,7 +136,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_name" name="txt_userEdit_name" type="text" placeholder="Saisissez votre NOM" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_name','','labelMessageName','Saisissez votre Nom d\'une longueur de 50 caractères maximum.')"
                         value=
                         "<?php
-                            echo escapeInput($users['name']);
+                            echo Utilities::escapeInput($users['name']);
                         ?>"
                     >
                 </td>
@@ -166,7 +166,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_surname" name="txt_userEdit_surname" type="text" placeholder="Saisissez votre Prénom" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_surname','','labelMessageSurname','Saisissez votre Prénom d\'une longueur de 50 caractères maximum.')"
                         value=
                         "<?php
-                            echo escapeInput($users['surname']);
+                            echo Utilities::escapeInput($users['surname']);
                         ?>"
                     >
                 </td>
@@ -196,7 +196,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_pseudo" name="txt_userEdit_pseudo" type="text" placeholder="Saisissez votre Pseudo" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_pseudo')"
                     value=
                         "<?php
-                            echo escapeInput($users['pseudo']);
+                            echo Utilities::escapeInput($users['pseudo']);
                         ?>"
                     >
                 </td>
@@ -225,7 +225,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_email" name="txt_userEdit_email" type="email" placeholder="Saisissez votre courriel" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_email','','labelMessageEmail','Saisissez votre adresse de courriel d\'une longueur maximum de 255 caractères.')"
                         value=
                         "<?php
-                            echo escapeInput($users['email']);
+                            echo Utilities::escapeInput($users['email']);
                         ?>"
                     > 
                 </td>
@@ -255,7 +255,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_phone" name="txt_userEdit_phone" type="tel" placeholder="## ## ## ## ##" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_phone','','labelMessagePhone','Saisissez votre N° de téléphone.')"
                         value=
                         "<?php
-                            echo escapeInput($users['phone']);
+                            echo Utilities::escapeInput($users['phone']);
                         ?>"
                     >
                 </td>
@@ -286,7 +286,7 @@
                     <input list="datalist_userEdit_type" name="list_userEdit_type" id="list_userEdit_type" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez un type" oninput="validateInput('list_userEdit_type','datalist_userEdit_type','labelMessageType','Selectionnez le type d\'utilisateur dans la liste de choix.')"
                         value=
                         "<?php
-                            echo escapeInput($users['type']);
+                            echo Utilities::escapeInput($users['type']);
                         ?>"
                     >
                     <datalist id="datalist_userEdit_type">
@@ -332,7 +332,7 @@
                                         <input class="form-control-lg bg-dark text-light border border-black m-0 p-0 " id="txt_userEdit_avatar" name="txt_userEdit_avatar" type="text" placeholder="Saisissez le nom de l'avatar" readonly style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_avatar','','labelMessageavatar','Saisissez le nom de l\'avatar (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une avatar depuis votre disque local. ATTENTION!!! Dimmentions avatar au ratio de 70px sur 70px.')"
                                             value=
                                             "<?php
-                                                echo escapeInput($users['avatar']);
+                                                echo Utilities::escapeInput($users['avatar']);
                                             ?>"
                                         >
                                     </div>
@@ -380,7 +380,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_password" name="txt_userEdit_password" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_password')"
                         value=
                         "<?php
-                            echo escapeInput($users['password']);
+                            echo Utilities::escapeInput($users['password']);
                         ?>"
                     >
                 </td>
@@ -412,7 +412,7 @@
                     <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_confirm" name="txt_userEdit_confirm" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_confirm')"
                         value=
                         "<?php
-                            echo escapeInput($users['password']);
+                            echo Utilities::escapeInput($users['password']);
                         ?>"
                     >
                 </td>
@@ -483,7 +483,7 @@
 
 </section>
 
-<?php //$_SESSION['message'] =''; ?>
+<?php //$_SESSION['other']['message'] =''; ?>
 
 <script src="../../js/function.js"></script>
 <script src="../../js/fetch.js"></script>

@@ -1,8 +1,12 @@
 <?php
 
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Schedules
 	{
@@ -187,16 +191,14 @@
 
 		//-----------------------------------------------------------------------
 
-		private $theSchedules;
-		public function getSchedules($îdSchedules)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+		private $schedule;
+		public function getSchedule(int $id_schedules):array{
+			
+			$bdd = dbConnect::dbConnectGP(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $stmt = $bdd->prepare("SELECT
 										`schedules`.`id_schedules`,
 										`schedules`.`lundiMatin`,
 										`schedules`.`lundiAM`,
@@ -215,33 +217,33 @@
 
 									FROM `schedules`
 									
-									WHERE `schedules`.`id_schedules`=$îdSchedules
+									WHERE `schedules`.`id_schedules`= :id_schedules
 								");
 
-				/*while ($this->theContact[] = $sql->fetch());*/
-				$this->theSchedules[] = $sql->fetch();
-				return $this->theSchedules;
+				$stmt->bindParam(':id_schedules', $id_schedules, PDO::PARAM_INT);
+				$stmt->execute();
+
+				$this->schedule = $stmt->fetch(PDO::FETCH_ASSOC);
+				return $this->schedule;
 			}
 			catch (PDOException $e)
 			{
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $brandList;
-		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
+		private $scheduleList;
+		public function getScheduleList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $sql = $bdd->query("SELECT
 										`schedules`.`id_schedules`,
 										`schedules`.`lundiMatin`,
 										`schedules`.`lundiAM`,
@@ -265,27 +267,25 @@
 									LIMIT $firstLine, $linePerPage
 								");
 
-				while ($this->brandList[] = $sql->fetch());
-				return $this->brandList;
+				$this->scheduleList = $sql->fetchAll(PDO::FETCH_ASSOC);
+				return $this->scheduleList;
 			}
 			catch (PDOException $e)
 			{
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function addSchedules()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$conn->exec("INSERT INTO `schedules`(`id_schedules`,`lundiMatin`,`lundiAM`,`mardiMatin`,`mardiAM`,
+				$bdd->exec("INSERT INTO `schedules`(`id_schedules`,`lundiMatin`,`lundiAM`,`mardiMatin`,`mardiAM`,
 													`mercrediMatin`,`mercrediAM`,`jeudiMatin`,`jeudiAM`,
 													`vendrediMatin`,`vendrediAM`, `samediMatin`,`samediAM`,
 													`dimancheMatin`,`dimancheAM`)
@@ -307,7 +307,7 @@
 								)
 							");
 
-				$sql = $conn->query("SELECT MAX(`id_schedules`) FROM `schedules`");
+				$sql = $bdd->query("SELECT MAX(`id_schedules`) FROM `schedules`");
 				$id_schedule = $sql->fetch();
 				$this->id_schedules = intval($id_schedule['id_schedules']);
 
@@ -319,20 +319,18 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function updateSchedules()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-				$conn->exec("UPDATE `schedules`
+				$bdd->exec("UPDATE `schedules`
 							SET `lundiMatin` =  '" . $this->lundiMatin . "',
 								`lundiAM` =  '" . $this->lundiAM . "',
 								`mardiMatin` =  '" . $this->mardiMatin . "',
@@ -358,20 +356,18 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function deleteSchedules($id)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-			    $conn->exec('DELETE FROM schedules WHERE id_schedules=' . $id);
+			    $bdd->exec('DELETE FROM schedules WHERE id_schedules=' . $id);
 				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
 			}
 			catch (PDOException $e)
@@ -379,7 +375,7 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
         //__Ajouter user?___________________________________________

@@ -10,7 +10,7 @@
         article.className = 'mb-5 p-3 border rounded-4';
 
         const form = document.createElement('form');
-        form.action = '/index.php?page=car_edit';
+        form.action = '/index.php?page=carEdit';
         form.method = 'post';
 
         const divCarImg = document.createElement('div');

@@ -1,10 +1,13 @@
-<?php require_once('../../garageparrot/controller/home.controller.php') ?>
-<?php require_once('../../common/utilies.php') ?>
+<?php
+	require_once('../../garageparrot/controller/home.controller.php');
+	require_once('../../model/utilities.class.php');
+	use MyCv\Model\Utilities;
+?>
 
 <form action="" method="post">
 
 	<!-- input hidden csrf -->
-	<input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+	<input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
 	<div class="container pt-3">
 
@@ -18,7 +21,7 @@
 					id="txt_titre1"
 					name="txt_home_titre1"
 					<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';}?>
-					value="<?php echo escapeInput($Home[0]['titre1']); ?>"
+					value="<?php echo Utilities::escapeInput($Home[0]['titre1']); ?>"
 				>
 
 			</h2>
@@ -42,7 +45,7 @@
 						rows="4"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['intro_chapter1']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['intro_chapter1']); ?></textarea>
 
 				</p>
 
@@ -57,7 +60,7 @@
 						rows="4"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['intro_chapter2']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['intro_chapter2']); ?></textarea>
 
 				</p>
 
@@ -95,7 +98,7 @@
 					type="text"
 					id="txt_home_titre2"
 					name="txt_home_titre2"
-					value="<?php echo escapeInput($Home[0]['titre2']); ?>"
+					value="<?php echo Utilities::escapeInput($Home[0]['titre2']); ?>"
 					<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 				>
 
@@ -120,7 +123,7 @@
 							id="txt_article1_titre"
 							name="txt_article1_titre"
 							type="text"
-							value="<?php echo escapeInput($Home[0]['article1_titre']); ?>"
+							value="<?php echo Utilities::escapeInput($Home[0]['article1_titre']); ?>"
 							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						>
 
@@ -133,13 +136,13 @@
 						rows="6"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['article1_chapter1']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['article1_chapter1']); ?></textarea>
 
 				</div>
 
 				<img
 					class="m-0 ps-0 pb-3 pb-lg-0 ps-lg-5"
-					src="img/photo/<?php echo escapeInput($Home[0]['article1_image1']); ?>"
+					src="img/photo/<?php echo Utilities::escapeInput($Home[0]['article1_image1']); ?>"
 					alt="photo mécanique"
 				>
 
@@ -159,7 +162,7 @@
 
 				<img
 					class="m-0 ps-0 pb-3 pb-lg-0"
-					src="img/photo/<?php echo escapeInput($Home[0]['article1_image2']); ?>"
+					src="img/photo/<?php echo Utilities::escapeInput($Home[0]['article1_image2']); ?>"
 					alt="photo mécanique"
 				>
 
@@ -173,7 +176,7 @@
 							name="txt_article1_titre2"
 							type="text"
 							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
-							value="<?php echo escapeInput($Home[0]['article1_titre2']); ?>"
+							value="<?php echo Utilities::escapeInput($Home[0]['article1_titre2']); ?>"
 						>
 
 					</h2>
@@ -185,7 +188,7 @@
 						rows="6"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['article1_chapter2']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['article1_chapter2']); ?></textarea>
 
 				</div>
 
@@ -213,7 +216,7 @@
 							name="txt_article2_titre"
 							type="text"
 							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
-							value="<?php echo escapeInput($Home[0]['article2_titre']); ?>"
+							value="<?php echo Utilities::escapeInput($Home[0]['article2_titre']); ?>"
 						>
 
 					</h2>
@@ -225,13 +228,13 @@
 						rows="6"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['article2_chapter1']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['article2_chapter1']); ?></textarea>
 
 				</div>
 
 				<img
 					class="m-0 ps-0 pb-3 pb-lg-0 ps-lg-5"
-					src="img/photo/<?php echo escapeInput($Home[0]['article2_image1']); ?>"
+					src="img/photo/<?php echo Utilities::escapeInput($Home[0]['article2_image1']); ?>"
 					alt="photo mécanique"
 				>
 
@@ -251,7 +254,7 @@
 				
 				<img
 					class="m-0 ps-0 pb-3 pb-lg-0"
-					src="img/photo/<?php echo escapeInput($Home[0]['article2_image2']); ?>"
+					src="img/photo/<?php echo Utilities::escapeInput($Home[0]['article2_image2']); ?>"
 					alt="photo mécanique"
 				>
 
@@ -265,7 +268,7 @@
 							name="txt_article2_titre2"
 							type="text"
 							<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
-							value="<?php echo escapeInput($Home[0]['article2_titre2']); ?>"
+							value="<?php echo Utilities::escapeInput($Home[0]['article2_titre2']); ?>"
 						>
 
 					</h2>
@@ -277,7 +280,7 @@
 						rows="6"
 						<?php if($_SESSION['dataConnect']['type'] != 'Administrator'){echo 'readonly disabled';} ?>
 						style="text-align: justify;"
-					><?php echo escapeInput($Home[0]['article2_chapter2']); ?></textarea>
+					><?php echo Utilities::escapeInput($Home[0]['article2_chapter2']); ?></textarea>
 
 				</div>
 

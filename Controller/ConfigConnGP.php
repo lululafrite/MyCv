@@ -2,7 +2,7 @@
 
 	function connectDB(): PDO{
 
-		$local = $_SESSION['local'];
+		$local = $_SESSION['other']['local'];
 		settype($local, "boolean");
 		
 		$current_url = $_SERVER['REQUEST_URI'];
@@ -67,12 +67,12 @@
 
 		}
 
-		$connect = null;
+		$bddect = null;
 
 		try
 		{
-			$connect = new PDO("mysql:host=$DB_HOST; dbname=$DB_NAME;charset=utf8mb4;port=$BD_PORT", $DB_USER, $DB_PASS);
-			return $connect;
+			$bddect = new PDO("mysql:host=$DB_HOST; dbname=$DB_NAME;charset=utf8mb4;port=$BD_PORT", $DB_USER, $DB_PASS);
+			return $bddect;
 		}
 		catch (PDOException $e)
 		{

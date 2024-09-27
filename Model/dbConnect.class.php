@@ -1,75 +1,71 @@
 <?php
 
 	namespace MyCv\Model;
-	
+
+	$checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']); 
+    if($checkUrl){
+		require_once('../../model/utilities.class.php');
+	}else{
+		require_once('../model/utilities.class.php');
+	}
+
+	use MyCv\Model\Utilities;
 	use \PDO;
 	use \PDOException;
 
 	class dbConnect
 	{
-		public function connectionDb(){
-
-			$local = isset($_SESSION['local']) ? $_SESSION['local'] : false;
-			settype($local, "boolean");
+		private static function connectDb(): PDO{
 			
-			$current_url = $_SERVER['REQUEST_URI'];
-			settype($current_url, "string");
-
-			$goldorak = "/goldorak/";
-			settype($goldorak, "string");
-
-			$garageParrot = "/garageparrot/";
-			settype($garageParrot, "string");
-
-			if(preg_match($goldorak, $current_url)){
+			$local = Utilities::verifIfLocal();
+			if($local){
+				$DB_HOST = 'localhost';
+				$DB_USER = 'root';
+				$DB_PASS = '';
+				$BD_PORT = '3307';
 				
-				if($local){
-					$DB_HOST = 'localhost';
-					$DB_NAME = 'goldorak';
-					$DB_USER = 'root';
-					$DB_PASS = '';
-					$BD_PORT = '3307';
-				}
-				else{
-					$DB_HOST = 'db5015520267.hosting-data.io';
-					$DB_NAME = 'dbs12677679';
-					$DB_USER = 'dbu4075604';
-					$DB_PASS = 'MarLud7772!';
-					$BD_PORT = '3306';
-				}
-
-			}else if(preg_match($garageParrot, $current_url)){
-				
-				if($local){
-					$DB_HOST = 'localhost';
-					$DB_NAME = 'garage_parrot';
-					$DB_USER = 'root';
-					$DB_PASS = '';
-					$BD_PORT = '3307';
-				}
-				else{
-					$DB_HOST = 'db5015199153.hosting-data.io';
-					$DB_NAME = 'dbs12564096';
-					$DB_USER = 'dbu1146568';
-					$DB_PASS = 'MarLud7772!';
-					$BD_PORT = '3306';
-				}
-
 			}else{
+				$DB_PASS = 'MarLud7772!';
+				$BD_PORT = '3306';
+			}
+
+			$checkUser = Utilities::checkValueInUrl('user');
+			$checkConnexion = Utilities::checkValueInUrl('connexion');
+			$checkUrlGoldorak = Utilities::checkValueInUrl('goldorak');
+			$checkUrlGarageParrot = Utilities::checkValueInUrl('garageparrot');
+			$checkUrl = !$checkUrlGoldorak && !$checkUrlGarageParrot;
+			
+			if($checkUser || $checkUrl || $checkConnexion){
 
 				if($local){
-					$DB_HOST = 'localhost';
 					$DB_NAME = 'mycv';
-					$DB_USER = 'root';
-					$DB_PASS = '';
-					$BD_PORT = '3307';
 				}
 				else{
 					$DB_HOST = 'db5016299008.hosting-data.io';
 					$DB_NAME = 'dbs13260004';
 					$DB_USER = 'dbu510923';
-					$DB_PASS = 'MarLud7772!';
-					$BD_PORT = '3306';
+				}
+
+			}else if($checkUrlGoldorak){
+				
+				if($local){
+					$DB_NAME = 'goldorak';
+				}
+				else{
+					$DB_HOST = 'db5015520267.hosting-data.io';
+					$DB_NAME = 'dbs12677679';
+					$DB_USER = 'dbu4075604';
+				}
+
+			}else if($checkUrlGarageParrot){
+				
+				if($local){
+					$DB_NAME = 'garage_parrot';
+				}
+				else{
+					$DB_HOST = 'db5015199153.hosting-data.io';
+					$DB_NAME = 'dbs12564096';
+					$DB_USER = 'dbu1146568';
 				}
 
 			}
@@ -83,10 +79,69 @@
 				return $bdd;
 
 			}catch (PDOException $e){
-				echo "Erreur de connexion à la base de données :" . $e->getMessage() . "<br/>";
-				die();
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage();
+				return false;
 			}
 
-		}		
+		}
+
+		public static function dbConnect(): PDO{
+
+			$bdd = dbConnect::connectDb();
+			date_default_timezone_set($_SESSION['other']['timeZone']);
+
+			if($bdd){
+				return $bdd;
+			}else{
+				return false;
+			}
+		}
+
+		private static function connectDbGP():PDO{
+			
+			$local = Utilities::verifIfLocal();
+				
+				if($local){
+					$DB_HOST = 'localhost';
+					$DB_USER = 'root';
+					$DB_PASS = '';
+					$BD_PORT = '3307';
+					$DB_NAME = 'garage_parrot';
+				}
+				else{
+					$DB_HOST = 'db5015199153.hosting-data.io';
+					$DB_NAME = 'dbs12564096';
+					$DB_USER = 'dbu1146568';
+					$DB_PASS = 'MarLud7772!';
+					$BD_PORT = '3306';
+				}
+
+			$bdd = null;
+
+			try{
+				$bdd = new PDO("mysql:host=$DB_HOST; dbname=$DB_NAME;charset=utf8mb4;port=$BD_PORT", $DB_USER, $DB_PASS);
+				$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$bdd->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+				return $bdd;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage();
+				return false;
+			}
+		}
+
+		public static function dbConnectGP(): PDO{
+
+			$bdd = dbConnect::connectDbGP();
+			date_default_timezone_set($_SESSION['other']['timeZone']);
+
+			if($bdd){
+				return $bdd;
+			}else{
+				return false;
+			}
+		}
 	}
 ?>

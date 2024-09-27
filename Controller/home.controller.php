@@ -1,23 +1,35 @@
 <?php
+
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/home.class.php');
+        require_once('../../model/article.class.php');
+        require_once('../../model/utilities.class.php');
+    }else{
+        require_once('../model/home.class.php');
+        require_once('../model/article.class.php');
+        require_once('../model/utilities.class.php');
+    }
     
-    require_once('../common/utilies.php');
-    require_once('../model/home.class.php');
-    require_once('../model/homeArticle.class.php');
 
     use MyCv\Model\Home;
     use MyCv\Model\HomeArticle;
+    use MyCv\Model\Utilities;
 
     $homes = new Home();
     $homeArticles = new HomeArticle();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         
+        resetDataConnectVarSession();
+        resetOtherVarSession();
+        
         $home_article_id = isset($_POST['home_article_id']) ? filterInput('home_article_id') : '';
         $btn_home_article_img = "btn_home_article_img_" . $home_article_id;
         $btn_delete_home_article = "btn_delete_home_article_" . $home_article_id;
         $btn_save_home_article = "btn_save_home_article_" . $home_article_id;
 
-        if(verifCsrf('csrf')){
+        if(Utilities::verifCsrf('csrf')){
             
             if(isset($_POST['btn_save_header'])){
                 
@@ -28,18 +40,18 @@
             }else if(isset($_POST['btn_new_home_article'])){
                 
                 varHomeArticle($homeArticles, 'new');
-                $homeArticles->newHomeArticle();
+                $homeArticles->newArticle();
                 unset($_POST['btn_new_home_article']);
 
             }else if(isset($_POST[$btn_save_home_article])){
 
                 varHomeArticle($homeArticles, $home_article_id);                
-                $homeArticles->updateHomeArticle($home_article_id);
+                $homeArticles->updateArticle($home_article_id);
                 unset($_POST['btn_save_home_article']);
 
             }else if(isset($_POST[$btn_delete_home_article])){
                 
-                $homeArticles->deleteHomeArticle($home_article_id);
+                $homeArticles->deleteArticle($home_article_id);
                 unset($_POST[$btn_delete_home_article]);
                 unset($_POST['btn_delete_home_article']);
 
@@ -51,7 +63,7 @@
 
                     $arrayHomeArticle['homeArticleImg'] = $_SESSION['newImgChapter1'];
                     $homeArticles->setHomeArticleImg($_SESSION['newImgChapter1']);
-                    $homeArticles->updateHomeArticle($home_article_id);
+                    $homeArticles->updateArticle($home_article_id);
 
                 }else{
 
@@ -73,13 +85,13 @@
     $monParcours = "/mycv/";
     settype($monParcours, "string");
 
-    $home = $homes->get(1,'home_id','DESC','0','2');
+    $home = $homes->getHome(1);
 
     if(preg_match($monParcours, $current_url)){
-        $home[0]['home_title_page'] = "Mon parcours";
+        $home['home_title_page'] = "Mon parcours";
     }
     
-    $homeArticle = $homeArticles->get(1,'home_article_sort','ASC','0','20');
+    $homeArticle = $homeArticles->getArticleList(1, 'home_article_sort', 'ASC', 0, 20);
 
 //----------------------------------------------------------------------------------------------------------------------
 // FUNCTIONS

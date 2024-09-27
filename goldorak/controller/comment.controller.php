@@ -1,10 +1,17 @@
 <?php
+    
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/utilities.class.php');
+        require_once('../../goldorak/model/comment.class.php');
+    }else{
+        require_once('../model/utilities.class.php');
+        require_once('../goldorak/model/comment.class.php');
+    }
 
     use \Goldorak\Model\Comment;
+    use MyCv\Model\Utilities;
     use \Firebase\JWT\JWT;
-
-    require_once('../../common/utilies.php');
-    require_once('../../goldorak/model/comment.class.php');
     
     $bt_save_comment = isset($_POST['bt_save_comment']) ? true : false;
     unset($_POST['bt_save_comment']);
@@ -22,14 +29,14 @@
         $comments = new Comment();
     }
 
-    $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
-    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
+    $jwt1 = JWT::jsondecode($_SESSION['token']['jwt']['tokenJwt']);
+    $jwt2 = JWT::jsondecode(Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']));
 
-    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
+    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['token']['jwt']['delay']){
 
         if($jwt1->{'pseudo'} === $jwt2->{'pseudo'} && $jwt1->{'key'} === $jwt2->{'key'}){
 
-            if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+            if(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
                 
                 $idComment = filterInput('txt_comment_id');
 
@@ -48,7 +55,7 @@
                         $comments->setRating($rating_);
                         $comments->setComment($comment_);
 
-                        $comments->addComment();
+                        $comments->insertComment();
 
                     }else{
 
@@ -81,22 +88,21 @@
         $_SESSION['dataConnect']['avatar'] = 'avatar_membre_white.webp';
         $_SESSION['dataConnect']['subscription'] = 'Vénusia';
         $_SESSION['dataConnect']['connexion'] = false;
-        
-        timeExpired();
 
+        Utilities::redirectToPage('timeExpired');
     }
 
     if($_SESSION['dataConnect']['type'] === 'Administrator'){
 
-        $Comment = $comments->get(1,'date_','DESC','0','50');
+        $Comment = $comments->getCommentList(1,'date_','DESC', 0, 50);
 
     }else if($_SESSION['dataConnect']['type'] === 'User'){
 
-        $Comment = $comments->get('`publication` = 0','date_','DESC','0','50');
+        $Comment = $comments->getCommentList('`publication` = 0','date_','DESC',0,50);
 
     }else{
 
-        $Comment = $comments->get('`publication` = 2','date_','DESC','0','50');
+        $Comment = $comments->getCommentList("`comment`.`publication` = 2",'date_','DESC',0,50);
 
     }
 

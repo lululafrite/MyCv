@@ -1,13 +1,21 @@
 <?php
+    
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/utilities.class.php');
+        require_once('../../garageparrot/model/home.class.php');
+    }else{
+        require_once('../model/utilities.class.php');
+        require_once('../garageparrot/model/home.class.php');
+    }
+    
     use GarageParrot\Model\Home;
-
-    require_once('../../common/utilies.php');
-    require_once('../../garageparrot/model/home.class.php');
+    use MyCv\Model\Utilities;
 
     $homes = new Home();
 
     // Vérification du token CSRF
-    if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ //(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if(isset($_POST['bt_home'])){
             

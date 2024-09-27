@@ -1,8 +1,12 @@
 <?php
 
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Model
 	{
@@ -34,13 +38,11 @@
 		private $theModel;
 		public function getmodel($idModel)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $sql = $bdd->query("SELECT
 										`model`.`id_model`,
 										`model`.`name`
 
@@ -58,21 +60,19 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $modelList;
-		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
+		public function getModelList($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->prepare("SELECT
+			    $sql = $bdd->prepare("SELECT
 										`model`.`id_model`,
 										`model`.`name`,
 										`model`.`id_brand`
@@ -99,22 +99,20 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function addModel()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$conn->exec("INSERT INTO `model`(`name`)
+				$bdd->exec("INSERT INTO `model`(`name`)
 							VALUES('" . $this->name . "')");
 
-				$sql = $conn->query("SELECT MAX(`id_model`) FROM `model`");
+				$sql = $bdd->query("SELECT MAX(`id_model`) FROM `model`");
 				$id_model = $sql->fetch();
 				$this->id_model = intval($id_model['id_model']);
 
@@ -126,20 +124,18 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function updatemodel($idModel)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-				$conn->exec("UPDATE `model` SET `name` = '" . $this->name . "'
+				$bdd->exec("UPDATE `model` SET `name` = '" . $this->name . "'
 							WHERE `id_model` = " . intval($idModel) . "
 							");
 				
@@ -150,20 +146,18 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function deleteModel($id)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-			    $conn->exec('DELETE FROM model WHERE id_model=' . $id);
+			    $bdd->exec('DELETE FROM model WHERE id_model=' . $id);
 				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
 			}
 			catch (PDOException $e)
@@ -171,22 +165,22 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
         //__Ajouter user?___________________________________________
         
         public function getAddmodel()
         {
-            if(is_null($_SESSION['addModel']))
+            if(is_null($_SESSION['car']['addModel']))
             {
-                $_SESSION['addModel']=false;
+                $_SESSION['car']['addModel']=false;
             }
-            return $_SESSION['addModel'];
+            return $_SESSION['car']['addModel'];
         }
         public function setAddmodel($new)
         {
-            $_SESSION['addModel']=$new;
+            $_SESSION['car']['addModel']=$new;
         }
 
 	}

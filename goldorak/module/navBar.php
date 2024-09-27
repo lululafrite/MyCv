@@ -1,7 +1,3 @@
-<?php 
-    require_once '../../common/utilies.php';
-?>
-
 <nav class="navbar navbar-expand-lg mx-auto mt-auto mb-3 ">
 
     <div class="container-fluid">
@@ -58,7 +54,7 @@
                 </li>
             <?php } ?>
             
-            <?php if($_SESSION['dataConnect']['subscription'] != 'Vénusia' && $_SESSION['dataConnect']['type'] != 'User'){ ?>
+            <?php if($_SESSION['dataConnect']['subscription'] != 'Vénusia' && $_SESSION['dataConnect']['type'] != 'User' && $_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                 <li class="nav-item dropdown d-flex justify-content-center align-items-center">
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="p-0 px-2 mb-1" src="img/icon/joystick.svg" alt="icone joystick du menu jeux">  

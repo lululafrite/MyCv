@@ -1,8 +1,12 @@
 <?php
 
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Comment
 	{
@@ -70,13 +74,11 @@
 		private $theComment;
 		public function getComments($îdComment)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $sql = $bdd->query("SELECT
 										`comment`.`id_comment`,
 										`comment`.`date_`,
 										`comment`.`pseudo`,
@@ -98,21 +100,19 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $CommentList;
-		public function get($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
+		public function getCommentList($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-				$stmt = $conn->prepare("SELECT
+				$stmt = $bdd->prepare("SELECT
 											`comment`.`id_comment`,
 											`comment`.`date_`,
 											`comment`.`pseudo`,
@@ -140,20 +140,18 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 		
 		public function addComment()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
 				// Requête préparée
-				$sql = $conn->prepare("SELECT `comment`.`id_comment`
+				$sql = $bdd->prepare("SELECT `comment`.`id_comment`
 										FROM  `comment`
 										WHERE `comment`.`date_` = :date_
 										AND `comment`.`pseudo` = :pseudo
@@ -174,7 +172,7 @@
 
 				if (!$result) {
 
-					$sql = $conn->prepare("INSERT INTO `comment` (`date_`, `pseudo`, `rating`, `comment`)
+					$sql = $bdd->prepare("INSERT INTO `comment` (`date_`, `pseudo`, `rating`, `comment`)
 											VALUES (:date_, :pseudo, :rating, :comment)");
 											
 					// Liaison des valeurs
@@ -186,8 +184,8 @@
 					// Exécution de la requête
 					$sql->execute();
 					
-					$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					$sql = $conn->query("SELECT MAX(`id_comment`) AS idMax FROM `comment`");
+					$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					$sql = $bdd->query("SELECT MAX(`id_comment`) AS idMax FROM `comment`");
 					$result = $sql->fetch(PDO::FETCH_ASSOC);
 					$this->id = $result['idMax'];
 
@@ -200,21 +198,19 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function updateComment($id)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
 				// Requête préparée
-				$sql = $conn->prepare("UPDATE `comment`
+				$sql = $bdd->prepare("UPDATE `comment`
 											SET `date_` = :date_,
 												`pseudo` = :pseudo,
 												`rating` = :rating,
@@ -240,20 +236,18 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 		
 		public function deleteComment($id)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try {
 				// Requête préparée pour la sélection
-				$sql = $conn->prepare("SELECT `comment`.`id_comment`
+				$sql = $bdd->prepare("SELECT `comment`.`id_comment`
 										FROM  `comment`
 										WHERE `comment`.`id_comment` = :id");
 
@@ -269,7 +263,7 @@
 				// Vérification si l'ID existe
 				if ($result) {
 					// Requête préparée pour la suppression
-					$sql = $conn->prepare('DELETE FROM comment WHERE id_comment = :id_comment');
+					$sql = $bdd->prepare('DELETE FROM comment WHERE id_comment = :id_comment');
 
 					// Liaison de la valeur
 					$sql->bindParam(':id_comment', $id);
@@ -288,7 +282,7 @@
 
 			}
 
-			$conn = null;
+			$bdd = null;
 		}
 
         //__Ajouter user?___________________________________________

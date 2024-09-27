@@ -1,5 +1,7 @@
 <?php
-    include('../../garageparrot/controller/comment.controller.php');
+    require_once('../../garageparrot/controller/comment.controller.php');
+    require_once('../../model/utilities.class.php');
+    use MyCv\Model\Utilities;
 ?>
 
 <div class="col-12 bg-dark d-flex justify-content-center text-light mx-auto mb-3 rounded-3">
@@ -29,7 +31,7 @@
                 <form action="" method="post">
                     
                     <!-- input hidden csrf -->
-                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
                     <tbody>
 
@@ -155,7 +157,7 @@
                                 <form action="" method="post">
                                     
                                 <!-- input hidden csrf -->
-                                <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+                                <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
                                     <div class="card-header fs-4">
 
@@ -168,7 +170,7 @@
                                                     id="txt_comment_id"
                                                     name="txt_comment_id"
                                                     readonly
-                                                    value="<?php echo escapeInput($Comment[$i]['id_comment']); ?>"
+                                                    value="<?php echo Utilities::escapeInput($Comment[$i]['id_comment']); ?>"
                                                 >
 
                                             </div>
@@ -176,21 +178,21 @@
                                             <input
                                                 type="text"
                                                 readonly
-                                                value="<?php echo escapeInput($Comment[$i]['pseudo']); ?>"
+                                                value="<?php echo Utilities::escapeInput($Comment[$i]['pseudo']); ?>"
                                             >
 
                                             <input
                                                 type="text"
                                                 style="text-align: center;"
                                                 readonly
-                                                value="Date : <?php echo escapeInput($Comment[$i]['date_']); ?>"
+                                                value="Date : <?php echo Utilities::escapeInput($Comment[$i]['date_']); ?>"
                                             >
 
                                             <input
                                                 type="text"
                                                 style="text-align: right;"
                                                 readonly
-                                                value=" note : <?php echo escapeInput($Comment[$i]['rating']); ?>/5"
+                                                value=" note : <?php echo Utilities::escapeInput($Comment[$i]['rating']); ?>/5"
                                             >
                                         
                                         </div>
@@ -204,7 +206,7 @@
                                             <textarea
                                                 readonly
                                                 rows="2"
-                                            ><?php echo escapeInput($Comment[$i]['comment']); ?></textarea>
+                                            ><?php echo Utilities::escapeInput($Comment[$i]['comment']); ?></textarea>
                                         
                                         </blockquote>
 

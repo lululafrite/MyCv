@@ -6,7 +6,7 @@
 <form action="" method="post">
 
     <!-- input hidden csrf -->
-    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
     <div class="d-sm-flex justify-content-sm-between p-3 mx-2 mb-2 mt-2 mx-md-5 bgDark border border-secondary border-3 rounded-4">
 
@@ -16,16 +16,16 @@
             <select class="form-select fw-bolder rounded-3" id="select_car_brand" name="select_car_brand" style="font-size: 1.6rem;">
             <?php
                 if(isset($_POST['select_car_brand'])){
-                    $_SESSION['criteriaBrand'] = $_POST['select_car_brand'];
+                    $_SESSION['car']['criteriaBrand'] = $_POST['select_car_brand'];
                 }
             ?>
-                <option value='<?php echo $_SESSION['criteriaBrand']; ?>'><?php echo $_SESSION['criteriaBrand']; ?></option>";
+                <option value='<?php echo $_SESSION['car']['criteriaBrand']; ?>'><?php echo $_SESSION['car']['criteriaBrand']; ?></option>";
                 <option value='Selectionnez une marque'>Selectionnez une marque</option>
             <?php
 
                 require_once('../../garageparrot/model/brand.class.php');
                 $Brands = new Brand();
-                $MyBrand = $Brands->get(1,'name', 'ASC', 0, 50);
+                $MyBrand = $Brands->getBrandList(1,'name', 'ASC', 0, 50);
                 unset($Brands);
                 for($i=0;$i != count($MyBrand)-1;$i++) { ?>
                     <option value="<?php echo $MyBrand[$i]['name']; ?>"><?php echo $MyBrand[$i]['name']; ?></option>
@@ -40,19 +40,19 @@
             <select class="form-select fw-bolder rounded-3" id="select_car_model" name="select_car_model" style="font-size: 1.6rem;">
             <?php
                 if(isset($_POST['select_car_model'])){
-                    $_SESSION['criteriaModel'] = $_POST['select_car_model'];
+                    $_SESSION['car']['criteriaModel'] = $_POST['select_car_model'];
                 }
             ?>
-                <option value='<?php echo $_SESSION['criteriaModel']; ?>'><?php echo $_SESSION['criteriaModel']; ?></option>";
+                <option value='<?php echo $_SESSION['car']['criteriaModel']; ?>'><?php echo $_SESSION['car']['criteriaModel']; ?></option>";
                 <option value='Selectionnez un modele'>Selectionnez un modele</option>";
             <?php
 
                 require_once('../../garageparrot/model/model.class.php');
                 $Models = new Model();
-                if($_SESSION['criteriaBrand'] != 'Selectionnez une marque'){
-                    $MyModel = $Models->get('`model`.`id_brand` = (SELECT `brand`.`id_brand` FROM `brand` WHERE `brand`.`name` = \'' . $_SESSION['criteriaBrand'] . '\')','name', 'ASC', 0, 50);
+                if($_SESSION['car']['criteriaBrand'] != 'Selectionnez une marque'){
+                    $MyModel = $Models->getModelList('`model`.`id_brand` = (SELECT `brand`.`id_brand` FROM `brand` WHERE `brand`.`name` = \'' . $_SESSION['car']['criteriaBrand'] . '\')','name', 'ASC', 0, 50);
                 }else{
-                    $MyModel = $Models->get(1,'name', 'ASC', 0, 50);
+                    $MyModel = $Models->getModelList(1,'name', 'ASC', 0, 50);
                 }
                 unset($Models);
                 for($i=0;$i != count($MyModel);$i++) { ?>
@@ -68,11 +68,11 @@
             <select class="form-select fw-bolder rounded-3" id="select_car_mileage" name="select_car_mileage" style="font-size: 1.6rem;">
             <?php
                 if(isset($_POST['select_car_mileage'])){
-                    $_SESSION['criteriaMileage'] = $_POST['select_car_mileage'];
+                    $_SESSION['car']['criteriaMileage'] = $_POST['select_car_mileage'];
                 }
             ?>
                 
-                <option value='<?php echo $_SESSION['criteriaMileage']; ?>'><?php echo $_SESSION['criteriaMileage']; ?></option>";
+                <option value='<?php echo $_SESSION['car']['criteriaMileage']; ?>'><?php echo $_SESSION['car']['criteriaMileage']; ?></option>";
                 
                 <option value='Selectionnez un kilometrage maxi'>Selectionnez un kilometrage maxi</option>
                 <option value="10000">10000 km</option>
@@ -97,11 +97,11 @@
             <select class="form-select fw-bolder rounded-3" id="select_car_price" name="select_car_price" style="font-size: 1.6rem;">
             <?php
                 if(isset($_POST['select_car_price'])){
-                    $_SESSION['criteriaPrice'] = $_POST['select_car_price'];
+                    $_SESSION['car']['criteriaPrice'] = $_POST['select_car_price'];
                 }
             ?>
                 
-                <option value='<?php echo $_SESSION['criteriaPrice']; ?>'><?php echo $_SESSION['criteriaPrice']; ?></option>";
+                <option value='<?php echo $_SESSION['car']['criteriaPrice']; ?>'><?php echo $_SESSION['car']['criteriaPrice']; ?></option>";
                 
                 <option value='Selectionnez un prix maxi'>Selectionnez un prix maxi</option>
                 <option value="2500">2500 €</option>

@@ -22,12 +22,12 @@ function sendDataOfUserEdit(button){
     formData.append('txt_userEdit_password', document.querySelector('input[name="txt_userEdit_password"]').value);
 
     // Envoyer les données au serveur
-    if (button ==='bt_userEdit_save' || button ==='bt_userEdit_new'){
+    if (button ==='btn_userEdit_save' || button ==='bt_userEdit_new'){
 
         sendDataToServer('index.php?page=userEdit', formData) // Function in file fetch.js
         .then(response => {
 
-            if (button ==='bt_userEdit_save'){
+            if (button ==='btn_userEdit_save'){
 
                 const messageAlerte = 'Enregistrement effectué avec succès!';
 
@@ -133,12 +133,12 @@ function initMessageSave(input){
 // Event if button save of form is clicked
 /**************************************************************************** */
 
-document.getElementById('bt_userEdit_save').addEventListener('click', function (event) {
+document.getElementById('btn_userEdit_save').addEventListener('click', function (event) {
     event.preventDefault();
     dataSaveFormUserEdit();
 });
 
-document.getElementById('bt_userEdit_save_1').addEventListener('click', function (event) {
+document.getElementById('btn_userEdit_save_1').addEventListener('click', function (event) {
     event.preventDefault();
     dataSaveFormUserEdit();
 });
@@ -239,7 +239,7 @@ function dataSaveFormUserEdit(){
 
     }else{
 
-        sendDataOfUserEdit('bt_userEdit_save');
+        sendDataOfUserEdit('btn_userEdit_save');
 
     }
 

@@ -1,10 +1,18 @@
 <?php
 
-    require_once '../common/utilies.php';
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/utilities.class.php');
 
-    $page = isset($_GET['page']) ? escapeInput($_GET['page']) : 'home';
+    }else{
+        require_once('../model/utilities.class.php');
+    }
+
+    use MyCv\Model\Utilities;
+
+    $page = isset($_GET['page']) ? Utilities::escapeInput($_GET['page']) : 'home';
     
-    $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
+    $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
     
     if ($page === 'home'){
 

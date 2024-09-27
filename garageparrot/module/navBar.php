@@ -1,5 +1,3 @@
-<?php require_once('../../common/utilies.php'); ?>
-
 <div class="d-flex justify-content-between bg-body-tertiary py-2">
 
     <div class="text-center my-auto">
@@ -48,18 +46,18 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>    
-                                    <a class="dropdown-item Nav_Span1" href="index.php?page=userBtn">
+                                    <a class="dropdown-item Nav_Span1" href="index.php?page=user">
                                         <img class="p-2 h-75" src="img/icon/search.svg" alt="icone du bouton s'identifier">
                                         Profils
                                     </a>
                                 </li>
                                 <li>
-                                    <form action="index.php?page=user_edit" method="post">
+                                    <form action="index.php?page=userEdit" method="post">
 
                                         <!-- input hidden csrf -->
-                                        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+                                        <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
-                                        <button class="dropdown-item Nav_Span1" id="nav_new_user" name="nav_new_user" type="submit">
+                                        <button class="dropdown-item Nav_Span1" id="btn_navBar_new" name="btn_navBar_new" type="submit">
                                             <img class="p-2 h-75" src="img/icon/person-plus.svg" alt="icone du bouton s'identifier">
                                             Nouveau
                                         </button>
@@ -83,7 +81,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>    
-                                    <a class="dropdown-item Nav_Span1" href="index.php?page=carBtn">
+                                    <a class="dropdown-item Nav_Span1" href="index.php?page=car">
                                         <img class="p-2 h-75" src="img/icon/car-front.svg" alt="icone du bouton s'identifier">
                                         Nos occasions
                                     </a>
@@ -93,10 +91,10 @@
                             if ($_SESSION['dataConnect']['type'] ==="Administrator" || $_SESSION['dataConnect']['type'] ==="User")
                             {
                             ?>
-                                <form action="index.php?page=car_edit" method="post">
+                                <form action="index.php?page=carEdit" method="post">
 
                                     <!-- input hidden csrf -->
-                                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+                                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
                                     <li>
                                         <button class="dropdown-item Nav_Span1" id="nav_new_car" name="nav_new_car" type="submit">

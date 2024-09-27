@@ -1,19 +1,12 @@
 <?php
 
 	namespace User\Model;
-	
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
 
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
 		require_once('../../model/dbConnect.class.php');
-
     }else{
-
 		require_once('../model/dbConnect.class.php');
-
     }
 
 	use \PDO;
@@ -23,146 +16,136 @@
 	class Type
 	{
 		private $id_type;
-		public function getId()
-		{
+		public function getId():int{
 			return $this->id_type;
 		}
-		public function setId($new)
-		{
+		public function setId(int $new):void{
 			$this->id_type = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $type;
-		public function getName()
-		{
+		public function getName():string{
 			return $this->type;
 		}
-		public function setName($new)
-		{
+		public function setName(string $new):void{
 			$this->type = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $theType;
-		public function getType($idType)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-			unset($myDbConnect);
+		public function getType(int $id_type):array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
-				$stmt = $bdd->prepare("SELECT
-										`user_type`.`id_type`,
-										`user_type`.`type`
-									FROM `user_type`
-									WHERE `user_type`.`id_type` = :idType");
-				$stmt->bindParam(':idType', $idType, PDO::PARAM_INT);
+			try{
+				$stmt = $bdd->prepare("SELECT `user_type`.`id_type`,
+											  `user_type`.`type`
+										FROM  `user_type`
+										WHERE `user_type`.`id_type` = :id_type");
+				
+				$stmt->bindParam(':id_type', $id_type, PDO::PARAM_INT);
 				$stmt->execute();
 
-				$this->theType = $stmt->fetchAll();
+				$this->theType = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				return $this->theType;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->getMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The type is found!!!";
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The type is not found!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->theType;
 		}
 
 
 		//-----------------------------------------------------------------------
 
-		private $userTypeList;
-		public function get($whereClause, $orderBy = 'type', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-			unset($myDbConnect);
-			
-			try
-			{
-				$sql = $bdd->prepare("SELECT
-										`user_type`.`id_type`,
-										`user_type`.`type`
-									FROM
-										`user_type`
-									WHERE $whereClause
-									ORDER BY $orderBy $ascOrDesc
-									LIMIT :firstLine, :linePerPage");
+		private $typeList;
+		public function getTypeList(string $whereClause, string $orderBy = 'type', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
+			$bdd = dbConnect::dbConnect(new dbConnect());
+			
+			try{
+				$sql = $bdd->prepare("SELECT `user_type`.`id_type`,
+											 `user_type`.`type`
+										FROM `user_type`
+										WHERE $whereClause
+									 ORDER BY :orderBy :ascOrDesc
+										LIMIT :firstLine, :linePerPage");
+
+				$sql->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$sql->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
 				$sql->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
 				$sql->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
 
 				$sql->execute();
 
-				$this->userTypeList = $sql->fetchAll();
+				$this->typeList = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-				return $this->userTypeList;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->getMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Type list is found!!!";
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Type list is not found!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->typeList;
 		}
 
 		//-----------------------------------------------------------------------
+		
+		private $insertType;
+		public function InsertType():int{
 
-		public function addUserType()
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-			unset($myDbConnect);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
-			try {
+			try{
 				$stmt = $bdd->prepare("INSERT INTO `user_type`(`type`) VALUES(:type)");
 				$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
 				$stmt->execute();
 
-				$this->id_type = $bdd->lastInsertId();
+				$this->insertType = $bdd->lastInsertId();
 
-				echo '<script>alert("L\'enregistrement est effectué!");</script>';
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The type is inserted!!!";
 
-			} catch (PDOException $e) {
-				echo "Erreur de la requête : " . $e->getMessage();
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The type is not inserted!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->insertType;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function updateUserType($idType)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-			unset($myDbConnect);
+		public function updateUserType($id_type):void{
 
-			try
-			{
-				$stmt = $bdd->prepare("UPDATE `user_type` SET `name` = :name WHERE `id_type` = :idType");
+			$bdd = dbConnect::dbConnect(new dbConnect());
+
+			try{
+				$stmt = $bdd->prepare("UPDATE `user_type` SET `name` = :name WHERE `id_type` = :id_type");
+				
 				$stmt->bindParam(':name', $this->type, PDO::PARAM_STR);
-				$stmt->bindParam(':idType', $idType, PDO::PARAM_INT);
+				$stmt->bindParam(':id_type', $id_type, PDO::PARAM_INT);
+				
 				$stmt->execute();
 
-				if ($stmt->rowCount() > 0) {
-					echo '<script>alert("Les modifications sont enregistrées!");</script>';
-				} else {
-					echo '<script>alert("Aucune modification effectuée. L\'enregistrement avec l\'ID spécifié n\'existe peut-être pas.");</script>';
-				}
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->getMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The type is updated!!!";
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The type is not updated!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
@@ -170,32 +153,26 @@
 
 		//-----------------------------------------------------------------------
 
-		public function deleteUserType($id)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-			unset($myDbConnect);
+		public function deleteUserType(int $id_type):void{
 
-			try
-			{
-				$stmt = $bdd->prepare('DELETE FROM user_type WHERE id_type = :id');
-				$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+			$bdd = dbConnect::dbConnect(new dbConnect());
+
+			try{
+				$stmt = $bdd->prepare('DELETE FROM user_type WHERE id_type = :id_type');
+
+				$stmt->bindParam(':id_type', $id_type, PDO::PARAM_INT);
+
 				$stmt->execute();
 
-				if ($stmt->rowCount() > 0) {
-					echo '<script>alert("Cet enregistrement est supprimé!");</script>';
-				} else {
-					echo '<script>alert("L\'enregistrement avec l\'ID spécifié n\'existe pas!");</script>';
-				}
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->getMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The type is deleted!!!";
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The type is not deleted!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
 		}
-
 	}
-	
 ?>

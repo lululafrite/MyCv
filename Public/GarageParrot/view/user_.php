@@ -1,5 +1,6 @@
 <?php
     include('../../controller/user.controller.php');
+    include('../../module/searchUser.php');
     include('../../module/select_page.php');
 ?>
 
@@ -8,7 +9,7 @@
 <?php for($i=0;$i != count($users)-1;$i++) { ?>
 
 <article class="mb-5 p-3 border rounded-4">
-    <form action="/index.php?page=user_edit" method="post">
+    <form action="/index.php?page=userEdit" method="post">
         <div class="div__user--img">
             <table class='table__user--img'>
                 <tr>
@@ -47,7 +48,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center my-2">
-            <button type="submit" class='btn btn-primary fs-3 mt-3' name='bt_user_edit'>Editer</button>
+            <button type="submit" class='btn btn-primary fs-3 mt-3' name='bt_user_Edit'>Editer</button>
         </div>
     </form>
 </article>

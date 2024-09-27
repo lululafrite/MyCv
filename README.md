@@ -31,7 +31,7 @@ POUR TRAVAILLER EN LOCAL
     - Décommentez error_reporting(E_ALL);
     - Décommentez ini_set('display_errors', 'On');
     - Décommentez xdebug_break();
-    - Passez la variable $_SESSION['local'] à true. Exemple : $_SESSION['local']=true; Cette variable agit sur le controleur 'ConfigConnGP.php' pour les paramètres de connexion (true pour local et false pour online).
+    - Passez la variable $_SESSION['other']['local'] à true. Exemple : $_SESSION['other']['local']=true; Cette variable agit sur le controleur 'ConfigConnGP.php' pour les paramètres de connexion (true pour local et false pour online).
 
 PS : il y a 3 types de profil : Le visiteur (Guest), l'employé (User) et l'administrateur (Administrator). L'utilisateur et l'administrateur doivent se connecter avec un identifiant et un mot de passe. L'utilisateur posséde des privilèges de création et de suppression que le visiteur ne posséde pas et l'administrateur a les mêmes privilèges que l'utilisateur avec en plus, la possibilité de créer des nouveaux profils pouvant-être : employé ou administrateur.
 Il existe un employé (User) par défaut dans la BD | ID : user@gmail.com | PW : User123/
@@ -44,7 +44,7 @@ POUR TRAVAILLER ONLINE
     - Commentez //error_reporting(E_ALL);
     - Commentez //ini_set('display_errors', 'On');
     - Commentez //xdebug_break();
-    - Passez la variable $_SESSION['local'] à false. Exemple : $_SESSION['local']=false; Cette variable agit sur le controleur 'ConfigConnGP.php' pour les paramètres de connexion (true pour local et false pour online).
+    - Passez la variable $_SESSION['other']['local'] à false. Exemple : $_SESSION['other']['local']=false; Cette variable agit sur le controleur 'ConfigConnGP.php' pour les paramètres de connexion (true pour local et false pour online).
 2) Utilisateur de la Base de données
     - Produire un utilisateur possédant tous les privilèges avec un nom d'utilisateur différent de root et un mot de passe sécurisé.
 3) Uploadez le projet sur le serveur online

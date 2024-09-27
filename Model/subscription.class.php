@@ -1,140 +1,154 @@
 <?php
 
 	namespace User\Model;
-	
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
 
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
 		require_once('../../model/dbConnect.class.php');
-
     }else{
-
 		require_once('../model/dbConnect.class.php');
-
     }
 
-	use \PDO;
 	use \PDOException;
 	use MyCv\Model\dbConnect;
+use PDO;
 
 	class Subscription
 	{
 		private $id_subscription;
-		public function getIdSubscription()
-		{
+		public function getIdSubscription():int{
 			return $this->id_subscription;
 		}
-		public function setIdSubscription($new)
-		{
+		public function setIdSubscription(int $new):void{
 			$this->id_subscription = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $subscription;
-		public function getSubscription()
-		{
+		public function getSubscription():string{
 			return $this->subscription;
 		}
-		public function setSubscription($new)
-		{
+		public function setSubscription(string $new):void{
 			$this->subscription = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $theSubscription;
-		public function getSubscription_($îdSubscription)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		public function getTheSubscription(int $id_subscription):array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
-			    $sql = $bdd->query("SELECT
-										`subscription`.`id_subscription`,
-										`subscription`.`subscription`
+			try{
+			    $stmt = $bdd->prepare("SELECT `subscription`.`id_subscription`,
+											  `subscription`.`subscription`
+										FROM `subscription`
+										WHERE `subscription`.`id_subscription` = :id_subscription");
 
-									FROM `subscription`
-									
-									WHERE `subscription`.`id_subscription`=$îdSubscription
-								");
+				$stmt->bindParam(':id_subscription', $id_subscription, PDO::PARAM_INT);
+				$stmt->execute();
 
-				$this->theSubscription[] = $sql->fetch();
-				return $this->theSubscription;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+				$this->theSubscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Subscription is found!!!";
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Subscription is not found!!!" . $e->GetMessage();
 			}
 
 			$bdd=null;
+			return $this->theSubscription;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $userSubscriptionList;
-		public function get($whereClause, $orderBy = 'subscription', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $subscriptionList;
+		public function getSubscriptionList(string $whereClause, string $orderBy = 'subscription', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 50):array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
-			    $sql = $bdd->query("SELECT
-										`subscription`.`id_subscription`,
-										`subscription`.`subscription`
-									FROM
-										`subscription`
-									WHERE $whereClause
-									ORDER BY $orderBy $ascOrDesc
-									LIMIT $firstLine, $linePerPage
-								");
+			try{
+			    $stmt = $bdd->prepare("SELECT `subscription`.`id_subscription`,
+											  `subscription`.`subscription`
+										FROM`subscription`
+										WHERE $whereClause
+										ORDER BY :orderBy :ascOrDesc
+										LIMIT :firstLine, :linePerPage");
 
-				while ($this->userSubscriptionList[] = $sql->fetch());
-				return $this->userSubscriptionList;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
+				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
+				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+
+				$stmt->execute();
+
+				$this->subscriptionList = $stmt->fetchall(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Subscription list is found!!!";
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Subscription list is not found!!!" . $e->GetMessage();
 			}
 
 			$bdd=null;
+			return $this->subscriptionList;
 		}
 
 		//-----------------------------------------------------------------------
-
-		public function addUserSubscription()
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
-
-			date_default_timezone_set($_SESSION['timeZone']);
+		private $insertSubscription;
+		public function insertSubscription():int{
+			
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$bdd->exec("INSERT INTO `subscription`(`subscription`)
-							VALUES('" . $this->subscription . "')");
+				$stmt = $bdd->prepare('INSERT INTO `subscription`(`subscription`) VALUES (:subscription)');
+				$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+				$stmt->execute();
 
-				$sql = $bdd->query("SELECT MAX(`id_subscription`) FROM `subscription`");
-				$id_subscription = $sql->fetch();
-				$this->id_subscription = intval($id_subscription['id_subscription']);
+				$stmt = $bdd->prepare('SELECT MAX(`id_subscription`) FROM `subscription`');
+				$stmt->execute();
 
-				echo '<script>alert("L\'enregistrement est effectué!");</script>';
+				$this->insertSubscription = intval($stmt->fetchColumn());
 
-			} catch (PDOException $e) {
-				
-				echo "Erreur de la requête : " . $e->getMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Subscription is inserted!!!";
 
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Subscription is not inserted!!!" . $e->GetMessage();
+			}
+
+			$bdd=null;
+			return $this->insertSubscription;
+		}
+
+		//-----------------------------------------------------------------------
+
+		public function updateUserSubscription(int $id_subscription):void{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
+
+			try{
+				$stmt = $bdd->prepare('UPDATE `subscription`
+										SET `subscription` = :subscription
+										WHERE `id_subscription` = :id_subscription');
+
+				$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+				$stmt->bindParam(':id_subscription', $id_subscription, PDO::PARAM_INT);
+
+				$stmt->execute();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Subscription is updated!!!";
+			
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Subscription is not updated!!!" . $e->GetMessage();
 			}
 
 			$bdd=null;
@@ -142,53 +156,24 @@
 
 		//-----------------------------------------------------------------------
 
-		public function updateUserSubscription($idSubscription)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		public function deleteUsersubscription(int $id_subscription):void{
+			
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			try{
+			    $stmt = $bdd->prepare('DELETE FROM subscription WHERE id_subscription = :id_subscription');
+				$stmt->bindParam(':id_subscription', $id_subscription, PDO::PARAM_INT);
+				$stmt->execute();
 
-			try
-			{
-				$bdd->exec("UPDATE `subscription` SET `subscription` = '" . $this->subscription . "'
-							WHERE `id_subscription` = " . intval($idSubscription) . "
-							");
-				
-				echo '<script>alert("Les modifications sont enregistrées!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "This subscription is deleted!";
+			
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "This subscription is not deleted!" . $e->GetMessage();
 			}
 
 			$bdd=null;
 		}
-
-		//-----------------------------------------------------------------------
-
-		public function deleteUsersubscription($id)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
-
-			date_default_timezone_set($_SESSION['timeZone']);
-
-			try
-			{
-			    $bdd->exec('DELETE FROM subscription WHERE id_subscription=' . $id);
-				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
-			}
-
-			$bdd=null;
-		}
-
 	}
-	
 ?>

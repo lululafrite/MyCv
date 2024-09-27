@@ -150,20 +150,38 @@
 
         <section class="d-flex flex-column border rounded-3 p-3 mb-5">
 
-            <h2>Le bonus du Club Goldorak : Les épisodes 1 et 2 de la saison 1!!!</h2>
+            <h2>Le bonus du Club Goldorak : Les épisodes 2 et 42 de la saison 1!!!</h2>
 
             <article>
 
-                <br><strong>Saison 1, Episode 1 : Les Frères de l'espace</strong><br>
+                <br><strong>Saison 1, Episode 2 : Le prince d'un autre monde</strong><br>
                 <div class="d-flex justify-content-center">
-                    <iframe class="my_iframe mt-3" width="560px" height="315px" src="https://www.youtube.com/embed/JIN0fvMpWZg?si=S5xFCQ9XNZvn1h8H" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src="https://www.youtube.com/embed/QX8whPvQYYM?si=TeFxQMx-7X_DLk3s"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
                 </div>
 
                 <hr>
 
-                <br><strong>Saison 1, Episode 2 : Le prince d'un autre monde</strong><br>
+                <br><strong>Saison 1, Episode 42 : Peril en la demeure</strong><br>
                 <div class="d-flex justify-content-center">
-                    <iframe class="my_iframe mt-3" width="560px" height="315px" src="https://www.youtube.com/embed/VXDA6Ke8q8g?si=Sw6hXgttA4XZW6X6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src="https://www.youtube.com/embed/_rPztMThyfE?si=hiKUvjJXUxM3RXAQ"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
                 </div>
                 
             </article>

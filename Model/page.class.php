@@ -2,133 +2,129 @@
 
     namespace MyCv\Model;
 
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
-
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-        require_once('../../model/dbConnect.class.php');
-
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+		require_once('../../model/dbConnect.class.php');
     }else{
-        require_once('../model/dbConnect.class.php');
+		require_once('../model/dbConnect.class.php');
     }
 
-    use \PDO;
-    use \PDOException;
+	use MyCv\Model\dbConnect;
+	use \PDOException;
+    use function PHPUnit\Framework\isNull;
 
 	class Page
-    {        
+    {
         // __Nombre de ligne__________________________________________
 
-        public function getNbOfLine()
-        {
-            if(is_null($_SESSION['nbOfLine']))
-            {
-                $_SESSION['nbOfLine']=1;
-            }
-            return $_SESSION['nbOfLine'];
+        private $nbOfProduct = 1; //$_SESSION['pagination']['nbOfProduct'] = 1;
+        public function getNbOfProduct():int{
+            return $this->nbOfProduct;
         }
-        public function setNbOfLine($new)
-        {
-            $_SESSION['nbOfLine']=$new;
+        public function setNbOfProduct(int $new):void{
+            $this->nbOfProduct = $new;
         }
         
         // __Première ligne de la page active__________________________________________
         
-        public function getFirstLine()
-        {
-            if(is_null($_SESSION['pagination']['firstLine']))
-            {
-                $_SESSION['pagination']['firstLine']=0;
-            }
-            return $_SESSION['pagination']['firstLine'];
+        private $firstLine = 0; //$_SESSION['pagination']['firstProduct'] = 0;
+        public function getFirstProduct():int{
+            return $this->firstLine;
         }
-        public function setFirstLine($newFirstLine)
-        {
-            $_SESSION['pagination']['firstLine']=$newFirstLine;
-            if ($_SESSION['pagination']['firstLine'] < 0){
-                $_SESSION['pagination']['firstLine'] = 0;
-            }
+        public function setFirstProduct(int $new):void{
+            $this->firstLine = $new;
         }
         
         // __Nombre de ligne par page__________________________________________
         
-        private $nbLinePerPage;
-        public function getNbDeLigneParPage()
-        {
-            if (is_null($_SESSION['pagination']['productPerPage']))
-            {
-                $_SESSION['pagination']['productPerPage']=2;
-                $this->nbLinePerPage =2;
-            }
-            return $this->nbLinePerPage;
+        private $nbProductPerPage = 3; //$_SESSION['pagination']['productPerPage'] = 3;
+        public function getProductPerPage():int{
+            return $this->nbProductPerPage;
         }
-        public function setNbDeLigneParPage($new)
-        {
-            $this->nbLinePerPage=$new;
-            $_SESSION['pagination']['productPerPage']=$new;
+        public function setProductPerPage(int $new):void{
+            $this->nbProductPerPage = $new;
         }
         
         // __La page active__________________________________________
-        
-        public function getLaPage()
-        {
-            if (is_null($_SESSION['pagination']['thePage'])) {
-                $_SESSION['pagination']['thePage'] = 1;
-            }
-            return $_SESSION['pagination']['thePage'];
+
+        private $thePage = 1; //$_SESSION['pagination']['thePage'] = 1;
+        public function getThePage():int{
+            return $this->thePage;
         }
-        public function setLaPage($new)
-        {
-            $_SESSION['pagination']['thePage'] = $new; //$this->thePage;
-            if ($_SESSION['pagination']['thePage'] <= 0){
-                $_SESSION['pagination']['thePage'] = 1;
-            }
+        public function setThePage(int $new):void{
+            $this->thePage = $new;
         }
         
-        public function getnbOfPage()
-        {
-            if(is_null($_SESSION['pagination']['nbOfPage']))
-            {
-                $_SESSION['pagination']['nbOfPage']=1;
-            }
-            return $_SESSION['pagination']['nbOfPage'];
+        // __Nombre de page__________________________________________
+
+        private $nbOfPage = 1; //$_SESSION['pagination']['nbOfPage'] = 1;
+        public function getNbOfPage():int{
+            return $this->nbOfPage;
         }
-        public function SetnbOfPage($nbOfPage)
-        {
-            if ($nbOfPage===0){
-                $nbOfPage=1;
-            }
-            $_SESSION['pagination']['nbOfPage']=$nbOfPage;
+        public function setNbOfPage(int $new):void{
+            $this->nbOfPage = $new;
         }
 
-        private $countLine;
-		public function getCountLine()
-		{
-			$this->countLine;
-			return $this->countLine;
+        // __Page suivante ou précédente__________________________________________
+
+        private $nextOrPrevious = 1; //$_SESSION['pagination']['NextOrPrevious'] = false;
+		public function getNextOrPrevious():bool{
+			return $this->nextOrPrevious;
 		}
-		public function setCountLine($theTable)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		public function setNextOrPrevious(bool $new):void{
+            $this->nextOrPrevious = $new;
+		}
 
-			try
-			{
-                if(empty($_SESSION['whereClause'])){
-                    $this->countLine = $bdd->query('SELECT count(*) FROM ' . $theTable)->fetchColumn();
+        // __Nombre de produit__________________________________________
+
+        private static $checkNumberOfProduct = 0;
+		public static function checkNumberOfProduct(string $table , string $whereClause = null):int{
+			
+            $bdd = dbConnect::dbConnect(new dbConnect());
+
+			try{
+                if(isNull($whereClause)){
+                    
+                    $stmt = $bdd->prepare('SELECT count(*) FROM ' . $table);
+                    $stmt->execute();
+                    self::$checkNumberOfProduct = $stmt->fetchColumn();
+
                 }else{
-                    $this->countLine = $bdd->query("SELECT count(*) FROM `" . $theTable . "` WHERE " . $_SESSION['whereClause'])->fetchColumn();
+                    $stmt = $bdd->prepare('SELECT count(*) FROM ' . $table . ' WHERE ' . $whereClause);
+                    $stmt->execute();
+                    self::$checkNumberOfProduct = $stmt->fetchColumn();
                 }
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+
+                $_SESSION['other']['error'] = false;
+                $_SESSION['other']['message'] = "Nombre de produit trouvé";
+
+			}catch (PDOException $e){
+                $_SESSION['other']['error'] = true;
+                $_SESSION['other']['message'] = "Erreur de la requete : " . $e->getMessage();
 			}
 
 			$bdd=null;
+            return self::$checkNumberOfProduct;
 		}
-    }
 
+        //-----------------------------------------------------------------------------------
+        
+        public static function FctNbPage(int $productPerPage, object $MyPage, string $table):void{
+    
+            $MyPage->setNbOfProduct(self::checkNumberOfProduct($table));
+    
+            $totalLigne = $MyPage->getNbOfProduct();
+            
+            if ($totalLigne < $productPerPage){
+                $nbOfPage = 1;
+                $MyPage->setThePage(1);            
+            }else{
+                $nbOfPage = ceil($totalLigne / $productPerPage);
+                if ($nbOfPage < $MyPage->getThePage()){
+                    $MyPage->setThePage(1);
+                }
+            }
+            $MyPage->setNbOfPage($nbOfPage);
+        }
+    }
 ?>

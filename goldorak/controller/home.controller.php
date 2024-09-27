@@ -1,70 +1,74 @@
 <?php
-    use \Goldorak\Model\Home;
-    //require_once '../../common/utilies.php';
-    require_once('../../goldorak/model/home.class.php');
 
- //   use \Firebase\JWT\JWT;
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']); 
+    if($checkUrl){
+        require_once('../../goldorak/model/home.class.php');
+		require_once('../../model/utilities.class.php');
+	}else{
+        require_once('../goldorak/model/home.class.php');
+		require_once('../model/utilities.class.php');
+	}
 
-    $btn_home_save = isset($_POST['btn_home_save']) ? true : false;
-    unset($_POST['btn_home_save']);
+    use \Goldorak\Model\Home as HomeGoldorak;
+	use MyCv\Model\Utilities;
 
-    $btn_img_chapter1 = isset($_POST['btn_img_chapter1']) ? true : false;
-    unset($_POST['btn_img_chapter1']);
-
-    $btn_img_chapter2 = isset($_POST['btn_img_chapter2']) ? true : false;
-    unset($_POST['btn_img_chapter2']);
+    $homes = new HomeGoldorak();
     
-    if(!isset($homes)){
+    /*if(!isset($homes)){
         $homes = new Home();
-    }
+    }*/
 
-/*  $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
-    $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ //(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
-*/
-        if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
-            
-            if($btn_home_save){
-                $btn_home_save = false;
-                saveHome($homes,'');
-            }
+        $btn_home_save = isset($_POST['btn_home_save']) ? true : false;
+        unset($_POST['btn_home_save']);
+    
+        $btn_img_chapter1 = isset($_POST['btn_img_chapter1']) ? true : false;
+        unset($_POST['btn_img_chapter1']);
+    
+        $btn_img_chapter2 = isset($_POST['btn_img_chapter2']) ? true : false;
+        unset($_POST['btn_img_chapter2']);
+        
+        if($btn_home_save){
+            $btn_home_save = false;
+            saveHome($homes,'');
+        }
 
-            //***********************************************************************************************
-            // traitement du téléchargement des images 
-            //***********************************************************************************************
+        //***********************************************************************************************
+        // traitement du téléchargement des images 
+        //***********************************************************************************************
 
-            if($btn_img_chapter1){
+        if($btn_img_chapter1){
 
-                $btn_img_chapter1 = false;
+            $btn_img_chapter1 = false;
 
-                if (uploadImg('newImgChapter1','txt_img_chapter1','file_img_chapter1','./img/picture/')){
+            if (uploadImg('newImgChapter1','txt_img_chapter1','file_img_chapter1','./img/picture/')){
 
-                    $home[0]['img_chapter1'] = $_SESSION['newImgChapter1'];
+                $home[0]['img_chapter1'] = $_SESSION['newImgChapter1'];
 
-                }else{
+            }else{
 
-                    echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
-
-                }
-
-            }
-
-            if($btn_img_chapter2){
-
-                if (uploadImg('newImgChapter2','txt_img_chapter2','file_img_chapter2','./img/picture/')){
-
-                    $home[0]['img_chapter2'] = $_SESSION['newImgChapter2'];
-
-                }else{
-
-                    echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
-
-                }
+                echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
 
             }
 
         }
+
+        if($btn_img_chapter2){
+
+            if (uploadImg('newImgChapter2','txt_img_chapter2','file_img_chapter2','./img/picture/')){
+
+                $home[0]['img_chapter2'] = $_SESSION['newImgChapter2'];
+
+            }else{
+
+                echo "<script>alert('Désolé, une erreur s\'est produite lors de l\'upload de l\'image.');</script>";
+
+            }
+
+        }
+
+    }
 
     /*}else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
@@ -78,7 +82,7 @@
 
     }*/
 
-    $home = $homes->get(1,'id_home','DESC','0','10');
+    $home = $homes->getHome(1);
 
     function saveHome($object, $button = ''){
 
@@ -115,7 +119,9 @@
         $object->updateHome(1);
         
         if($button === 'btn_img_chapter1' || $button === 'btn_img_chapter1'){
-            routeToHomePage();
+            
+            //routeToHomePage();
+            Utilities::redirectToPage('home');
         }
 
     }

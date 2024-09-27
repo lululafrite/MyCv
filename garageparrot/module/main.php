@@ -1,43 +1,49 @@
-<main>
+<!--<main> -->
     <?php
-        //Routeur Garage PARROT
-        require_once('../../common/utilies.php');
 
-        if (isset($_POST['next']) || isset($_POST['previous'])){
-            //require_once('../../garageparrot/controller/page.controller.php');
+        $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+        if($checkUrl){
+            require_once('../../model/utilities.class.php');
             require_once('../../controller/page.controller.php');
+        }else{
+            require_once('../model/utilities.class.php');
+            require_once('../controller/page.controller.php');
         }
-
+        
         use \Firebase\JWT\JWT;
+        use MyCv\Model\Utilities;
     
-        $jwt1 = JWT::jsondecode($_SESSION['jwt']['tokenJwt']);
-        $jwt2 = JWT::jsondecode(tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']));
+        $jwt1 = JWT::jsondecode($_SESSION['token']['jwt']['tokenJwt']);
+        $jwt2 = JWT::jsondecode(Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']));
     
-        $page = isset($_GET['page']) ? escapeInput($_GET['page']) : 'home';
+        $page = isset($_GET['page']) ? Utilities::escapeInput($_GET['page']) : 'home';
         
         if ($page === 'home'){
 
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
             
             require_once 'view/home.php';
 
         }elseif ($page === 'connexion'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
 
             require_once '../view/connexion.php';
 
         }elseif ($page === 'disconnect'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             require_once '../view/disconnect.php';
 
@@ -46,52 +52,56 @@
             require_once 'api/car.api.php';
 
         }elseif ($page === 'error_page'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             require_once 'error/error_access_page.php';
 
         }elseif ($page === 'error_unknown_page'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             require_once 'error/error_unknown_page.php';
 
         }elseif ($page === 'kanban'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             require_once 'view/kanban.php';
 
         }elseif ($page === 'mokup'){
-
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            
+            resetUserVarSession();
+            resetCarVarSession();
+            
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             require_once 'view/mokup.php';
 
-        }elseif($page === 'car' || $page === 'carBtn' ){
+        }elseif($page === 'car'){ //|| $page === 'carBtn' ){
+            
+            resetUserVarSession();
 
-            resetVariableUser();
-            $_SESSION['message'] = '';
+            $_SESSION['other']['message'] = '';
 
-            if($_SESSION['dataConnect']['avatar'] === 'Administrator' || $_SESSION['dataConnect']['avatar'] === 'User'){
+            if($_SESSION['dataConnect']['type'] === 'Administrator' || $_SESSION['dataConnect']['type'] === 'User'){
                 
-                include('../../garageparrot/module/searchCarAdmin.php');
-                require_once 'view/car_admin.php';
+                require_once('view/car_admin.php');
                 
-                if($page === 'carBtn'){
+                if($page === 'car'){
                 }
 
             }else{
@@ -100,24 +110,25 @@
 
             }
 
-        }else if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['jwt']['delay']){
+        }else if($jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['token']['jwt']['delay']){
 
             if($jwt2->{'key'} === $jwt1->{'key'}){
 
                 if($jwt2->{'pseudo'} === $jwt1->{'pseudo'}){
 
-                    $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
+                    $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
                 
-                    if ($page === 'car_edit'){
+                    if ($page === 'carEdit'){
+            
+                        resetUserVarSession();
+                        resetCarVarSession();
+                        
+                        resetPageVarSession();
+                        $_SESSION['other']['message'] = '';
 
-                        resetVariableCar();
-                        resetVariableUser();
-                        resetVariablePage();
-                        $_SESSION['message'] = '';
-
-                        if($_SESSION['dataConnect']['avatar'] === 'Administrator' || $_SESSION['dataConnect']['avatar'] === 'User'){
+                        if($_SESSION['dataConnect']['type'] === 'Administrator' || $_SESSION['dataConnect']['type'] === 'User'){
                             
-                            require_once 'view/car_edit.php';
+                            require_once 'view/carEdit.php';
 
                         }else{
                             
@@ -125,16 +136,15 @@
 
                         }
 
-                    }elseif ($page === 'user' || $page === 'userBtn'){
+                    }elseif ($page === 'user'){ // || $page === 'userBtn'){
 
-                        resetVariableCar();
-                        $_SESSION['message'] = '';
+                        resetCarVarSession();
+                        $_SESSION['other']['message'] = '';
                         
-                        if($_SESSION['dataConnect']['avatar'] === 'Administrator'){
+                        if($_SESSION['dataConnect']['type'] === 'Administrator'){
 
-                            //require_once('../../garageparrot/module/searchUser.php');
-                            require_once('../../module/searchUser.php');
-                            require_once 'view/user.php';
+                            //require_once('../../module/searchUser.php');
+                            require_once('../view/user.php');
 
                             if($page === 'userBtn'){
                             }
@@ -145,16 +155,17 @@
 
                         }
 
-                    }elseif ($page === 'user_edit'){
+                    }elseif ($page === 'userEdit'){
+            
+                        resetUserVarSession();
+                        resetCarVarSession();
+                        
+                        resetPageVarSession();
+                        $_SESSION['other']['message'] = '';
 
-                        resetVariableCar();
-                        resetVariableUser();
-                        resetVariablePage();
-                        $_SESSION['message'] = '';
-
-                        if($_SESSION['dataConnect']['avatar'] === 'Administrator'){
+                        if($_SESSION['dataConnect']['type'] === 'Administrator'){
                             
-                            require_once 'view/user_edit.php';
+                            require_once('../view/userEdit.php');
 
                         }else{
                             
@@ -178,27 +189,16 @@
 
         }else if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
 
-            $dataConnect = array(); settype($dataConnect, 'array');
-            $dataConnect['idUser'] = 0;
-            $dataConnect['pseudo'] = 'Guest';
-            $dataConnect['avatar'] = 'black_person.svg';
-            $dataConnect['type'] = 'Guest';
-            $dataConnect['subscription'] = 'Vénusia';
-            $dataConnect['password'] = '';
-            $dataConnect['error'] = false;
-            $dataConnect['message'] = '';
-            $dataConnect['connexion'] = false;
-    
-            $_SESSION['dataConnect'] = $dataConnect;
-            
+            resetDataConnectVarSession();
             timeExpired();
     
         }else {
+            
+            resetUserVarSession();
+            resetCarVarSession();
 
-            resetVariableCar();
-            resetVariableUser();
-            resetVariablePage();
-            $_SESSION['message'] = '';
+            resetPageVarSession();
+            $_SESSION['other']['message'] = '';
 
             //require_once 'error/error_unknown_page.php';
 
@@ -208,4 +208,4 @@
 
         
     ?>
-</main>
+<!--</main> -->

@@ -1,19 +1,12 @@
 <?php
 
 	namespace MyCv\Model;
-	
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
 
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
 		require_once('../../model/dbConnect.class.php');
-
     }else{
-
 		require_once('../model/dbConnect.class.php');
-
     }
 
 	use \PDO;
@@ -23,127 +16,122 @@
 	class Home
 	{
 		private $homeId;
-		public function getHomeId()
-		{
+		public function getHomeId():int{
 			return $this->homeId;
 		}
-		public function setHomeId($new)
-		{
+		public function setHomeId(int $new):void{
 			$this->homeId = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeTitle;
-		public function getHomeTitle()
-		{
+		public function getHomeTitle():string{
 			return $this->homeTitle;
 		}
-		public function setHomeTitle($new)
-		{
+		public function setHomeTitle(string $new):void{
 			$this->homeTitle = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeSubtitle;
-		public function getHomeSubtitle()
-		{
+		public function getHomeSubtitle():string{
 			return $this->homeSubtitle;
 		}
-		public function setHomeSubtitle($new)
-		{
+		public function setHomeSubtitle($new):void{
 			$this->homeSubtitle = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeTitlePage;
-		public function getHomeTitlePage()
-		{
+		public function getHomeTitlePage():string{
 			return $this->homeTitlePage;
 		}
-		public function setHomeTitlePage($new)
-		{
+		public function setHomeTitlePage(string $new):void{
 			$this->homeTitlePage = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $theHome;
-		public function getHome($idHome){
-						
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $getHome;
+		public function getHome(int $home_id):array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
-				$stmt = $bdd->prepare("SELECT
-											`home`.`home_id`,
-											`home`.`home_title`,
-											`home`.`home_subtitle`,
-											`home`.`home_title_page`
-										FROM `home`
-										WHERE `home`.`home_id` = :idHome");
-				$stmt->bindParam(':idHome', $idHome, PDO::PARAM_INT);
+			try{
+				$stmt = $bdd->prepare('SELECT `home`.`home_id`,
+											  `home`.`home_title`,
+											  `home`.`home_subtitle`,
+											  `home`.`home_title_page`
+										FROM  `home`
+										WHERE `home`.`home_id` = :home_id');
+
+				$stmt->bindParam(':home_id', $home_id, PDO::PARAM_INT);
+
 				$stmt->execute();
 
-				$this->theHome = $stmt->fetch(PDO::FETCH_ASSOC);
-				return $this->theHome;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requête :" . $e->getMessage();
+				$this->getHome = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home is existent";
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to requête :" . $e->getMessage();
 			}
 
 			$bdd = null;
+			return $this->getHome;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeList;
-		public function get($whereClause, $orderBy = 'home_id', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		public function getHomeList(string $whereClause, string $orderBy = 'home_id', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
+			try{
 				$stmt = $bdd->prepare("SELECT
 											`home`.`home_id`,
 											`home`.`home_title`,
 											`home`.`home_subtitle`,
 											`home`.`home_title_page`
+
 										FROM `home`
+
 										WHERE $whereClause
-										ORDER BY $orderBy $ascOrDesc
+										ORDER BY :orderBy :ascOrDesc
 										LIMIT :firstLine, :linePerPage");
+
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
 				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
 				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+
 				$stmt->execute();
 
 				$this->homeList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				return $this->homeList;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requête :" . $e->getMessage();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home list is existent";
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to requête :" . $e->getMessage();
 			}
 
 			$bdd = null;
+			return $this->homeList;
 		}
 
 		//-----------------------------------------------------------------------
+		private $updateHome = false;
+		public function updateHome(int $home_id):bool{
 
-		public function updateHome($homeId){
-
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home`
@@ -151,84 +139,89 @@
 											`home_subtitle` = :homeSubtitle,
 											`home_title_page` = :homeTitlePage
 											
-										WHERE `home_id` = :homeId");
+										WHERE `home_id` = :home_id");
 				
 				$stmt->bindParam(':homeTitle', $this->homeTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeSubtitle', $this->homeSubtitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeTitlePage', $this->homeTitlePage, PDO::PARAM_STR);
-				$stmt->bindParam(':homeId', $homeId, PDO::PARAM_INT);
+				$stmt->bindParam(':home_id', $home_id, PDO::PARAM_INT);
 				
 				$stmt->execute();
-							
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home is updated";
+
+				$this->updateHome = true;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Error to requête :" . $e->getMessage();
 			}
 
-			$bdd=null;
+			$bdd = null;
+			return $this->updateHome;
 		}
 
 		//-----------------------------------------------------------------------
+		private $deleteHome = false;
+		public function deleteHome(int $home_id):bool{
 
-		public function deleteHome($id): bool{
-
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
-				$stmt = $bdd->prepare('DELETE FROM home WHERE home_id = :id');
-				$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+			try{
+				$stmt = $bdd->prepare('DELETE FROM home WHERE home_id = :home_id');
+
+				$stmt->bindParam(':home_id', $home_id, PDO::PARAM_INT);
+
 				$stmt->execute();
-				$bdd = null;
-				return true;
-			}
-			catch (PDOException $e)
-			{
-				$bdd = null;
-				echo "Erreur de la requete :" . $e->getMessage();
-				return false;
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home is deleted";
+
+				$this->deleteHome = true;
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Erreur de la requete :" . $e->getMessage();
 			}
 
+			$bdd = null;
+			return $this->deleteHome;
 		}
 
 		//-----------------------------------------------------------------------
+		
+		private $insertHome = false;
+		public function insertHome():bool{
 
-		public function newHome(): bool{
-
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 	
-			try
-			{
+			try{
 				$stmt = $bdd->prepare("INSERT INTO `home` (`home_title`,
 															`home_subtitle`,
-															`home_title_page`,
-															`home_article1_title`) 
+															`home_title_page`) 
 										VALUES (:home_title,
 												:home_subtitle,
-												:home_title_page,
-												:home_article1_title)");
+												:home_title_page)");
 	
 				$stmt->bindParam(':home_title', $this->homeTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':home_subtitle', $this->homeSubtitle, PDO::PARAM_STR);
 				$stmt->bindParam(':home_title_page', $this->homeTitlePage, PDO::PARAM_STR);
 	
 				$stmt->execute();
-				$bdd = null;
-				return true;
-			}
-			catch (PDOException $e)
-			{
-				$bdd = null;
-				echo "Erreur de la requête : " . $e->getMessage();
-				return false;
-			}
-		}
 
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home is inserted";
+
+				$this->insertHome = true;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Erro to query : " . $e->getMessage();
+			}
+
+			$bdd = null;
+			return $this->insertHome;
+		}
 	}
-	
 ?>

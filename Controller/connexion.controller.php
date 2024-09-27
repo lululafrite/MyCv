@@ -1,108 +1,72 @@
 <?php
 
-    use MyCv\model\UserConnect;
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/utilities.class.php');
+        require_once('../../model/user.class.php');
+    }else{
+        require_once('../model/utilities.class.php');
+        require_once('../model/user.class.php');
+    }
 
-    if(isset($_POST['envoyer'])){
+    use MyCv\Model\Utilities;
+    use User\Model\User;
 
-        $current_url = $_SERVER['REQUEST_URI'];
-        $goldorak = '/goldorak/';
-        $garageParrot = '/garageparrot/';
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-            
-            require_once('../../model/connexion.class.php');
-            require_once('../../common/utilies.php');
+        if(isset($_POST['envoyer'])){
 
-        }else{
-            require_once('../model/connexion.class.php');
-            require_once('../common/utilies.php');
-        }
+            resetDataConnectVarSession();
+            resetOtherVarSession();
 
-        $MyUserConnect = new UserConnect();
+            $email = ''; settype($email, "string");
+            $pw = ''; settype($pw, "string");
+            $hashedPw = ''; settype($hashedPw, "string");
+            $data = array(); settype($data, "array");
 
-        $emptyCell = false; settype($emptyCell, "boolean");
-        $emptyEmail = false; settype($emptyEmail, "boolean");
-        $email = ''; settype($email, "string");
-        $pw = ''; settype($pw, "string");
-        $data = array(); settype($data, "array");
-
-        if (isset($_POST["email"]) && empty($_POST["email"])) {
-            
-            $emptyCell = true;
-            $emptyEmail = true;
-
-        }else{
-            $email = escapeInput($_POST["email"]);
-        }
-
-        if (isset($_POST["password"]) && empty($_POST["password"])) {
-
-            $emptyCell = true;
-
-        }else{
-            $pw = escapeInput($_POST["password"]);
-        }
-        
-        //$hashedPassword = password_hash($pw, PASSWORD_DEFAULT);
-
-        if(!$emptyCell){
-
-            $pwDb = ""; settype($pwDb, "string");
-            $hashedPw = ""; settype($hashedPw, "string");
-
-            $pwDb = $MyUserConnect->getCheckPw($email); settype($pwDb, "array");
-            
-            if(!$pwDb['error']){
-
-                $hashedPw = $pwDb['password'];
-                $data = password_verify($pw, $hashedPw) ? $MyUserConnect->dataConnect($email, $hashedPw) : false;
-
-                if(!$data['error']){
-
-                    $data['connexion'] = true;
-                    $_SESSION['dataConnect'] = $data;
-
-                    $_SESSION['jwt']['tokenJwt'] = tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['jwt']['secretKey'], $_SESSION['jwt']['delay']);
+            if (isset($_POST["email"]) && empty($_POST["email"])) {
                 
-                    routeToHomePage();
-
-                }else{
-
-                    $data['id_User'] = 0;
-                    $data['pseudo'] = "Guest";
-                    $data['avatar'] = 'black_person.svg';
-                    $data['type'] = "Guest";
-                    $data['subscription'] = "Vénusia";
-                    $data['message'] = $data['message'];
-                    $data['connexion'] = false;
-
-                    $_SESSION['dataConnect'] = $data;
-                }
+                $_SESSION['other']['error'] = true;
+                $_SESSION['other']['message'] = 'The Cell [email] is umpty!!!';
+                return;
 
             }else{
-                $_SESSION['message'] = $pwDb['message'];
+
+                $email = Utilities::escapeInput($_POST["email"]);
+
+                if(!User::checkEmail($email)){
+                    $_SESSION['other']['error'] = true;
+                    $_SESSION['other']['message'] = 'This email is not existing!!!';
+                    return;
+                }
             }
 
-        }else{
+            if (isset($_POST["password"]) && empty($_POST["password"])) {
 
-            if($emptyEmail){
-
-                $_SESSION['message'] = 'Le champ email est vide, veuillez saisir votre adresse email';
+                $_SESSION['other']['error'] = true;
+                $_SESSION['other']['message'] = 'The Cell [mot de passe] is umpty!!!';
+                return;
 
             }else{
-                $_SESSION['message'] = 'Le champ mot de passe est vide, veuillez saisir votre mot de passe';
+
+                $pw = Utilities::escapeInput($_POST["password"]);
+                $hashedPw = User::checkPassword($email);
+
+                if(!password_verify($pw, $hashedPw)){
+                    $_SESSION['other']['error'] = true;
+                    $_SESSION['other']['message'] = 'This password is not correctly!!!';
+                    return;
+                }
             }
             
-            $data['id_user'] = 0;
-            $data['pseudo'] = "Guest";
-            $data['avatar'] = 'black_person.svg';
-            $data['type'] = "Guest";
-            $data['subscription'] = "Vénusia";
-            $data['message'] = $data['message'];
-            $data['connexion'] = false;
+            $data = User::checkUserConnect($email, $hashedPw);
 
             $_SESSION['dataConnect'] = $data;
+            $_SESSION['dataConnect']['connexion'] = true;
 
+            $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
+            
+            Utilities::redirectToPage('home');
         }
     }
 ?>

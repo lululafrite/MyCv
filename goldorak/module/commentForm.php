@@ -5,7 +5,7 @@
     <form action="index?page=home" method="post" id="formComment_"  enctype="multipart/form-data">
  
         <!-- input hidden csrf -->
-        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf']; ?>">
+        <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf']; ?>">
 
         <tbody>
 

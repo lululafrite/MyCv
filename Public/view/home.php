@@ -1,6 +1,6 @@
 <?php 
     require_once('../controller/home.controller.php');
-    require_once('../module/homeArticle.php');
+    require_once('../module/article.php');
 ?>
 
     <!-- start of data save message -->

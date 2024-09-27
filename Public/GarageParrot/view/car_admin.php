@@ -1,8 +1,10 @@
 <?php
-    require_once('../../common/utilies.php');
+    require_once('../../model/utilities.class.php');
     require_once('../../garageparrot/controller/car.controller.php');
     require_once('../../garageparrot/module/searchCarAdmin.php');
-    require('../../garageparrot/module/select_page.php');
+    require('../../module/select_page.php');
+
+    use MyCv\Model\Utilities;
 ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-center">
@@ -11,45 +13,45 @@
 
 <article class="mb-5 p-3 border rounded-4">
     
-    <form action="/index.php?page=car_edit" method="post">
+    <form action="/index.php?page=carEdit" method="post">
 
     <!-- input hidden csrf -->
-    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
         
         <div class="d-flex justify-content-center div__Car--img">
 
             <a
-                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image1']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo Utilities::escapeInput($cars[$i]['image1']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             >
                 <img
-                    src="../garageparrot/img/vehicle/<?php echo $Cars[$i]['image1']; ?>"
+                    src="../garageparrot/img/vehicle/<?php echo $cars[$i]['image1']; ?>"
                     alt="Image du véhicule"
                     style="width:350px;"
                 >
             </a>
 
             <a
-                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image2']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo Utilities::escapeInput($cars[$i]['image2']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image3']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo Utilities::escapeInput($cars[$i]['image3']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image4']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo Utilities::escapeInput($cars[$i]['image4']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
 
             <a
-                href="../garageparrot/img/vehicle/<?php echo escapeInput($Cars[$i]['image5']); ?>"
+                href="../garageparrot/img/vehicle/<?php echo Utilities::escapeInput($cars[$i]['image5']); ?>"
                 class="popup-gallery"
                 data-fancybox="car-gallery-<?php echo $i; ?>"
             ></a>
@@ -67,11 +69,11 @@
                     <td class="tdText border border-0">
                         <input
                             type="text"
-                            id='txt_carEdit_id'
-                            name='txt_carEdit_id'
+                            id='txt_car_id'
+                            name='txt_car_id'
                             class="bgDark text-light text-start ps-2"
                             readonly
-                            value='<?php echo escapeInput($Cars[$i]['id_car']);?>'
+                            value='<?php echo Utilities::escapeInput($cars[$i]['id_car']);?>'
                         >
                     </td>
 
@@ -84,10 +86,10 @@
                     <td class="tdText border border-0">
                         <input
                             type="text"
-                            name="txt__Car--Brand"
+                            name="txt_car_brand"
                             class="bg-secondary text-light text-start ps-2"
                             readonly
-                            value='<?php echo escapeInput($Cars[$i]['brand']);?>'
+                            value='<?php echo Utilities::escapeInput($cars[$i]['brand']);?>'
                         >
                     </td>
 
@@ -100,10 +102,10 @@
                     <td class="tdText border border-0">
                         <input
                             type="text"
-                            name="txt__Car--Model"
+                            name="txt_car_model"
                             class="bg-secondary text-light text-start ps-2"
                             readonly
-                            value='<?php echo escapeInput($Cars[$i]['model']);?>'
+                            value='<?php echo Utilities::escapeInput($cars[$i]['model']);?>'
                         >
                     </td>
 
@@ -112,42 +114,96 @@
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Moteur:</td>
-                    <td class="tdText border border-0"><input type="text" name="txt__Car--Motorization" class="bg-secondary text-light text-start ps-2" readonly value='<?php echo escapeInput($Cars[$i]['motorization']);?>'></td>
+
+                    <td class="tdText border border-0">
+                        <input
+                            type="text"
+                            name="txt_car_motorization"
+                            class="bg-secondary text-light text-start ps-2"
+                            readonly
+                            value='<?php echo Utilities::escapeInput($cars[$i]['motorization']);?>'
+                        >
+                    </td>
 
                 </tr>
 
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Année:</td>
-                    <td class="tdText border border-0"><input type="text" name="txt__Car--year" class="bg-secondary text-light text-start ps-2" readonly value='<?php echo escapeInput($Cars[$i]['year']);?>'></td>
+
+                    <td class="tdText border border-0">
+                        <input
+                            type="text"
+                            name="txt_car_year"
+                            class="bg-secondary text-light text-start ps-2"
+                            readonly
+                            value='<?php echo Utilities::escapeInput($cars[$i]['year']);?>'
+                        >
+                    </td>
 
                 </tr>
 
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Kilomètrage:</td>
-                    <td class="tdText border border-0"><input type="text" name="txt__Car--mileage" class="bg-secondary text-light text-start ps-2" readonly value='<?php echo escapeInput($Cars[$i]['mileage']);?> kms'></td>
+
+                    <td class="tdText border border-0">
+                        <input
+                            type="text"
+                            name="txt_car_mileage"
+                            class="bg-secondary text-light text-start ps-2"
+                            readonly
+                            value='<?php echo Utilities::escapeInput($cars[$i]['mileage']);?> kms'
+                        >
+                    </td>
 
                 </tr>
 
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Prix:</td>
-                    <td class="tdText border border-0"><input type="text" name="txt__Car--price" class="bg-secondary text-light text-start ps-2" readonly value='<?php echo escapeInput($Cars[$i]['price']);?> € TTC'></td>
+
+                    <td class="tdText border border-0">
+                        <input
+                            type="text"
+                            name="txt_car_price"
+                            class="bg-secondary text-light text-start ps-2"
+                            readonly
+                            value='<?php echo Utilities::escapeInput($cars[$i]['price']);?> € TTC'
+                        >
+                    </td>
 
                 </tr>
 
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Disponible:</td>
-                    <td class="tdText border border-0"><input type="text" name="txt__Car--sold" class="bg-secondary text-light text-start ps-2" readonly value='<?php echo escapeInput($Cars[$i]['sold']);?>'></td>
+
+                    <td class="tdText border border-0">
+                        <input
+                            type="text"
+                            name="txt_car_available"
+                            class="bg-secondary text-light text-start ps-2"
+                            readonly
+                            value='<?php echo Utilities::escapeInput($cars[$i]['available']);?>'
+                        >
+                    </td>
 
                 </tr>
 
                 <tr>
 
                     <td class="tdLabel text-end border border-0 pe-1">Description:</td>
-                    <td class="tdText border border-0"><textarea class="bg-secondary text-light text-start ps-2" id="txt__Car--description" name="txt__Car--description" rows="3" placeholder="Options et description" readonly><?php echo escapeInput($Cars[$i]['description']);?></textarea></td>
+
+                    <td class="tdText border border-0">
+                        <textarea
+                            class="bg-secondary text-light text-start ps-2"
+                            id="txt_car_description"
+                            name="txt_car_description"
+                            rows="3"
+                            placeholder="Options et description"
+                            readonly><?php echo Utilities::escapeInput($cars[$i]['description']);?></textarea>
+                    </td>
 
                 </tr>
 
@@ -193,7 +249,7 @@
 
 </section>
 
-<?php require('../../garageparrot/module/select_page.php'); ?>
+<?php require('../../module/select_page.php'); ?>
 
 <script>
 

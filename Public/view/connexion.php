@@ -73,18 +73,11 @@
 
                 </fieldset>
 
-                <?php
-                    if($_SESSION['message'] != ''){
-                ?>
-                    <div classe='text-center' style='color:red; text-align:center; margin:auto;'>
-                        <?php echo htmlspecialchars_decode($_SESSION['message']); ?>
-                    </div>
-                <?php
-                        $_SESSION['message'] = '';
-                    }
-                ?>
+                <div style='color:red;'>
+                    <p class=" text-center fs-2 pt-3"> <?php echo htmlspecialchars_decode($_SESSION['other']['message']); ?> </p>
+                </div>
 
-                <div><a href="index.php?page=connexion">Mot de passe oublié ?</a></div>
+                <div class="d-flex justify-content-center pb-5"><a href="index.php?page=connexion">Mot de passe oublié ?</a></div>
 
             </form>
 

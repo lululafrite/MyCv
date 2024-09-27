@@ -1,8 +1,11 @@
 <?php
-
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Car
 	{
@@ -176,29 +179,27 @@
 		private $newCar;
 		public function getNewCar()
 		{
-			if(empty($_SESSION['newCar'])){
-				$_SESSION['newCar'] = false;
+			if(empty($_SESSION['car']['newCar'])){
+				$_SESSION['car']['newCar'] = false;
 				$this->newCar = false;
 			}
-			return $_SESSION['newCar'];
+			return $_SESSION['car']['newCar'];
 		}
 		public function setNewCar($new)
 		{
-			$_SESSION['newCar'] = $new;
+			$_SESSION['car']['newCar'] = $new;
 			$this->newCar = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $theCar;
-		public function getCar($idCar)
+		private $currentCar;
+		public function getCurrentCar(int $id_car)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try {
-				$stmt = $conn->prepare("SELECT
+				$stmt = $bdd->prepare("SELECT
 											`car`.`id_car`,
 											`brand`.`name` AS `brand`,
 											`model`.`name` AS `model`,
@@ -222,13 +223,13 @@
 											ON `car`.`id_model` = `model`.`id_model`
 										LEFT JOIN `motorization`
 											ON `car`.`id_motorization` = `motorization`.`id_motorization`
-										WHERE `car`.`id_car` = :idCar");
+										WHERE `car`.`id_car` = :id_car");
 
-				$stmt->bindParam(':idCar', $idCar, PDO::PARAM_INT);
+				$stmt->bindParam(':id_car', $id_car, PDO::PARAM_INT);
 				$stmt->execute();
 
-				$this->theCar = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				return $this->theCar;
+				$this->currentCar = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $this->currentCar;
 
 			}catch(PDOException $e){
 
@@ -236,7 +237,7 @@
 
 			}
 
-			$conn = null;
+			$bdd = null;
 
 		}
 
@@ -245,13 +246,11 @@
 		private $carList;
 		public function get($whereClause, $orderBy = 'price', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-			    $sql = $conn->prepare("SELECT
+			    $sql = $bdd->prepare("SELECT
 										`car`.`id_car`,
 										`brand`.`name` AS `brand`,
 										`model`.`name` AS `model`,
@@ -294,19 +293,17 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function addCar()
+		public function InsertCar()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$stmt = $conn->prepare("INSERT INTO `car` (`id_brand`,
+				$stmt = $bdd->prepare("INSERT INTO `car` (`id_brand`,
 															`id_model`,
 															`id_motorization`,
 															`year`, `mileage`,
@@ -356,7 +353,7 @@
 				
 				$stmt->execute();
 
-				$stmt = $conn->query("SELECT MAX(`id_car`) FROM `car`");
+				$stmt = $bdd->query("SELECT MAX(`id_car`) FROM `car`");
 				$maxId = $stmt->fetchColumn();
 				$this->id_car = intval($maxId);
 				return $this->id_car;
@@ -367,19 +364,17 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function updateCar($idCar)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try {
-				$stmt = $conn->prepare("UPDATE `car`
+				$stmt = $bdd->prepare("UPDATE `car`
 										SET 
 											`id_brand` = (SELECT `id_brand` FROM `brand` WHERE `name` = :brand),
 											`id_model` = (SELECT `id_model` FROM `model` WHERE `name` = :model),
@@ -430,36 +425,40 @@
 
 			}
 
-			$conn = null;
+			$bdd = null;
 
 		}
 
 
 		//-----------------------------------------------------------------------
+		private $deleteCar = false;
+		public function deleteCar(int $id_car):bool{
+			
+			if(self::checkIdCar($id_car)){
 
-		public function deleteCar($id)
-		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+				$bdd = dbConnect::dbConnect(new dbConnect());
 
-			try{
-				$stmt = $conn->prepare('DELETE FROM car WHERE id_car = :idCar');
+				try{
+					$stmt = $bdd->prepare('DELETE FROM car WHERE id_car = :id_car');
+					$stmt->bindParam(':id_car', $id_car, PDO::PARAM_INT);
+					$stmt->execute();
 
-				$id = intval($id);
-				$stmt->bindParam(':idCar', $id, PDO::PARAM_INT);
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The car with id " . $id_car . " is delete with success!!!";
 
-				$stmt->execute();
+					$this->deleteCar = true;
 
-				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
+				}catch(PDOException $e){
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = "Error to delete car : " . $e->getMessage();
+				}
 
-			}catch(PDOException $e){
-
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
-
+			}else{
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The car with id " . $id_car . " is not existing!!!";
 			}
-
-			$conn = null;
+			$bdd = null;
+			return $this->deleteCar;
 		}
 
 
@@ -467,12 +466,10 @@
 		private $carExist;
 		public function verifCar($brand, $model, $motorization, $year, $mileage, $price)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$stmt = $conn->prepare("SELECT COUNT(*) AS `number`
+				$stmt = $bdd->prepare("SELECT COUNT(*) AS `number`
 										FROM `car`
 										WHERE `id_brand` = (SELECT `id_brand` FROM `brand` WHERE `name` = :brand)
 										AND `id_model` = (SELECT `id_model` FROM `model` WHERE `name` = :model)
@@ -508,23 +505,57 @@
 
 			}
 
-			$conn = null;
+			$bdd = null;
 		}
 
         //__Ajouter car?___________________________________________
         
         public function getAddCar()
         {
-            if(is_null($_SESSION['addCar']))
+            if(is_null($_SESSION['car']['addCar']))
             {
-                $_SESSION['addCar']=false;
+                $_SESSION['car']['addCar']=false;
             }
-            return $_SESSION['addCar'];
+            return $_SESSION['car']['addCar'];
         }
         public function setAddCar($new)
         {
-            $_SESSION['addCar']=$new;
+            $_SESSION['car']['addCar']=$new;
         }
+
+		private static $checkIdCar;
+		public static function checkIdCar(int $id_car):bool{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
+			
+			try{
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `car` WHERE `id_car` = :id_car");
+				$stmt->bindParam(':id_car', $id_car, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				$bdd=null;
+
+				if($result > 0){
+					self::$checkIdCar = true;
+					$_SESSION['other']['message'] = "This id_car is existent!!!";
+				}else{
+					self::$checkIdCar = false;
+					$_SESSION['other']['message'] = "This id_car is not existent!!!";
+				}
+
+				$_SESSION['other']['error'] = false;
+				return self::$checkIdCar;
+
+			}catch(PDOException $e){
+				$bdd=null;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to function checkIdCar() in car.class.php:" . $e->getMessage();
+				return false;
+			}
+		}
 
 	}
 	

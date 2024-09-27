@@ -1,21 +1,14 @@
 <?php
 
 	namespace MyCv\Model;
-	
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
 
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-
+	$checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+	if($checkUrl){
 		require_once('../../model/dbConnect.class.php');
-
-    }else{
-
+	}else{
 		require_once('../model/dbConnect.class.php');
+	}
 
-    }
-	
 	use \PDO;
 	use \PDOException;
 	use MyCv\Model\dbConnect;
@@ -23,139 +16,111 @@
 	class HomeArticle
 	{
 		private $homeArticleId;
-		public function getHomeArticleId()
-		{
+		public function getHomeArticleId():int{
 			return $this->homeArticleId;
 		}
-		public function setHomeArticleId($new)
-		{
+		public function setHomeArticleId(int $new):void{
 			$this->homeArticleId = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleTitle;
-		public function getHomeArticleTitle()
-		{
+		public function getHomeArticleTitle():string{
 			return $this->homeArticleTitle;
 		}
-		public function setHomeArticleTitle($new)
-		{
+		public function setHomeArticleTitle(string $new):void{
 			$this->homeArticleTitle = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticle;
-		public function getHomeArticle()
-		{
+		public function getHomeArticle():string{
 			return $this->homeArticle;
 		}
-		public function setHomeArticle($new)
-		{
+		public function setHomeArticle(string $new):void{
 			$this->homeArticle = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImg;
-		public function getHomeArticleImg()
-		{
+		public function getHomeArticleImg():string{
 			return $this->homeArticleImg;
 		}
-		public function setHomeArticleImg($new)
-		{
+		public function setHomeArticleImg(string $new):void{
 			$this->homeArticleImg = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImgYesOrNo;
-		public function getHomeArticleImgYesOrNo()
-		{
+		public function getHomeArticleImgYesOrNo():string{
 			return $this->homeArticleImgYesOrNo;
 		}
-		public function setHomeArticleImgYesOrNo($new)
-		{
+		public function setHomeArticleImgYesOrNo(string $new):void{
 			$this->homeArticleImgYesOrNo = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImgRightOrLeft;
-		public function getHomeArticleImgRightOrLeft()
-		{
+		public function getHomeArticleImgRightOrLeft():string{
 			return $this->homeArticleImgRightOrLeft;
 		}
-		public function setHomeArticleImgRightOrLeft($new)
-		{
+		public function setHomeArticleImgRightOrLeft(string $new):void{
 			$this->homeArticleImgRightOrLeft = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImgWidth;
-		public function getHomeArticleImgWidth()
-		{
+		public function getHomeArticleImgWidth():string{
 			return $this->homeArticleImgWidth;
 		}
-		public function setHomeArticleImgWidth($new)
-		{
+		public function setHomeArticleImgWidth(string $new):void{
 			$this->homeArticleImgWidth = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImgHeight;
-		public function getHomeArticleImgHeight()
-		{
+		public function getHomeArticleImgHeight():string{
 			return $this->homeArticleImgHeight;
 		}
-		public function setHomeArticleImgHeight($new)
-		{
+		public function setHomeArticleImgHeight(string $new):void{
 			$this->homeArticleImgHeight = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleImgObjectFit;
-		public function getHomeArticleImgObjectFit()
-		{
+		public function getHomeArticleImgObjectFit():string{
 			return $this->homeArticleImgObjectFit;
 		}
-		public function setHomeArticleImgObjectFit($new)
-		{
+		public function setHomeArticleImgObjectFit(string $new):void{
 			$this->homeArticleImgObjectFit = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $homeArticleSort;
-		public function getHomeArticleSort()
-		{
+		public function getHomeArticleSort():string{
 			return $this->homeArticleSort;
 		}
-		public function setHomeArticleSort($new)
-		{
+		public function setHomeArticleSort(string $new):void{
 			$this->homeArticleSort = $new;
 		}
 
-
 		//-----------------------------------------------------------------------
 
-		private $homeArticleTable;
-		public function getHomeArticleTable($homeArticleId)
-		{
-			require_once('../model/dbConnect.class.php');
-			
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $article;
+		public function getArticle(int $home_article_id):array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
-			try
-			{
+			try{
 				$stmt = $bdd->prepare("SELECT
 											`home_article`.`home_article_id`,
 											`home_article`.`home_article_title`,
@@ -169,32 +134,34 @@
 											`home_article`.`home_article_img_objectFit`,
 											`home_article`.`home_article_sort`
 										FROM `home_article`
-										WHERE `home_article`.`home_article_id` = :homeArticleId");
+										WHERE `home_article`.`home_article_id` = :home_article_id");
 
-				$stmt->bindParam(':homeArticleId', $homeArticleId, PDO::PARAM_INT);
+				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
+
 				$stmt->execute();
 
-				$this->homeArticleTable = $stmt->fetch(PDO::FETCH_ASSOC);
-				return $this->homeArticleTable;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requête :" . $e->getMessage();
+				$this->article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'Home Article list is found';
+			
+			}catch (PDOException $e){
+
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query :' . $e->getMessage();
+				$this->article = false;
 			}
 
 			$bdd = null;
+			return $this->article;
 		}
-
 
 		//-----------------------------------------------------------------------
 
-		private $homeArticleList;
-		public function get($whereClause, $orderBy = 'home_article_sort', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			require_once('../model/dbConnect.class.php');
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $articleList;
+		public function getArticleList(string $whereClause, string $orderBy = 'home_article_sort', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
@@ -211,33 +178,37 @@
 											`home_article`.`home_article_sort`
 										FROM `home_article`
 										WHERE $whereClause
-										ORDER BY $orderBy $ascOrDesc
+										ORDER BY :orderBy :ascOrDesc
 										LIMIT :firstLine, :linePerPage");
 
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
 				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
 				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+
 				$stmt->execute();
 
-				$this->homeArticleList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				return $this->homeArticleList;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requête :" . $e->getMessage();
+				$this->articleList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'Home Article list is found';
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query :' . $e->getMessage();
+				$this->articleList = false;
 			}
 
 			$bdd = null;
+			return $this->articleList;
 		}
-
 
 		//-----------------------------------------------------------------------
 
-		public function updateHomeArticle($homeArticleId)
-		{
-			require_once('../model/dbConnect.class.php');
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $updateArticle = false;
+		public function updateArticle(int $home_article_id):bool{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home_article`
@@ -251,7 +222,7 @@
 											`home_article_img_objectFit` = :homeArticleImgObjectFit,
 											`home_article_sort` = :homeArticleSort
 											
-										WHERE `home_article_id` = :homeArticleId");
+										WHERE `home_article_id` = :home_article_id");
 				
 				$stmt->bindParam(':homeArticleTitle', $this->homeArticleTitle, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticle', $this->homeArticle, PDO::PARAM_STR);
@@ -262,50 +233,57 @@
 				$stmt->bindParam(':homeArticleImgHeight', $this->homeArticleImgHeight, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleImgObjectFit', $this->homeArticleImgObjectFit, PDO::PARAM_STR);
 				$stmt->bindParam(':homeArticleSort', $this->homeArticleSort, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleId', $homeArticleId, PDO::PARAM_INT);
+				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
 				
 				$stmt->execute();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home Article is updated";
+
+				$this->updateArticle = true;
 				
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to query :" . $e->getMessage();
 			}
 
-			$bdd=null;
+			$bdd = null;
+			return $this->updateArticle;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function deleteHomeArticle($id): bool{
-			require_once('../model/dbConnect.class.php');
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $deleteArticle = false;
+		public function deleteArticle(int $home_article_id): bool{
+
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-				$stmt = $bdd->prepare('DELETE FROM home_article WHERE home_article_id = :id');
-				$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-				$stmt->execute();
-				$bdd = null;
-				return true;
-			}
-			catch (PDOException $e)
-			{
-				$bdd = null;
-				echo "Erreur de la requete :" . $e->getMessage();
-				return false;
-			}
+				$stmt = $bdd->prepare('DELETE FROM home_article WHERE home_article_id = :home_article_id');
+				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
 
+				$stmt->execute();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home Article is deleted";
+
+				$this->deleteArticle = true;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to query : " . $e->getMessage();
+			}
+				
+			$bdd = null;
+			return $this->deleteArticle;
 		}
 
-		public function newHomeArticle(): bool{
+		//-----------------------------------------------------------------------
+		private $newArticle = false;
+		public function newArticle():bool{
 
-			require_once('../model/dbConnect.class.php');
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 	
 			try
 			{
@@ -339,17 +317,19 @@
 				$stmt->bindParam(':homeArticleSort', $this->homeArticleSort, PDO::PARAM_STR);
 					
 				$stmt->execute();
-				$bdd = null;
-				return true;
-			}
-			catch (PDOException $e)
-			{
-				$bdd = null;
-				echo "Erreur de la requête : " . $e->getMessage();
-				return false;
-			}
-		}
 
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "Home Article is inserted";
+
+				$this->newArticle = true;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to query : " . $e->getMessage();
+			}
+
+			$bdd = null;
+			return $this->newArticle;
+		}
 	}
-	
 ?>

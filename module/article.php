@@ -12,7 +12,7 @@
                 <input
                     type="hidden"
                     name="csrf"
-                    value="<?php echo $_SESSION['csrf'];?>"
+                    value="<?php echo $_SESSION['token']['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">
@@ -64,7 +64,7 @@
                 <input
                     type="hidden"
                     name="csrf"
-                    value="<?php echo $_SESSION['csrf'];?>"
+                    value="<?php echo $_SESSION['token']['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">
@@ -112,7 +112,7 @@
                 <input
                     type="hidden"
                     name="csrf"
-                    value="<?php echo $_SESSION['csrf'];?>"
+                    value="<?php echo $_SESSION['token']['csrf'];?>"
                 >
 
                 <div class="row m-0 p-0">
@@ -375,8 +375,13 @@
 
 <?php } ?>
 
+<?php
+    require_once ("../controller/home.controller.php");
+    use MyCv\Model\Utilities;
+?>
+
 <?php function homeArticleId($article, $i){ 
-    $id = escapeInput($article[$i]['home_article_id']);
+    $id = Utilities::escapeInput($article[$i]['home_article_id']);
     if ($_SESSION['dataConnect']['type']==='Administrator'){?>
 
         <div class="d-flex flex-row align-items-center ps-3 pb-3">
@@ -407,13 +412,13 @@
     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
         <h3 class="px-3">
-            <?php echo escapeInput($article[$i]['home_article_title']); ?>
+            <?php echo Utilities::escapeInput($article[$i]['home_article_title']); ?>
         </h3>
 
     <?php } ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['home_article_id']);
     ?>
         
         <h3 class="px-3">
@@ -421,7 +426,7 @@
                 type="text"
                 name="text_home_article_title_<?php echo $id; ?>"
                 id="text_home_article_title_<?php echo $id; ?>"
-                value="<?php echo escapeInput($article[$i]['home_article_title']); ?>"
+                value="<?php echo Utilities::escapeInput($article[$i]['home_article_title']); ?>"
             >
         </h3>
 
@@ -432,13 +437,13 @@
     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
         <p class="px-3" style="text-align: justify; white-space: pre-line;">
-            <?php echo escapeInput($article[$i]['home_article']); ?>
+            <?php echo Utilities::escapeInput($article[$i]['home_article']); ?>
         </p>
     
     <?php } ?>
     
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['home_article_id']);
     ?>
         
         <p class="px-3" style="text-align: justify; white-space: pre-line;">
@@ -447,7 +452,7 @@
                 id="textarea_home_article_<?php echo $id; ?>"
                 cols="1"
                 rows="10"
-            ><?php echo escapeInput($article[$i]['home_article']); ?></textarea>
+            ><?php echo Utilities::escapeInput($article[$i]['home_article']); ?></textarea>
         </p>
 
     <?php } ?>
@@ -458,7 +463,7 @@
 <?php function homeArticleButtonImg($article, $i){ ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['home_article_id']);
     ?>
         
         <div class="container px-3 pb-0 pb-lg-3">
@@ -476,7 +481,7 @@
                         readonly
                         style="font-size: 1.6rem;"
                         oninput="validateInput('text_home_article_img','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
-                        value="<?php echo escapeInput($article[$i]['home_article_img']);?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
                     >
 
                 </div>
@@ -517,7 +522,7 @@
 <?php function homeArticleImg($article, $i){ ?>
 
     <?php if ($article[$i]['home_article_img_yesOrNo'] === "yes"){ 
-            $id = escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['home_article_id']);
     ?>
 
         <div class="d-none d-sm-block">
@@ -526,9 +531,9 @@
                 class="rounded-3"
                 id="home_article_img_<?php echo $id; ?>"
                 name="home_article_img_<?php echo $id; ?>"
-                src="img/picture/<?php echo escapeInput($article[$i]['home_article_img']);?>"
+                src="img/picture/<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
                 alt="image de l'article <?php echo $id; ?>"
-                style="width: <?php echo escapeInput($article[$i]['home_article_img_width']);?>; height: <?php echo escapeInput($article[$i]['home_article_img_height']);?>; object-fit: <?php echo escapeInput($article[$i]['home_article_img_objectFit']);?>;"
+                style="width: <?php echo Utilities::escapeInput($article[$i]['home_article_img_width']);?>; height: <?php echo Utilities::escapeInput($article[$i]['home_article_img_height']);?>; object-fit: <?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']);?>;"
             >
 
         </div>
@@ -541,7 +546,7 @@
 <?php function homeArticleSettings($article, $i){ ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['home_article_id']);
     ?>
         <div class="container">
 
@@ -565,7 +570,7 @@
                             name="home_article_img_yesOrNo_<?php echo $id; ?>"
                             style="width: 20px; height: 20px;"
                             value="yes"
-                            <?php if (escapeInput($article[$i]['home_article_img_yesOrNo']) === 'yes'){ echo 'checked'; } ?>
+                            <?php if (Utilities::escapeInput($article[$i]['home_article_img_yesOrNo']) === 'yes'){ echo 'checked'; } ?>
                         >
                 </div>
 
@@ -582,7 +587,7 @@
                         name="home_article_img_rightOrLeft_<?php echo $id; ?>"
                         style="width: 100px;"
                     >
-                    <option value="<?php echo escapeInput($article[$i]['home_article_img_rightOrLeft']); ?>"><?php echo escapeInput($article[$i]['home_article_img_rightOrLeft']); ?></option>
+                    <option value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_rightOrLeft']); ?>"><?php echo Utilities::escapeInput($article[$i]['home_article_img_rightOrLeft']); ?></option>
                     <option value="right">right</option>
                     <option value="left">left</option>
                     </select>
@@ -602,7 +607,7 @@
                         name="home_article_img_objectFit_<?php echo $id; ?>"
                         style="width: 100px;"
                     >
-                    <option value="<?php echo escapeInput($article[$i]['home_article_img_objectFit']); ?>"><?php echo escapeInput($article[$i]['home_article_img_objectFit']); ?></option>
+                    <option value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']); ?>"><?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']); ?></option>
                     <option value="cover">cover</option>
                     <option value="contain">contain</option>
                     <option value="fill">fill</option>
@@ -625,7 +630,7 @@
                         id="home_article_img_width_<?php echo $id; ?>"
                         name="home_article_img_width_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo escapeInput($article[$i]['home_article_img_width']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_width']); ?>"
                     >
                     
                 </div>
@@ -643,7 +648,7 @@
                         id="home_article_img_height_<?php echo $id; ?>"
                         name="home_article_img_height_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo escapeInput($article[$i]['home_article_img_height']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_height']); ?>"
                     >
                     
                 </div>
@@ -666,7 +671,7 @@
                         id="home_article_sort_<?php echo $id; ?>"
                         name="home_article_sort_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo escapeInput($article[$i]['home_article_sort']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_sort']); ?>"
                     >
                     
                 </div>

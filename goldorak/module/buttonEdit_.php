@@ -6,7 +6,7 @@
         <button type="submit" class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" id="bt_userEdit_cancel" name="bt_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
     <?php } ?>
     
-        <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="button" name="bt_userEdit_save" id="bt_userEdit_save" style="width: 100px;" value="Enregistrer">
+        <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="button" name="btn_userEdit_save" id="btn_userEdit_save" style="width: 100px;" value="Enregistrer">
     
     </div>
 

@@ -1,8 +1,12 @@
 <?php
 
 	namespace GarageParrot\Model;
+
+	require_once('../../model/dbConnect.class.php');
+
 	use \PDO;
 	use \PDOException;
+	use MyCv\Model\dbConnect;
 
 	class Motorization
 	{
@@ -34,13 +38,11 @@
 		private $theMotorization;
 		public function getmotorization($idMotorization)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $sql = $bdd->query("SELECT
 										`motorization`.`id_motorization`,
 										`motorization`.`name`
 
@@ -58,21 +60,19 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $motorizationList;
-		public function get($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
+		public function getMotorizationList($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 			
 			try
 			{
-			    $sql = $conn->query("SELECT
+			    $sql = $bdd->query("SELECT
 										`motorization`.`id_motorization`,
 										`motorization`.`name`
 									FROM
@@ -90,22 +90,20 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function addMotorization()
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-				$conn->exec("INSERT INTO `motorization`(`name`)
+				$bdd->exec("INSERT INTO `motorization`(`name`)
 							VALUES('" . $this->name . "')");
 
-				$sql = $conn->query("SELECT MAX(`id_motorization`) FROM `motorization`");
+				$sql = $bdd->query("SELECT MAX(`id_motorization`) FROM `motorization`");
 				$id_motorization = $sql->fetch();
 				$this->id_motorization = intval($id_motorization['id_motorization']);
 
@@ -117,20 +115,18 @@
 
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function updatemotorization($idMotorization)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-				$conn->exec("UPDATE `motorization` SET `name` = '" . $this->name . "'
+				$bdd->exec("UPDATE `motorization` SET `name` = '" . $this->name . "'
 							WHERE `id_motorization` = " . intval($idMotorization) . "
 							");
 				
@@ -141,20 +137,18 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
 		public function deleteMotorization($id)
 		{
-			require_once('../../controller/ConfigConnGP.php');
-			$conn = connectDB();
-            date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
-			    $conn->exec('DELETE FROM motorization WHERE id_motorization=' . $id);
+			    $bdd->exec('DELETE FROM motorization WHERE id_motorization=' . $id);
 				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
 			}
 			catch (PDOException $e)
@@ -162,22 +156,22 @@
 				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
 			}
 
-			$conn=null;
+			$bdd=null;
 		}
 
         //__Ajouter user?___________________________________________
         
         public function getAddmotorization()
         {
-            if(is_null($_SESSION['addMotorization']))
+            if(is_null($_SESSION['car']['addMotorization']))
             {
-                $_SESSION['addMotorization']=false;
+                $_SESSION['car']['addMotorization']=false;
             }
-            return $_SESSION['addMotorization'];
+            return $_SESSION['car']['addMotorization'];
         }
         public function setAddmotorization($new)
         {
-            $_SESSION['addMotorization']=$new;
+            $_SESSION['car']['addMotorization']=$new;
         }
 
 	}

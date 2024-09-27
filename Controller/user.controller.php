@@ -5,131 +5,152 @@
     $garageParrot = '/garageparrot/';
 
     if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
+        require_once('../../model/utilities.class.php');
         require_once('../../model/user.class.php');
         require_once('../../model/userForm.class.php');        
         require_once("../../controller/page.controller.php");
-        require_once('../../common/utilies.php');
 
     }else{
+        require_once('../model/utilities.class.php');
         require_once('../model/user.class.php');
         require_once('../model/userForm.class.php');        
         require_once("../controller/page.controller.php");
-        require_once('../common/utilies.php');
     }
 
     use \User\Model\User;
     use \User\Model\UserForm;
+    use MyCv\Model\Utilities;
+
 
     $MyUser = new User();
     $MyUserForm = new UserForm();
 
-    $_SESSION['theTable'] = "user";
-
-    if (isset($_POST['btn-SearchUser'])){
-        
-        $_SESSION['pagination']['thePage'] = 1;
-        $_SESSION['pagination']['firstLine'] = 0;
-        $_SESSION['pagination']['productPerPage'] = 3;
-        $_SESSION['pagination']['nbOfPage'] = 1;
-
-        $_SESSION['user']['criteriaName'] = isset($_POST['Text_User_Nom']) ? escapeInput($_POST['Text_User_Nom']) : '';
-        unset($_POST['Text_User_Nom']);
-
-        $_SESSION['user']['criteriaPseudo'] = isset($_POST['Text_User_Pseudo']) ? escapeInput($_POST['Text_User_Pseudo']) : '';
-        unset($_POST['Text_User_Pseudo']);
-
-        $_SESSION['user']['criteriaType'] = isset($_POST['Select_User_Type']) ? escapeInput($_POST['Select_User_Type']) : 'Selectionnez un type';
-        unset($_POST['Select_User_Type']);
-
-    }else if(isset($_POST['nbOfPage'])){
-        $_SESSION['pagination']['thePage'] = 1;
-        $_SESSION['pagination']['firstLine']=0;
-    }
-
-    // Initialiser les variables pour paramètrer la clause where afin d'executer la requete SELECT pour rechercher le ou les contacts
     $name_umpty = true;
     $pseudo_umpty = true;
     $userType_umpty = true;
+    
+    $criteriaName = "";
+    $criteriaPseudo = "";
+    $criteriaType = "";
 
-    if(!empty($_SESSION['user']['criteriaName'])){
-        $name_umpty = false;
-    }else{
-        $name_umpty = true;
-    }
+    $criteria =  $_SESSION['user']['criteriaName'] != "" || $_SESSION['user']['criteriaPseudo'] != "" || ($_SESSION['user']['criteriaType'] != "Selectionnez un type" && $_SESSION['user']['criteriaType'] != "");
 
-    if(!empty($_SESSION['user']['criteriaPseudo'])){
-        $pseudo_umpty = false;
-    }else{
-        $pseudo_umpty = true;
-    }
+    if (isset($_POST['btn-SearchUser'])){
 
-    if(!empty($_SESSION['user']['criteriaType']) && $_SESSION['user']['criteriaType'] != 'Selectionnez un type'){
-        $userType_umpty = false;
-    }else{
-        $userType_umpty = true;
+        $_SESSION['user']['criteriaName'] = "";
+        $_SESSION['user']['criteriaPseudo'] = "";
+        $_SESSION['user']['criteriaType'] = "Selectionnez un type";
+        
+        if((isset($_POST['Text_User_Nom']) && $_POST['Text_User_Nom'] != "") || $_SESSION['user']['criteriaName'] != ""){
+
+            $text_User_Nom = Utilities::escapeInput($_POST['Text_User_Nom']);
+            unset($_POST['Text_User_Nom']);
+
+            $MyUser->setCriteriaName($text_User_Nom);
+            $_SESSION['user']['criteriaName'] = $text_User_Nom;
+            $name_umpty = false;
+
+            $criteriaName = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%' ";
+        }
+
+        if(isset($_POST['Text_User_Pseudo']) && $_POST['Text_User_Pseudo'] != ""){
+
+            $text_User_Pseudo = Utilities::escapeInput($_POST['Text_User_Pseudo']);
+            unset($_POST['Text_User_Pseudo']);
+
+            $MyUser->setCriteriaPseudo($text_User_Pseudo);
+            $_SESSION['user']['criteriaPseudo'] = $text_User_Pseudo;
+            $pseudo_umpty = false;
+
+            $criteriaPseudo = "`user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%' ";
+        }
+
+        if(isset($_POST['Select_User_Type']) && ($_POST['Select_User_Type'] != "Selectionnez un type" && $_POST['Select_User_Type'] != "")){
+
+            $select_User_Type = Utilities::escapeInput($_POST['Select_User_Type']);
+            unset($_POST['Select_User_Type']);
+
+            if($select_User_Type != 'Selectionnez un type'){
+                
+                $MyUser->setCriteriaType($select_User_Type);
+                $_SESSION['user']['criteriaType'] = $select_User_Type;
+                $userType_umpty = false;
+
+                $criteriaType = "`user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
+            }
+        }
+    }elseif($criteria){
+        
+        if($_SESSION['user']['criteriaName'] != ""){
+
+            $MyUser->setCriteriaName($_SESSION['user']['criteriaName']);
+            $name_umpty = false;
+
+            $criteriaName = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%'";
+        }
+
+        if($_SESSION['user']['criteriaPseudo'] != ""){
+
+            $MyUser->setCriteriaPseudo($_SESSION['user']['criteriaPseudo']);
+            $pseudo_umpty = false;
+
+            $criteriaPseudo = "`user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%'";
+        }
+
+        if($_SESSION['user']['criteriaType'] != "Selectionnez un type"){
+
+            $MyUser->setCriteriaType($_SESSION['user']['criteriaType']);
+            $userType_umpty = false;
+
+            $criteriaType = "`user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
+        }
     }
     
-    // Paramètrage de la clause WHERE pour executer la requete SELECT pour rechercher un ou plusieurs contacts
-    
-    $whereClause = "";
+    $whereClause = clauseWhere($name_umpty, $pseudo_umpty, $userType_umpty, $criteriaName, $criteriaPseudo, $criteriaType);
 
-    if($name_umpty === true && $pseudo_umpty === true && $userType_umpty === true){
+    $users = $MyUser->getUserList($whereClause, "'name'", 'ASC', $MyPage->getFirstProduct(), $MyPage->getProductPerPage());
+
+    $_SESSION['pagination']['nbOfProduct'] = User::checkNbOfProduct($whereClause);
+    $_SESSION['pagination']['nbOfPage'] = ceil($_SESSION['pagination']['nbOfProduct'] / $MyPage->getProductPerPage());
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    function clauseWhere(bool $name_umpty, bool $pseudo_umpty, bool $userType_umpty, string $criteriaName, string $criteriaPseudo, string $criteriaType):string{
         
-        $whereClause = 1;
-
-    }else if($name_umpty === false && $pseudo_umpty === false && $userType_umpty === false){
-
-        $whereClause = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%' AND
-                        `user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%' AND
-                        `user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
-
-    }else if($name_umpty === true && $pseudo_umpty === false && $userType_umpty === false){
-
-        $whereClause = "`user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%' AND
-                        `user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
+        if($name_umpty && $pseudo_umpty && $userType_umpty){
         
-    }else if($name_umpty === true && $pseudo_umpty === true && $userType_umpty === false){
+            $whereClause = 1;
 
-        $whereClause = "`user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
-        
-    }else if($name_umpty === true && $pseudo_umpty === false && $userType_umpty === true){
+        }else if(!$name_umpty && !$pseudo_umpty && !$userType_umpty){
 
-        $whereClause = "`user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%'";
+            $whereClause = $criteriaName . ' AND ' . $criteriaPseudo . ' AND ' . $criteriaType;
+                            
+        }else if($name_umpty && !$pseudo_umpty && !$userType_umpty){
 
-    }else if($name_umpty === false && $pseudo_umpty === true && $userType_umpty === false){
+            $whereClause = $criteriaPseudo . ' AND ' . $criteriaType;
+            
+        }else if($name_umpty && $pseudo_umpty && !$userType_umpty){
 
-        $whereClause = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%' AND
-                        `user`.`id_type` = (SELECT `user_type`.`id_type` FROM `user_type` WHERE `user_type`.`type`='" . $_SESSION['user']['criteriaType'] . "')";
-        
-    }else if($name_umpty === false && $pseudo_umpty === true && $userType_umpty === true){
+            $whereClause = $criteriaType;
+            
+        }else if($name_umpty && !$pseudo_umpty && $userType_umpty){
 
-        $whereClause = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%'";
-        
-    }else if($name_umpty === false && $pseudo_umpty === false && $userType_umpty === true){
+            $whereClause = $criteriaPseudo;
 
-        $whereClause = "`user`.`name` LIKE '%" . $_SESSION['user']['criteriaName'] . "%' AND
-                        `user`.`pseudo` LIKE '%" . $_SESSION['user']['criteriaPseudo'] . "%'";
+        }else if(!$name_umpty && $pseudo_umpty && !$userType_umpty){
 
+            $whereClause = $criteriaName . ' AND ' . $criteriaType;
+            
+        }else if(!$name_umpty && $pseudo_umpty && $userType_umpty){
+
+            $whereClause = $criteriaName;
+            
+        }else if(!$name_umpty && !$pseudo_umpty && $userType_umpty){
+
+            $whereClause = $criteriaName . ' AND ' . $criteriaPseudo;
+
+        }
+
+        return $whereClause;
     }
-    
-    if($MyUserForm->getNewUser() === true){
-        $_SESSION['newUser'] = false;
-        $whereClause = 1;
-        $MyUserForm->setNewUser(false);
-    }
-    
-    $_SESSION['whereClause'] =  $whereClause;
-
-    // Executer la requete SELECT pour rechercher les contacts en fonction de la clause WHERE
-    if(!$_SESSION['errorForm'] && !$_SESSION['newUser']){
-        
-        //require_once("../../goldorak/controller/page.controller.php");
-        $users = $MyUser->get($whereClause, 'name', 'ASC', $MyPage->getFirstLine(), $_SESSION['pagination']['productPerPage']);
-    }
-
-    if (isset($_POST['nbOfLine'])){
-		
-        $_POST['nbOfLine'] = null;
-
-	}
 ?>

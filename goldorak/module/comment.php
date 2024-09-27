@@ -7,7 +7,7 @@
     <div class="p-0 m-0">
         
     <?php
-        for($i=0;$i != count($Comment)-1;$i++){ 
+        for($i=0;$i != count($Comment);$i++){ 
     ?>
         <div class="px-0 mb-3">
 
@@ -23,7 +23,7 @@
 
                                 <div class="d-none">
                                     <input type="text" id="txt_comment_id" name="txt_comment_id" readonly value="<?php echo $Comment[$i]['id_comment']; ?>">
-                                    <input type="text" id="txt_local" name="txt_local" readonly value="<?php echo $_SESSION['local']; ?>">
+                                    <input type="text" id="txt_local" name="txt_local" readonly value="<?php echo $_SESSION['other']['local']; ?>">
                                 </div>
 
                                 <div class="col-12 col-sm-5 col-lg-12 col-xxl-5 d-flex mx-0 px-0">
@@ -110,7 +110,7 @@
     <?php
         }
 
-        $local = $_SESSION['local'];
+        $local = $_SESSION['other']['local'];
     ?>
 
     </div>

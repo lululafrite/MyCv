@@ -3,6 +3,7 @@
 
     session_start();
     require_once('../vendor/autoload.php'); // add-on Vendor
+    require_once __DIR__ . '/../vendor/autoload.php'; // add-on Vendor
 
     require_once('../module/variable.php'); // Superglobal variables (mainly from SESSION)
     require_once('../module/head.php'); // Load the marker <head>

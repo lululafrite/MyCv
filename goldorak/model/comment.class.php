@@ -1,157 +1,150 @@
 <?php
-
 	namespace Goldorak\Model;
-	
-	require_once('../../model/dbConnect.class.php');
 
+	$checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']); 
+    if($checkUrl){
+		require_once('../../model/dbConnect.class.php');
+		require_once('../../model/utilities.class.php');
+	}else{
+		require_once('../model/dbConnect.class.php');
+		require_once('../model/utilities.class.php');
+	}
+
+	use MyCv\Model\dbConnect;
+	use MyCv\Model\Utilities;
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
 
 	class Comment
 	{
 		private $id;
-		public function getId()
-		{
+		public function getId():int{
 			return $this->id;
 		}
-		public function setId($new)
-		{
+		public function setId(int $new):void{
 			$this->id = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $date_;
-		public function getDate_()
-		{
-			return $this->date_;
+		private $date;
+		public function getDate():string{
+			return $this->date;
 		}
-		public function setDate_($new)
-		{
-			$this->date_ = $new;
+		public function setDate_(string $new):void{
+			$this->date = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $pseudo;
-		public function getPseudo()
-		{
+		public function getPseudo():string{
 			return $this->pseudo;
 		}
-		public function setPseudo($new)
-		{
+		public function setPseudo(string $new):void{
 			$this->pseudo = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $rating;
-		public function getRating()
-		{
+		public function getRating():int{
 			return $this->rating;
 		}
-		public function setRating($new)
-		{
+		public function setRating(int $new):void{
 			$this->rating = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $comment;
-		public function getComment()
-		{
+		public function getComment():string{
 			return $this->comment;
 		}
-		public function setComment($new)
-		{
+		public function setComment(string $new):void{
 			$this->comment = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $id_member;
-		public function getIdMember()
-		{
+		public function getIdMember():int{
 			return $this->id_member;
 		}
-		public function setIdMember($new)
-		{
+		public function setIdMember(int $new):void{
 			$this->id_member = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $theComment;
-		public function getComments($idComment)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $comments;
+		public function getComments(int $id_comment):array{
+	
+			if(Utilities::checkData('comment','id_comment', $id_comment)){
 
-			date_default_timezone_set($_SESSION['timeZone']);
-			
-			try
-			{
-				// Préparez la requête avec un paramètre
-				$sql = $bdd->prepare("SELECT
-											`comment`.`id_comment`,
-											`comment`.`date_`,
-											`user`.`pseudo` AS `pseudo`,
-											`comment`.`rating`,
-											`comment`.`comment`,
-											`user`.`avatar` AS `avatar`,
-											`comment`.`publication`,
-											`comment`.`id_member`
-										
-										FROM `comment`
+				$bdd = dbConnect::dbConnect(new dbConnect());
+				
+				try{
+					$stmt = $bdd->prepare("SELECT
+												`comment`.`id_comment`,
+												`comment`.`date_`,
+												`user`.`pseudo` AS `pseudo`,
+												`comment`.`rating`,
+												`comment`.`comment`,
+												`user`.`avatar` AS `avatar`,
+												`comment`.`publication`,
+												`comment`.`id_member`
+											
+											FROM `comment`
 
-										LEFT JOIN `user`
-											ON `user`.`id_user` = `comment`.`id_member`
-										LEFT JOIN `user` AS `userAvatar`
-											ON `userAvatar`.`id_user` = `comment`.`id_member`
-										
-										WHERE `comment`.`id_comment` = :idComment");
+											LEFT JOIN `user`
+												ON `user`.`id_user` = `comment`.`id_member`
+											LEFT JOIN `user` AS `userAvatar`
+												ON `userAvatar`.`id_user` = `comment`.`id_member`
+											
+											WHERE `comment`.`id_comment` = :id_comment");
 
-				// Liaison du paramètre
-				$sql->bindParam(':idComment', $idComment, PDO::PARAM_INT);
+					$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
 
-				// Exécution de la requête
-				$sql->execute();
+					$stmt->execute();
 
-				// Récupération du résultat dans un tableau
-				$this->theComment[] = $sql->fetch();
+					$bdd=null;
 
-				// Fermeture de la requête
-				$sql->closeCursor();
+					$this->comments = $stmt->fetch(PDO::FETCH_ASSOC);
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
-				// Retourne le tableau
-				return $this->theComment;
+					return $this->comments;
 
+				}
+				catch (PDOException $e)
+				{
+					$bdd=null;
+
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
+
+					return $this->comments;
+				}
+			}else{
+				$bdd=null;
+
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'The ID is not existent!!!';
+
+				return $this->comments;
 			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
-			}
-
-			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $CommentList;
-		public function get($whereClause, $orderBy = 'date_', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 30)
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
-
-			date_default_timezone_set($_SESSION['timeZone']);
+		private $commentList;
+		public function getCommentList(string $whereClause, string $orderBy = 'date_', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 50):array{
 			
-			try
-			{
-				// Préparez la requête avec les paramètres
-				$sql = $bdd->prepare("SELECT 
+			$bdd = dbConnect::dbConnect(new dbConnect());
+			
+			try{
+				$stmt = $bdd->prepare("SELECT 
 											`comment`.`id_comment`,
 											`comment`.`date_`,
 											`user`.`pseudo` AS `pseudo`,
@@ -168,109 +161,110 @@
 											ON `userAvatar`.`id_user` = `comment`.`id_member`
 										
 										WHERE $whereClause
-										ORDER BY $orderBy $ascOrDesc
-										LIMIT :firstLine, :linePerPage
-									");
+										ORDER BY :orderBy :ascOrDesc
+										LIMIT :firstLine, :linePerPage");
 
-				// Liaison des paramètres
-				$sql->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
-				$sql->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
+				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
+				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
 
-				// Exécution de la requête
-				$sql->execute();
+				$stmt->execute();
+
+				$bdd=null;
 				
-				while ($this->CommentList[] = $sql->fetch());
+				$this->commentList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
-				// Fermeture de la requête
-				$sql->closeCursor();
-
-				// Retourne le tableau
-				return $this->CommentList;
-
+				return $this->commentList;
 			}
 			catch (PDOException $e)
 			{
-				echo "Erreur de la requete :" . $e->GetMessage();
-			}
+				$bdd=null;
+				
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 
-			$bdd=null;
+				return $this->commentList;
+			}
 		}
 
 		//-----------------------------------------------------------------------
-		private $idComment;
-		public function addComment()
-		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
+		private $insertComment;
+		public function insertComment():array{
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try{
-
-				// Requête préparée
-				$query = $bdd->prepare("SELECT `comment`.`id_comment`
+				$stmt = $bdd->prepare("SELECT `comment`.`id_comment`
 										FROM  `comment`
-										WHERE `comment`.`date_` = :date_
+										WHERE `comment`.`date_` = :date
 										AND `comment`.`pseudo` = :pseudo
 										AND `comment`.`rating` = :rating
 										AND `comment`.`comment` = :comment"
 										);
 
-				// Liaison des valeurs
-				$query->bindParam(':date_', $this->date_);
-				$query->bindParam(':pseudo', $this->pseudo);
-				$query->bindParam(':rating', $this->rating);
-				$query->bindParam(':comment', $this->comment);
+				$stmt->bindParam(':date', $this->date);
+				$stmt->bindParam(':pseudo', $this->pseudo);
+				$stmt->bindParam(':rating', $this->rating);
+				$stmt->bindParam(':comment', $this->comment);
 
-				// Exécution de la requête
-				$query->execute();
+				$stmt->execute();
 
-				// Récupération du résultat
-				$result = $query->fetch(PDO::FETCH_ASSOC);
+				$this->insertComment = $stmt->fetch(PDO::FETCH_ASSOC);
 
-				if (!$result) {
+				if (!$this->insertComment) {
 
-					$query = $bdd->prepare("INSERT INTO `comment` (`date_`, `pseudo`, `rating`, `comment`, `id_member`)
-                        VALUES (:date_, :pseudo, :rating, :comment, (SELECT id_user FROM user WHERE `pseudo` = :pseudo))
-                    ");
+					$stmt = $bdd->prepare("INSERT INTO `comment` (`date_`,
+																	`pseudo`,
+																	`rating`,
+																	`comment`,
+																	`id_member`)
+                        					VALUES (:date_,
+													:pseudo,
+													:rating,
+													:comment,
+													(SELECT id_user FROM user WHERE `pseudo` = :pseudo))");
 
-					// Liaison des valeurs
-					$query->bindParam(':date_', $this->date_);
-					$query->bindParam(':pseudo', $this->pseudo);
-					$query->bindParam(':rating', $this->rating);
-					$query->bindParam(':comment', $this->comment);
+					$stmt->bindParam(':date', $this->date);
+					$stmt->bindParam(':pseudo', $this->pseudo);
+					$stmt->bindParam(':rating', $this->rating);
+					$stmt->bindParam(':comment', $this->comment);
 
-					// Exécution de la requête
-					$query->execute();
+					$stmt->execute();
 
+					$stmt = $bdd->prepare("SELECT MAX(`id_comment`) AS id_comment FROM `comment`");
+
+					$stmt->execute();
 					
-					$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					$sql = $bdd->query("SELECT MAX(`id_comment`) AS idMax FROM `comment`");
-					$result = $sql->fetch(PDO::FETCH_ASSOC);
-					$this->id = $result['idMax'];
+					$bdd=null;
 
-					echo '<script>alert("L\'enregistrement est effectué!");</script>';
+					$this->insertComment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'The data is inserted correctly!!!';
+
+					return $this->insertComment;
 				}
 
 			}catch (PDOException $e){
-				
-				echo "Erreur de la requête : " . $e->getMessage();
+				$bdd=null;
 
+				$this->insertComment['id_comment'] = 0;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
+
+				return $this->insertComment;
 			}
-
-			$bdd=null;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function updateComment($idComment)
+		public function updateComment(int $idComment)
 		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
@@ -283,7 +277,7 @@
 				WHERE `id_comment` = :idComment");
 
 				// Liaison des valeurs
-				$query->bindParam(':date_', $this->date_);
+				$query->bindParam(':date_', $this->date);
 				$query->bindParam(':pseudo', $this->pseudo);
 				$query->bindParam(':rating', $this->rating);
 				$query->bindParam(':comment', $this->comment);
@@ -304,13 +298,10 @@
 
 		//-----------------------------------------------------------------------
 
-		public function modereComment($idComment, $publication)
+		public function modereComment(int $idComment, string $publication)
 		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try
 			{
@@ -339,13 +330,10 @@
 
 		//-----------------------------------------------------------------------
 		
-		public function deleteComment($id)
+		public function deleteComment(int $id)
 		{
-			$myDbConnect = new dbConnect();
-			$bdd = $myDbConnect->connectionDb();
-            unset($myDbConnect);
 
-			date_default_timezone_set($_SESSION['timeZone']);
+			$bdd = dbConnect::dbConnect(new dbConnect());
 
 			try {
 				// Requête préparée pour la sélection

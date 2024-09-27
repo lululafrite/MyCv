@@ -1,5 +1,3 @@
-<?php require_once('../common/utilies.php'); ?>
-
 <div class="d-flex justify-content-center bg-body-tertiary py-2">
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary p-0 m-0">

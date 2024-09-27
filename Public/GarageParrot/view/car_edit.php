@@ -7,7 +7,7 @@
     <form action="" method="post" id="formCarEdit" enctype="multipart/form-data">
 
         <!-- input hidden csrf -->
-        <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+        <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
         <table class="w-100">
 
@@ -918,4 +918,4 @@
 
 </section>
 
-<script src="../js/car_edit.js"></script>
+<script src="../js/carEdit.js"></script>

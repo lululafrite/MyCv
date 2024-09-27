@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    $local = isset($_SESSION['local']) ? $_SESSION['local'] : false;
+    $local = isset($_SESSION['other']['local']) ? $_SESSION['other']['local'] : false;
     settype($local, "boolean");
 
     if($local){

@@ -1,8 +1,8 @@
 <?php
 
-	namespace User\Model;
+	namespace GarageParrot\Model;
 
-	class UserForm
+	class CarForm
 	{
 		private $btnNavBarInsert = false;
 		public function getBtnNavBarInsert():bool{
@@ -14,12 +14,12 @@
 
 		//-----------------------------------------------------------------------
 
-		private $btnUserEdit = false;
-		public function getBtnUserEdit():bool{
-			return $this->btnUserEdit;
+		private $btnCarEdit = false;
+		public function getBtnCarEdit():bool{
+			return $this->btnCarEdit;
 		}
-		public function setBtnUserEdit(bool $new):void{
-			$this->btnUserEdit = $new;
+		public function setBtnCarEdit(bool $new):void{
+			$this->btnCarEdit = $new;
 		}
 
 		//-----------------------------------------------------------------------
@@ -74,82 +74,73 @@
 
 		//-----------------------------------------------------------------------
 
-		private $btnAvatar = false;
-		public function getBtnAvatar():bool{
-			return $this->btnAvatar;
+		private $btnImage1 = false;
+		public function getBtnImage1():bool{
+			return $this->btnImage1;
 		}
-		public function setBtnAvatar(bool $new):void{
-			$this->btnAvatar = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $btnVenesia = false;
-		public function getBtnVenusia():bool{
-			return $this->btnVenesia;
-		}
-		public function setBtnVenusia(bool $new):void{
-			$this->btnVenesia = $new;
+		public function setBtnImage1(bool $new):void{
+			$this->btnImage1 = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $btnActarus = false;
-		public function getBtnActarus():bool{
-			return $this->btnActarus;
+		private $btnImage2 = false;
+		public function getBtnImage2():bool{
+			return $this->btnImage2;
 		}
-		public function setBtnActarus(bool $new):void{
-			$this->btnActarus = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $btnGoldorak = false;
-		public function getBtnGoldorak():bool{
-			return $this->btnGoldorak;
-		}
-		public function setBtnGoldorak(bool $new):void{
-			$this->btnGoldorak = $new;
+		public function setBtnImage2(bool $new):void{
+			$this->btnImage2 = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $btnMonCompte = false;
-		public function getBtnMonCompte():bool{
-			return $this->btnMonCompte;
+		private $btnImage3 = false;
+		public function getBtnImage3():bool{
+			return $this->btnImage3;
 		}
-		public function setBtnMonCompte(bool $new):void{
-			$this->btnMonCompte = $new;
+		public function setBtnImage3(bool $new):void{
+			$this->btnImage3 = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $userEditNewError = false;
+		private $btnImage4 = false;
+		public function getBtnImage4():bool{
+			return $this->btnImage4;
+		}
+		public function setBtnImage4(bool $new):void{
+			$this->btnImage4 = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $btnImage5 = false;
+		public function getBtnImage5():bool{
+			return $this->btnImage5;
+		}
+		public function setBtnImage5(bool $new):void{
+			$this->btnImage5 = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $carEditNewError = false;
 		public function getNewError():bool{
-			return $this->userEditNewError;
+			return $this->carEditNewError;
 		}
 		public function setNewError(bool $new):void{
-			$this->userEditNewError = $new;
+			$this->carEditNewError = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $newUser = false;
-		public function getNewUser():bool{
-			return $this->newUser;
+		private $newCar = false;
+		public function getNewCar():bool{
+			return $this->newCar;
 		}
-		public function setNewUser(bool $new):void{
-			$this->newUser = $new;
+		public function setNewCar(bool $new):void{
+			$this->newCar = $new;
 		}
 
-		//-----------------------------------------------------------------------
-
-		private $newMember = false;
-		public function getNewMember():bool{
-			return $this->newMember;
-		}
-		public function setNewMember(bool $new):void{
-			$this->newMember = $new;
-		}
 	}
 ?>

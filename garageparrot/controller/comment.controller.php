@@ -1,13 +1,21 @@
 <?php
-    use GarageParrot\Model\Comment;
+    
+    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
+    if($checkUrl){
+        require_once('../../model/utilities.class.php');
+        require_once('../../garageparrot/model/comment.class.php');
+    }else{
+        require_once('../model/utilities.class.php');
+        require_once('../garageparrot/model/comment.class.php');
+    }
 
-    require_once('../../common/utilies.php');
-    require_once('../../garageparrot/model/comment.class.php');
+    use GarageParrot\Model\Comment;
+    use MyCv\Model\Utilities;
 
     $comments = new Comment();
 
     // Vérification du token CSRF
-    if(verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ //(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if(isset($_POST['bt_save_comment'])){
             
@@ -23,10 +31,9 @@
             
             $comments->deleteComment(isset($_POST['txt_comment_id']) ? filterInput('txt_comment_id') : '');
             unset($_POST['bt_comment_delete']);
-
         }
 
     }
 
-    $Comment = $comments->get(1,'date_','DESC','0','50');
+    $Comment = $comments->getCommentList(1,'date_','DESC','0','50');
 ?>

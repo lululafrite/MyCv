@@ -1,9 +1,13 @@
-<?php require_once ("../../goldorak/controller/home.controller.php");?>
+<?php
+    require_once ("../../goldorak/controller/home.controller.php");
+    require_once ("../../model/utilities.class.php");
+    use MyCv\Model\Utilities;
+?>
 
 <form method="post" id="formHome"  enctype="multipart/form-data">
     
     <!-- input hidden csrf -->
-    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf'];?>">
+    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
     <!-- start of data save message -->
 
@@ -18,10 +22,10 @@
     <div class="text-center">
         </br>
         <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
-            <h2><?php echo escapeInput($home[0]['titre1']); ?></h2>
+            <h2><?php echo Utilities::escapeInput($home['titre1']); ?></h2>
         <?php } ?>
         <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
-            <h2><input class="text-center" type="text" name="txt_titre1" id="txt_titre1" value="<?php echo escapeInput($home[0]['titre1']); ?>"></h2>
+            <h2><input class="text-center" type="text" name="txt_titre1" id="txt_titre1" value="<?php echo Utilities::escapeInput($home['titre1']); ?>"></h2>
         <?php } ?>
         </br>
     </div>
@@ -43,10 +47,10 @@
                             <!-- Start Titre chapter1 -->
 
                             <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
-                                <h3><?php echo escapeInput($home[0]['titre_chapter1']); ?></h3>
+                                <h3><?php echo Utilities::escapeInput($home['titre_chapter1']); ?></h3>
                             <?php } ?>
                             <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
-                                <h3><input type="text" id="txt_titre_chapter1"  name="txt_titre_chapter1" value="<?php echo escapeInput($home[0]['titre_chapter1']); ?>"></h3>
+                                <h3><input type="text" id="txt_titre_chapter1"  name="txt_titre_chapter1" value="<?php echo Utilities::escapeInput($home['titre_chapter1']); ?>"></h3>
                             <?php } ?>
 
                             <!-- End Titre chapter1 -->
@@ -56,7 +60,7 @@
                             <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
                                 <p class="p-0" style="text-align: justify;">
-                                    <?php echo escapeInput($home[0]['chapter1']); ?>
+                                    <?php echo Utilities::escapeInput($home['chapter1']); ?>
                                 </p>
 
                             <?php } ?>
@@ -65,7 +69,7 @@
                                 
                                 <p class="p-0" style="text-align: justify;">
 <textarea name="txt_chapter1" id="txt_chapter1" cols="1" rows="12">
-<?php echo escapeInput($home[0]['chapter1']); ?>
+<?php echo Utilities::escapeInput($home['chapter1']); ?>
 </textarea>
                                 </p>
 
@@ -81,7 +85,7 @@
                                                     <input class="form-control-lg bg-transparent text-light m-0 p-0 border border-black" id="txt_img_chapter1" name="txt_img_chapter1" type="text" placeholder="Saisissez le nom de l'image" readonly style="font-size: 1.6rem;" oninput="validateInput('txt_img_chapter1','','labelMessageimg_chapter1','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
                                                         value=
                                                         "<?php
-                                                            echo escapeInput($home[0]['img_chapter1']);
+                                                            echo Utilities::escapeInput($home['img_chapter1']);
                                                         ?>"
                                                     >
                                                 </div>
@@ -107,7 +111,7 @@
                         <!-- Start image Chapter 1 -->
 
                         <div class="d-none d-sm-block">
-                            <img class="ms-3" id="img_chapter1" name="img_chapter1" src="img/picture/<?php echo escapeInput($home[0]['img_chapter1']); ?>" alt="Goldorak et Actarus" style="width:200px; height: 350px; object-fit: cover;">
+                            <img class="ms-3" id="img_chapter1" name="img_chapter1" src="img/picture/<?php echo Utilities::escapeInput($home['img_chapter1']); ?>" alt="Goldorak et Actarus" style="width:200px; height: 350px; object-fit: cover;">
                         </div>
 
                         <!-- End image Chapter 1 -->
@@ -165,7 +169,7 @@
                 <!-- Start image Chapter 2 -->
 
                 <div class="d-none d-sm-block pt-3 pe-3 mb-3">
-                    <img class="ms-3" id="img_chapter2" name="img_chapter2" src="img/picture/<?php echo escapeInput($home[0]['img_chapter2']); ?>" alt="Goldorak et Actarus" style="width:150px; height: 150px; object-fit: cover;">
+                    <img class="ms-3" id="img_chapter2" name="img_chapter2" src="img/picture/<?php echo Utilities::escapeInput($home['img_chapter2']); ?>" alt="Goldorak et Actarus" style="width:150px; height: 150px; object-fit: cover;">
                 </div>
 
                 <!-- End image Chapter 2 -->
@@ -175,10 +179,10 @@
                 <!-- Start Titre Chapter 2 -->
 
                     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
-                        <h3><?php echo escapeInput($home[0]['titre_chapter2']); ?></h3>
+                        <h3><?php echo Utilities::escapeInput($home['titre_chapter2']); ?></h3>
                     <?php } ?>
                     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
-                        <h3><input type="text" name="txt_titre_chapter2" id="txt_titre_chapter2" value="<?php echo escapeInput($home[0]['titre_chapter2']); ?>"></h3>
+                        <h3><input type="text" name="txt_titre_chapter2" id="txt_titre_chapter2" value="<?php echo Utilities::escapeInput($home['titre_chapter2']); ?>"></h3>
                     <?php } ?>
 
                 <!-- End Titre Chapter 2 -->
@@ -187,13 +191,13 @@
 
                     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
                         <p class="p-0 m-0" style="text-align: justify;">
-                            <?php echo escapeInput($home[0]['chapter2']); ?>
+                            <?php echo Utilities::escapeInput($home['chapter2']); ?>
                         </p>
                     <?php } ?>
                     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
                         <p class="p-0" style="text-align: justify;">
 <textarea name="txt_chapter2" id="txt_chapter2" cols="1" rows="5">
-<?php echo escapeInput($home[0]['chapter2']); ?>
+<?php echo Utilities::escapeInput($home['chapter2']); ?>
 </textarea>
                         </p>
 
@@ -209,7 +213,7 @@
                                             <input class="form-control-lg bg-transparent text-light m-0 p-0 border border-black" id="txt_img_chapter2" name="txt_img_chapter2" type="text" placeholder="Saisissez le nom de l'image" readonly style="font-size: 1.6rem;" oninput="validateInput('txt_img_chapter2','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
                                                 value=
                                                 "<?php
-                                                    echo escapeInput($home[0]['img_chapter2']);
+                                                    echo Utilities::escapeInput($home['img_chapter2']);
                                                 ?>"
                                             >
                                         </div>

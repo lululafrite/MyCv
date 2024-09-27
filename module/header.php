@@ -1,4 +1,9 @@
-<?php require_once ("../controller/home.controller.php");?>
+<?php
+    require_once('../model/utilities.class.php'); // Utilities
+    require_once ("../controller/home.controller.php");
+
+    use MyCv\Model\Utilities;
+?>
 
 <div class="container-fluid m-0 p-0 fixed-top">
         <?php require_once('../module/navBar.php'); ?>
@@ -12,7 +17,7 @@
         <input
             type="hidden"
             name="csrf"
-            value="<?php echo $_SESSION['csrf'];?>"
+            value="<?php echo $_SESSION['token']['csrf'];?>"
         >
 
         <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -29,8 +34,8 @@
 
                             <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
-                                <h2 class="titleHeader"><?php echo escapeInput($home[0]['home_title']); ?></h2>
-                                <p class="subTitleHeader"><?php echo escapeInput($home[0]['home_subtitle']); ?></p>
+                                <h2 class="titleHeader"><?php echo Utilities::escapeInput($home['home_title']); ?></h2>
+                                <p class="subTitleHeader"><?php echo Utilities::escapeInput($home['home_subtitle']); ?></p>
 
                             <?php }else if ($_SESSION['dataConnect']['type']==='Administrator'){ ?>
 
@@ -41,7 +46,7 @@
                                         type="text"
                                         id="text_home_title"
                                         name="text_home_title"
-                                        value="<?php echo escapeInput($home[0]['home_title']); ?>"
+                                        value="<?php echo Utilities::escapeInput($home['home_title']); ?>"
                                     >
 
                                 </h2>
@@ -53,7 +58,7 @@
                                         type="text"
                                         id="text_home_subtitle"
                                         name="text_home_subtitle"
-                                        value="<?php echo escapeInput($home[0]['home_subtitle']); ?>"
+                                        value="<?php echo Utilities::escapeInput($home['home_subtitle']); ?>"
                                     >
 
                                 </p>
@@ -118,7 +123,7 @@
 
             <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
-                <h2 class="pb-5"><?php echo escapeInput($home[0]['home_title_page']); ?></h2>
+                <h2 class="pb-5"><?php echo Utilities::escapeInput($home['home_title_page']); ?></h2>
 
             <?php } ?>
 
@@ -141,7 +146,7 @@
                                     name="text_home_title_page"
                                     id="text_home_title_page"
                                     style="width:100%; height: 40px;"
-                                    value="<?php echo escapeInput($home[0]['home_title_page']); ?>"
+                                    value="<?php echo Utilities::escapeInput($home['home_title_page']); ?>"
                                 >
                             </h2>
 
