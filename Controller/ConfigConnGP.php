@@ -31,7 +31,7 @@
 				$BD_PORT = '3306';
 			}
 
-		}else if(preg_match($garageParrot, $current_url)){
+		}elseif(preg_match($garageParrot, $current_url)){
 			
 			if($local){
 				$DB_HOST = 'localhost';

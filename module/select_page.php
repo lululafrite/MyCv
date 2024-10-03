@@ -1,3 +1,5 @@
+<?php //require_once('../controller/page.controller.php'); ?>
+
 <div class="container">
 
     <section class="d-flex flex-column flex-sm-row justify-content-center align-items-center p-3 bgDark border border-secondary border-3 rounded-4">

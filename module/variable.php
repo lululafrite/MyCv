@@ -1,16 +1,6 @@
 <?php
 
-    $timeExpired = preg_match('/timeExpired/', $_SERVER['REQUEST_URI']);
-    $goldorak = preg_match('/goldorak/', $_SERVER['REQUEST_URI']);
-    $garageParrot = preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
-
-    $checkPath = $goldorak || $garageParrot;
-
-    if($checkPath && !$timeExpired){
-        require_once '../../model/utilities.class.php';
-    }else{
-        require_once '../model/utilities.class.php';
-    }
+    require_once '../model/utilities.class.php';
 
     use MyCv\Model\Utilities;
 
@@ -27,7 +17,7 @@
         resetUploadImgVarSession();
         //resetOtherVarSession();
         resetTokenJwtVarSession();
-        $_SESSION['token']['csrf'] = "93082d283829273c47737cd555841ce33af04a29c791c2424df8e0f74a6d3afb";
+        $_SESSION['token']['csrf'] = bin2hex(random_bytes(32));
     }
 
 /********************** Functions reset variables ********************* */

@@ -2,12 +2,7 @@
 
 	namespace User\Model;
 
-    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
-    if($checkUrl){
-		require_once('../../model/dbConnect.class.php');
-    }else{
-		require_once('../model/dbConnect.class.php');
-    }
+    require_once('../model/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;

@@ -2,12 +2,7 @@
 
 	namespace MyCv\Model;
 
-	$checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']); 
-    if($checkUrl){
-		require_once('../../model/utilities.class.php');
-	}else{
-		require_once('../model/utilities.class.php');
-	}
+	require_once('../model/utilities.class.php');
 
 	use MyCv\Model\Utilities;
 	use \PDO;
@@ -17,7 +12,7 @@
 	{
 		private static function connectDb(): PDO{
 			
-			$local = Utilities::verifIfLocal();
+			$local = Utilities::checkIfLocal();
 			if($local){
 				$DB_HOST = 'localhost';
 				$DB_USER = 'root';
@@ -46,7 +41,7 @@
 					$DB_USER = 'dbu510923';
 				}
 
-			}else if($checkUrlGoldorak){
+			}elseif($checkUrlGoldorak){
 				
 				if($local){
 					$DB_NAME = 'goldorak';
@@ -57,7 +52,7 @@
 					$DB_USER = 'dbu4075604';
 				}
 
-			}else if($checkUrlGarageParrot){
+			}elseif($checkUrlGarageParrot){
 				
 				if($local){
 					$DB_NAME = 'garage_parrot';
@@ -100,7 +95,7 @@
 
 		private static function connectDbGP():PDO{
 			
-			$local = Utilities::verifIfLocal();
+			$local = Utilities::checkIfLocal();
 				
 				if($local){
 					$DB_HOST = 'localhost';

@@ -1,29 +1,14 @@
 <?php
 
-    $current_url = $_SERVER['REQUEST_URI'];
-    $goldorak = '/goldorak/';
-    $garageParrot = '/garageparrot/';
-
-    if(preg_match($goldorak, $current_url) || preg_match($garageParrot, $current_url)){
-        require_once('../../model/utilities.class.php');
-        require_once('../../model/user.class.php');
-        require_once('../../model/userForm.class.php');        
-        require_once("../../controller/page.controller.php");
-
-    }else{
-        require_once('../model/utilities.class.php');
-        require_once('../model/user.class.php');
-        require_once('../model/userForm.class.php');        
-        require_once("../controller/page.controller.php");
-    }
+    require_once('../model/utilities.class.php');
+    require_once('../model/user.class.php');
+    require_once("../controller/page.controller.php");
 
     use \User\Model\User;
-    use \User\Model\UserForm;
     use MyCv\Model\Utilities;
 
 
     $MyUser = new User();
-    $MyUserForm = new UserForm();
 
     $name_umpty = true;
     $pseudo_umpty = true;
@@ -43,7 +28,7 @@
         
         if((isset($_POST['Text_User_Nom']) && $_POST['Text_User_Nom'] != "") || $_SESSION['user']['criteriaName'] != ""){
 
-            $text_User_Nom = Utilities::escapeInput($_POST['Text_User_Nom']);
+            $text_User_Nom = Utilities::filterInput('Text_User_Nom');
             unset($_POST['Text_User_Nom']);
 
             $MyUser->setCriteriaName($text_User_Nom);
@@ -55,7 +40,7 @@
 
         if(isset($_POST['Text_User_Pseudo']) && $_POST['Text_User_Pseudo'] != ""){
 
-            $text_User_Pseudo = Utilities::escapeInput($_POST['Text_User_Pseudo']);
+            $text_User_Pseudo = Utilities::filterInput('Text_User_Pseudo');
             unset($_POST['Text_User_Pseudo']);
 
             $MyUser->setCriteriaPseudo($text_User_Pseudo);
@@ -67,7 +52,7 @@
 
         if(isset($_POST['Select_User_Type']) && ($_POST['Select_User_Type'] != "Selectionnez un type" && $_POST['Select_User_Type'] != "")){
 
-            $select_User_Type = Utilities::escapeInput($_POST['Select_User_Type']);
+            $select_User_Type = Utilities::filterInput('Select_User_Type');
             unset($_POST['Select_User_Type']);
 
             if($select_User_Type != 'Selectionnez un type'){
@@ -110,6 +95,8 @@
 
     $users = $MyUser->getUserList($whereClause, "'name'", 'ASC', $MyPage->getFirstProduct(), $MyPage->getProductPerPage());
 
+    //require_once("../controller/page.controller.php");
+
     $_SESSION['pagination']['nbOfProduct'] = User::checkNbOfProduct($whereClause);
     $_SESSION['pagination']['nbOfPage'] = ceil($_SESSION['pagination']['nbOfProduct'] / $MyPage->getProductPerPage());
 
@@ -121,31 +108,31 @@
         
             $whereClause = 1;
 
-        }else if(!$name_umpty && !$pseudo_umpty && !$userType_umpty){
+        }elseif(!$name_umpty && !$pseudo_umpty && !$userType_umpty){
 
             $whereClause = $criteriaName . ' AND ' . $criteriaPseudo . ' AND ' . $criteriaType;
                             
-        }else if($name_umpty && !$pseudo_umpty && !$userType_umpty){
+        }elseif($name_umpty && !$pseudo_umpty && !$userType_umpty){
 
             $whereClause = $criteriaPseudo . ' AND ' . $criteriaType;
             
-        }else if($name_umpty && $pseudo_umpty && !$userType_umpty){
+        }elseif($name_umpty && $pseudo_umpty && !$userType_umpty){
 
             $whereClause = $criteriaType;
             
-        }else if($name_umpty && !$pseudo_umpty && $userType_umpty){
+        }elseif($name_umpty && !$pseudo_umpty && $userType_umpty){
 
             $whereClause = $criteriaPseudo;
 
-        }else if(!$name_umpty && $pseudo_umpty && !$userType_umpty){
+        }elseif(!$name_umpty && $pseudo_umpty && !$userType_umpty){
 
             $whereClause = $criteriaName . ' AND ' . $criteriaType;
             
-        }else if(!$name_umpty && $pseudo_umpty && $userType_umpty){
+        }elseif(!$name_umpty && $pseudo_umpty && $userType_umpty){
 
             $whereClause = $criteriaName;
             
-        }else if(!$name_umpty && !$pseudo_umpty && $userType_umpty){
+        }elseif(!$name_umpty && !$pseudo_umpty && $userType_umpty){
 
             $whereClause = $criteriaName . ' AND ' . $criteriaPseudo;
 

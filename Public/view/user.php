@@ -1,15 +1,31 @@
 <?php
-    require_once('../../model/utilities.class.php');
+
+	$urlImg = '../img/avatar/';
+    if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
+
+		$urlImg = '../img/goldorak/avatar/';
+        /*require_once('../controller/user.controller.php');
+        require_once('../model/utilities.class.php');*/
+
+	}if(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
+
+		$urlImg = '../img/garageparrot/avatar/';
+        /*require_once('../../controller/user.controller.php');
+        require_once('../../model/utilities.class.php');*/
+	}
+
+    require_once('../controller/user.controller.php');
+    require_once('../model/utilities.class.php');
+
     use MyCv\Model\Utilities;
-    require_once('../../controller/user.controller.php');
 ?>
 
 <div class="mt-5">
-    <?php require_once('../../module/searchUser.php'); ?>
+    <?php require_once('../module/searchUser.php'); ?>
 </div>
 
 <div class="mt-3">
-    <?php require_once('../../module/select_page.php'); ?>
+    <?php require_once('../module/select_page.php'); ?>
 </div>
 
 <div class="container">
@@ -23,7 +39,7 @@
         <form action="index.php?page=userEdit" method="post">
 
             <div class="d-flex justify-content-center div__Car--img mt-3">
-                <img src="img/avatar/<?php echo Utilities::escapeInput($users[$i]['avatar']); ?>" alt="Avatar de l'utilisateur" style="width:70px; height: 70px; object-fit: cover;">
+                <img src= "<?php echo $urlImg . Utilities::escapeInput($users[$i]['avatar']); ?>" alt="Avatar de l'utilisateur" style="width:70px; height: 70px; object-fit: cover;">
             </div>
 
             <div class="div__user--img">
@@ -113,5 +129,5 @@
 </div>
 
 <div class="mb-5">
-    <?php require('../../module/select_page.php'); ?>
+    <?php require('../module/select_page.php'); ?>
 </div>

@@ -1,27 +1,16 @@
 <?php
 
-    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
-    if($checkUrl){
-        require_once('../../model/user.class.php');
-        require_once('../../model/userForm.class.php');
-        require_once('../../model/type.class.php');
-        require_once('../../model/subscription.class.php');
-        require_once('../../model/utilities.class.php');
-
-    }else{
-        require_once('../model/user.class.php');
-        require_once('../model/userForm.class.php');
-        require_once('../model/type.class.php');
-        require_once('../model/subscription.class.php');
-        require_once('../model/utilities.class.php');
-    }
+    require_once('../model/user.class.php');
+    require_once('../model/userForm.class.php');
+    require_once('../model/type.class.php');
+    require_once('../model/subscription.class.php');
+    require_once('../model/utilities.class.php');
 
     use \User\Model\User;
     use \User\Model\UserForm;
     use \User\Model\Type As UserType;
     use \User\Model\Subscription;
     use MyCv\Model\Utilities;
-
     
     $MyUser = new User();
     $MyUserForm = new UserForm();
@@ -30,10 +19,22 @@
     $MyTypes = array();
     $MySubscription = array();
     $btnUpdate = false; settype($btnUpdate, 'boolean');
+    
+    $urlImg = '../img/avatar/';
+    if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
+
+        $urlImg = '../img/goldorak/avatar/';
+
+    }elseif(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
+    
+        $urlImg = '../img/garageparrot/avatar/';
+    
+    }
 
 //***********************************************************************************************
 // Echapper les variables $_POST
 //***********************************************************************************************
+
     resetOtherVarSession();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -87,7 +88,7 @@
 
         $MyUserForm->setBtnInsert(true);
 
-    }else if($MyUserForm->getBtnActarus()){
+    }elseif($MyUserForm->getBtnActarus()){
         
         $_SESSION['dataConnect']['subscription'] = 'Actarus';
         $MyUser->setSubscription('Actarus');
@@ -97,7 +98,7 @@
 
         $MyUserForm->setBtnInsert(true);
 
-    }else if($MyUserForm->getBtnGoldorak()){
+    }elseif($MyUserForm->getBtnGoldorak()){
         
         $_SESSION['dataConnect']['subscription'] = 'Goldorak';
         $MyUser->setSubscription('Goldorak');
@@ -122,10 +123,15 @@
 
         return;
 
-    }else if($btnUpdate){
-
-        if(Utilities::verifCsrf('csrf')){
+    }elseif($btnUpdate){
+        
+        if(!Utilities::ckeckCsrf()){
             
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            die($_SESSION['other']['message']);
+
+        }else{
+
             if($MyUser->getId() === 0){
 
                 if(empty($MyUser->getType())){
@@ -201,7 +207,7 @@
             }
         }
 
-    }else if($MyUserForm->getBtnMonCompte()){ //Button in the navigation bar
+    }elseif($MyUserForm->getBtnMonCompte()){ //Button in the navigation bar
         
         $MyUser->setId($_SESSION['dataConnect']['id_user']);
 
@@ -216,7 +222,7 @@
 
         return;
 
-    }else if($MyUserForm->getBtnInsert() || $MyUserForm->getBtnNavBarInsert()){
+    }elseif($MyUserForm->getBtnInsert() || $MyUserForm->getBtnNavBarInsert()){
         
         $subscription = 'Vénusia'; settype($subscription, 'string');
         if(empty($MyUser->getSubscription())){
@@ -234,55 +240,63 @@
         
         return;
 
-    }else if($MyUserForm->getBtnDelete()){
-
-        $deleteUser = $MyUser->deleteUser($MyUser->getId());
+    }elseif($MyUserForm->getBtnDelete()){
         
-        if (!$_SESSION['other']['error']){
-                
-            resetUserVar($MyUser, $MyUserForm);
-            $users = initTabUser($users, $MyUser, $MyUserForm);
-            $users['message'] = $_SESSION['other']['message'];
-
-            if($_SESSION['dataConnect']['type'] === 'Member'){
-
-                resetDataConnectVarSession();
-
-            }
-
-            $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
+        if(!Utilities::ckeckCsrf()){
             
-            if($_SESSION['dataConnect']['type'] === 'Administrator'){
-                Utilities::redirectToPage('user');
-            }else{
-                Utilities::redirectToPage('home');
-            }
+            $users = initTabUser($users, $MyUser, $MyUserForm);
+            die($_SESSION['other']['message']);
 
         }else{
-            
-            $users = initTabUser($users, $MyUser, $MyUserForm);
-            $users['message'] = $_SESSION['other']['message'];
-            
-            $MyType = myType();
-            $MySubscription = mySubscription();
 
-            return;
+            $deleteUser = $MyUser->deleteUser($MyUser->getId());
+            
+            if (!$_SESSION['other']['error']){
+                    
+                resetUserVar($MyUser, $MyUserForm);
+                $users = initTabUser($users, $MyUser, $MyUserForm);
+                $users['message'] = $_SESSION['other']['message'];
+
+                if($_SESSION['dataConnect']['type'] === 'Member'){
+
+                    resetDataConnectVarSession();
+
+                }
+
+                $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
+                
+                if($_SESSION['dataConnect']['type'] === 'Administrator'){
+                    Utilities::redirectToPage('user');
+                }else{
+                    Utilities::redirectToPage('home');
+                }
+
+            }else{
+                
+                $users = initTabUser($users, $MyUser, $MyUserForm);
+                $users['message'] = $_SESSION['other']['message'];
+                
+                $MyType = myType();
+                $MySubscription = mySubscription();
+
+                return;
+            }
+
         }
 
-    }else if($MyUserForm->getBtnCancel()){
+    }elseif($MyUserForm->getBtnCancel()){
         
         Utilities::redirectToPage('user');
 
-    }else if($MyUserForm->getBtnAvatar()){
+    }elseif($MyUserForm->getBtnAvatar()){
 
-        if (uploadImg('uploadAvatar','txt_userEdit_avatar','fileAvatar','./img/avatar/')){
+        if (Utilities::uploadImg('user', 'uploadAvatar','txt_userEdit_avatar','fileAvatar', $urlImg)){
             
             if($MyUserForm->getBtnMonCompte()){
                 $_SESSION['dataConnect']['avatar'] = $_SESSION['user']['uploadAvatar'];
             }
 
             $MyUser->setAvatar($_SESSION['user']['uploadAvatar']);
-            $_SESSION['dataConnect']['avatar'] = $_SESSION['user']['uploadAvatar'];
             
             $users = initTabUser($users, $MyUser, $MyUserForm);
             $users['message'] = "L'image a été téléchargée avec succès.";

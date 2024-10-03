@@ -1,13 +1,13 @@
 <?php
-    require_once('../../controller/userEdit.controller.php');
-    require_once('../../model/utilities.class.php');
+    require_once('../controller/userEdit.controller.php');
+    require_once('../model/utilities.class.php');
 
     use MyCv\Model\Utilities;
 ?>
 
 <section class="container">
     
-    <div id="sessionValue" data-local="<?php echo isset($_SESSION['other']['local']) ? $_SESSION['other']['local'] : ''; ?>"></div>
+    <div id="sessionValue" data-local="<?php echo isset($_SESSION['other']['local']) ? Utilities::escapeInput($_SESSION['other']['local']) : ''; ?>"></div>
 
     <form method="post" id="formUserEdit" enctype="multipart/form-data">
                 
@@ -16,7 +16,7 @@
             <!-- input hidden csrf -->
             <tr style="display: none;">
                 <td colspan="2">
-                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
+                    <input type="hidden" name="csrf" value="<?php echo Utilities::escapeInput($_SESSION['token']['csrf']); ?>">
                 </td>
             </tr>
 
@@ -61,7 +61,7 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message1" id="message1"><?php if(!empty($users['message'])){echo $users['message'];} ?></div>
+                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message1" id="message1"><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
                 </td>
             </tr>
 
@@ -111,7 +111,7 @@
                     <datalist id="datalist_userEdit_subscription">
                         <?php
                             for($i=0;$i != count($MySubscription);$i++) { ?>
-                            <option value="<?php echo $MySubscription[$i]['subscription']; ?>">
+                            <option value="<?php echo Utilities::escapeInput($MySubscription[$i]['subscription']); ?>">
                         <?php } ?>
                     </datalist>
                 </td>
@@ -297,7 +297,7 @@
                     <datalist id="datalist_userEdit_type">
                         <?php
                             for($i=0;$i != count($MyType);$i++) { ?>
-                            <option value="<?php echo $MyType[$i]['type']; ?>">
+                            <option value="<?php echo Utilities::escapeInput($MyType[$i]['type']); ?>">
                         <?php } ?>
                     </datalist>
                 </td>
@@ -478,7 +478,7 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message2" id="message2"><?php if(!empty($users['message'])){echo $users['message'];} ?></div>
+                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message2" id="message2"><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
                 </td>
             </tr>
 
@@ -490,7 +490,7 @@
 
 <?php //$_SESSION['other']['message'] =''; ?>
 
-<script src="../../js/function.js"></script>
-<script src="../../js/fetch.js"></script>
-<script src="../../js/user_edit.js"></script>
+<script src="../js/function.js"></script>
+<script src="../js/fetch.js"></script>
+<script src="../js/user_edit.js"></script>
 

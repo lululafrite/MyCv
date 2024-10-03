@@ -1,5 +1,5 @@
 <?php
-    include('../../model/type.class.php');
+    include('../model/type.class.php');
     use \User\Model\Type As UserType;
 ?>
 

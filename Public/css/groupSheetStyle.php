@@ -19,24 +19,18 @@
     <?php
         if(preg_match($goldorak, $current_url)){
     ?>
-            <link rel='stylesheet' type='text/css' href='../../css/goldorak_style.css'>
-            <link rel='stylesheet' type='text/css' href='../../css/goldorak_commander.css'>
+            <link rel='stylesheet' type='text/css' href='../../css/goldorak/goldorak_style.css'>
+            <link rel='stylesheet' type='text/css' href='../../css/goldorak/goldorak_commander.css'>
     <?php
-        }else if(preg_match($garageParrot, $current_url)){
+        }elseif(preg_match($garageParrot, $current_url)){
     ?>
-            <link rel='stylesheet' type='text/css' href='../css/style_navbar.css'>
-            <link rel='stylesheet' type='text/css' href='../css/garage_parrot_style.css'>
-    <?php
-        }else if(preg_match($dragAndDrop, $current_url)){
-    ?>
-            <link rel="stylesheet" type="text/css" href="../css/style_navbar.css">
-            <link rel="stylesheet" type="text/css" href="../css/myCv_style.css">
-            <link rel="stylesheet" type="text/css"  href="../css/dragAndDrop.css">
+            <link rel='stylesheet' type='text/css' href='../css/garageparrot/style_navbar.css'>
+            <link rel='stylesheet' type='text/css' href='../css/garageparrot/garage_parrot_style.css'>
     <?php
         }else{
     ?>
-            <link rel="stylesheet" type="text/css" href="../css/style_navbar.css">
-            <link rel="stylesheet" type="text/css" href="../css/myCv_style.css">
+            <link rel="stylesheet" type="text/css" href="../css/mycv/style_navbar.css">
+            <link rel="stylesheet" type="text/css" href="../css/mycv/myCv_style.css">
     <?php
         }
     ?>

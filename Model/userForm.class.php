@@ -151,5 +151,6 @@
 		public function setNewMember(bool $new):void{
 			$this->newMember = $new;
 		}
+		
 	}
 ?>

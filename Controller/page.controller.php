@@ -1,11 +1,6 @@
 <?php
 
-    $checkUrl = preg_match('/goldorak/', $_SERVER['REQUEST_URI']) || preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
-    if($checkUrl){
-		require_once('../../model/page.class.php');
-    }else{
-		require_once('../model/page.class.php');
-    }
+    require_once('../model/page.class.php');
 
     use MyCv\Model\Page;
     $MyPage = new Page();
@@ -22,41 +17,61 @@
     //-----------------------------------------------------------------------------------
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
+        isset($_POST['nbOfProduct']) ? $MyPage->setProductPerPage($_POST['nbOfProduct']) : $MyPage->setProductPerPage($_SESSION['pagination']['productPerPage']);
+
         $next = isset($_POST['next']) ? true : false;
         $previous = isset($_POST['previous']) ? true : false;
 
-        if($next)
-        {
+        if($next){
+
             if ($MyPage->getThePage() >= $MyPage->getNbOfPage()){
+                
                 $MyPage->setThePage($MyPage->getNbOfPage());
-            }else{
+                $_SESSION['pagination']['thePage'] = $MyPage->getThePage();
+
+            }elseif($MyPage->getFirstProduct() + $MyPage->getProductPerPage()  < $MyPage->getNbOfProduct()){
+
                 $MyPage->setFirstProduct($MyPage->getFirstProduct() + $MyPage->getProductPerPage());
+                $_SESSION['pagination']['firstProduct'] = $MyPage->getFirstProduct();
+
                 $MyPage->setThePage($MyPage->getThePage() + 1);
+                $_SESSION['pagination']['thePage'] = $MyPage->getThePage();
             }
+
             $MyPage->setNextOrPrevious(true);
 
-        }elseif ($previous){
+        }elseif($previous){
 
-            if ($MyPage->getThePage() <= 1)
-            {               
+            if ($MyPage->getThePage() <= 1){
+
                 $MyPage->setFirstProduct(0);
+                $_SESSION['pagination']['firstProduct'] = 0;
+
                 $MyPage->setThePage(1);
+                $_SESSION['pagination']['thePage'] = 1;
+
             }else{
+
                 $MyPage->setFirstProduct($MyPage->getFirstProduct() - $MyPage->getProductPerPage());
+                $_SESSION['pagination']['firstProduct'] = $MyPage->getFirstProduct();
+
                 $MyPage->setThePage($MyPage->getThePage() - 1);
+                $_SESSION['pagination']['thePage'] = $MyPage->getThePage();
+
             }
+
             $MyPage->setNextOrPrevious(true);
         }
 
         //-----------------------------------------------------------------------------------
         
-        if(isset($_POST['nbOfProduct'])){
-            $MyPage->setProductPerPage($_POST['nbOfProduct']);
+        /*if(isset($_POST['nbOfProduct'])){
+            //$MyPage->setProductPerPage($_POST['nbOfProduct']);
             $MyPage->setFirstProduct(0);
             $MyPage->setThePage(1);
-        }
+        }*/
 
-        Page::FctNbPage($MyPage->getProductPerPage(), $MyPage, "user");
+        //Page::FctNbPage($MyPage->getProductPerPage(), $MyPage, "user");
     }
 
     //-----------------------------------------------------------------------------------
