@@ -77,5 +77,5 @@
 
 </table>
 
-<script src="../js/rating.js"></script>
+<script src="../js/goldorak/rating.js"></script>
 <script src="../js/comment.js"></script>

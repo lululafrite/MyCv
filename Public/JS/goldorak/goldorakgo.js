@@ -96,7 +96,7 @@ function makeGuess() {
             
             ajoutBaliseHtml = `
                 <p class="m-3" >` + messageGagnant + `</p>
-                <img class="m-3" src="img/game/gagne.gif" alt="J'ai gagné">
+                <img class="m-3" src="../../img/goldorak/game/gagne.gif" alt="J'ai gagné">
                 <br>
                 `+ displayResults(); +`
                 <br>

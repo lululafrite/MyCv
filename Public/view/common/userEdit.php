@@ -343,7 +343,7 @@
                                     </div>
 
                                     <div class="col-12 col-lg-5 d-flex align-items-center pb-3 pb-lg-0">
-                                        <input class="fs-4" type="file" name="fileAvatar" id="fileAvatar" accept="image/jpeg, image/png, image/webp" directory="./img/avatar/">
+                                        <input class="fs-4" type="file" name="fileAvatar" id="fileAvatar" accept="image/jpeg, image/png, image/webp" directory="./img/common/avatar/">
                                     </div>
 
                                     <div class="col-12 col-lg-4 d-flex align-items-center pb-3 pb-lg-0">
@@ -490,7 +490,7 @@
 
 <?php //$_SESSION['other']['message'] =''; ?>
 
-<script src="../js/function.js"></script>
-<script src="../js/fetch.js"></script>
-<script src="../js/user_edit.js"></script>
+<script src="../js/common/function.js"></script>
+<script src="../js/common/fetch.js"></script>
+<script src="../js/common/user_edit.js"></script>
 

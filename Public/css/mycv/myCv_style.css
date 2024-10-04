@@ -105,7 +105,7 @@ header{
   }
 
   footer{
-    background-image: url('../img/banner/footer_576x200_S.webp');
+    background-image: url('../../img/mycv/banner/footer_576x200_S.webp');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -145,7 +145,7 @@ header{
   }
 
   footer{
-    background-image: url('../img/banner/footer_768x250_M.webp');
+    background-image: url('../../img/mycv/banner/footer_768x250_M.webp');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -185,7 +185,7 @@ header{
   }
 
   footer{
-    background-image: url('../img/banner/footer_992x300_L.webp');
+    background-image: url('../../img/mycv/banner/footer_992x300_L.webp');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -232,7 +232,7 @@ header{
   }
 
   footer{
-    background-image: url('../img/banner/footer_992x300_L.webp');
+    background-image: url('../../img/mycv/banner/footer_992x300_L.webp');
     background-size: cover;
     background-position: center;
     width: 100%;

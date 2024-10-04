@@ -82,7 +82,7 @@
 
             <div class="d-flex mb-3 justify-content-center align-items-center">
                 
-                <img class="img1 my-auto" src="../img/goldorak/avatar/avatar_alcor_01.webp" style="width: 60px; height: 60px;">
+                <img class="img1 my-auto" src="../img/common/avatar/avatar_alcor_01.webp" style="width: 60px; height: 60px;">
                     
                 <div class="d-flex flex-column">
                     
@@ -117,7 +117,7 @@
 
             <div class="d-flex mb-3 justify-content-center">
                 
-                <img class="img1 my-auto" src="../img/goldorak/avatar/avatar_venusia_01.webp" style="width: 60px; height: 60px;">
+                <img class="img1 my-auto" src="../img/common/avatar/avatar_venusia_01.webp" style="width: 60px; height: 60px;">
                     
                 <div class="d-flex flex-column">
                     

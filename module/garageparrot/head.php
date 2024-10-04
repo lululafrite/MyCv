@@ -7,11 +7,11 @@
 
 	<!-- -------------------- TAB TITLE AND ICON -------------------- -->
     <title id="pageTitle"></title>
-	<script src="js/titleTab.js"></script>
+	<script src="./js/garageparrot/titleTab.js"></script>
 
-	<link rel="icon" href="img/garageparrot/icon/garage_75x75.webp" type="image/png">
+	<link rel="icon" href="img/common/icon/garage_75x75.webp" type="image/png image/webp image/jpg>
 
 	<!-- --------------- STYLE SHEETS AND LIBRARY CSS --------------- -->
-	<?php require_once('css/groupSheetStyle.php'); ?>
+	<?php require_once('css/common/groupSheetStyle.php'); ?>
 	
 </head>

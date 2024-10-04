@@ -26,7 +26,7 @@
 
                 <div class="carousel-item active" data-bs-interval="10000">
 
-                    <img src="img/banner/jpg/productivite_1920x400.jpg" class="d-block w-100" alt="...">
+                    <img src="img/mycv/banner/jpg/productivite_1920x400.jpg" class="d-block w-100" alt="...">
                     
                     <div class="carousel-caption d-flex justify-content-center align-items-center">
 
@@ -73,7 +73,7 @@
 
                 <div class="carousel-item">
 
-                    <img src="img/banner/jpg/connectivite_1920x400.jpg" class="d-block w-100" alt="...">
+                    <img src="img/mycv/banner/jpg/connectivite_1920x400.jpg" class="d-block w-100" alt="...">
 
                     <div class="carousel-caption d-flex justify-content-center">
 
@@ -90,7 +90,7 @@
 
                 <div class="carousel-item">
 
-                    <img src="img/banner/jpg/agil_1920x400.jpg" class="d-block w-100" alt="...">
+                    <img src="img/mycv/banner/jpg/agil_1920x400.jpg" class="d-block w-100" alt="...">
 
                     <div class="carousel-caption d-flex justify-content-center">
 

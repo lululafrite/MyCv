@@ -24,7 +24,7 @@
 
         <?php require_once '../module/goldorak/footer.php';  // Load the marker <footer> ?>
 
-        <?php require_once('./js/libraryJS.php'); ?>
+        <?php require_once('./js/common/libraryJS.php'); ?>
 
     <?php } ?>
 

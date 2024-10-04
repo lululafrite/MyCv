@@ -41,7 +41,7 @@ function editerNomJoueur2() {
 //Lancer le dé
 function lanceLeDe(){
     if(partieEncours === true){
-        document.querySelector(".img3").setAttribute("src", "img/game/lanceDe.gif");
+        document.querySelector(".img3").setAttribute("src", "../../img/goldorak/game/lanceDe.gif");
         setTimeout(valeurDuDe, 1000);
     }else{
         alert("Clique sur le bouton nouvelle partie avant de lancer le dé.");
@@ -51,7 +51,7 @@ function lanceLeDe(){
 //Sortir une valeur aléatoire du dé et incrémenter la valeur dans la variable 'somme' OU annuler le tour si la valeur est égale à 1.
 function valeurDuDe() {
     let randomNumber = Math.floor(Math.random() * 6) + 1;
-    document.querySelector(".img3").setAttribute("src", "img/game/dice" + randomNumber + ".png");
+    document.querySelector(".img3").setAttribute("src", "../../img/goldorak/game/dice" + randomNumber + ".png");
 
     if (randomNumber === 1){
         

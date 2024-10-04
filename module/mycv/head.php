@@ -8,7 +8,7 @@
 
     <title id="pageTitle"></title>    
     <link id='pageIcon' rel="icon" type="image/png image/webp image/jpg">
-    <script src="js/titleTab.js"></script>
+    <script src="./js/mycv/titleTab.js"></script>
     
 	<meta name="description" content="Ce site web est dédié à Ludovic FOLLACO, il détail l'ensemble de ses compétences acquises dans l'ingénierie industrielle spécifiques aux véhicules de transport, mais aussi ses compétences en tant que développeur d'application web, web mobile, CATIA V5 et pack office. On y trouve l'ensemble de ça carrière, décrite chronologiquement, avec des exemples concrets pour chacune de ces expériences. De plus, vous avez accès à certains de ses développements (web, web mobile, ...).">
 	<meta name="keywords" content="Directeur, chef d'entreprise, ingénieur, développeur, application, web, faisceau électrique, electrical harness, CATIA EHI, ludovic follaco, ludovic, follaco, 0608818390, 06 08 81 83 90, 06.08.81.83.90, ludovic.follaco@free.fr, ludovic@follaco.fr, ludovic.follaco@gmail.com, ludovic.follaco@e-nodev.fr, ludovic.follaco@styleanddesign.com, CV, curiculum vitae">
@@ -77,6 +77,6 @@
     }
     </script>
     
-    <?php require_once 'css/groupSheetStyle.php'; ?>
+    <?php require_once('css/common/groupSheetStyle.php'); ?>
 
 </head>

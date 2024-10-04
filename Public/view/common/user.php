@@ -1,13 +1,18 @@
 <?php
 
-	$urlImg = '../img/avatar/';
+	$urlImg = '../img/common/avatar/';
+    $page_ = 'index';
     if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
 
-		$urlImg = '../img/goldorak/avatar/';
+		//$urlImg = '../img/goldorak/avatar/';
+        $urlImg = '../img/common/avatar/';
+        $page_ = 'goldorak';
 
 	}if(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
 
-		$urlImg = '../img/garageparrot/avatar/';
+		//$urlImg = '../img/garageparrot/avatar/';
+        $urlImg = '../img/common/avatar/';
+        $page_ = 'garageparrot';
 	}
 
     require_once('../controller/common/user.controller.php');
@@ -32,7 +37,7 @@
 
     <article class="border rounded-4 px-3 m-4">
 
-        <form action="index.php?page=userEdit" method="post">
+        <form action="<?php echo $page_ . '.php?page=userEdit'; ?>" method="post">
 
             <div class="d-flex justify-content-center div__Car--img mt-3">
                 <img src= "<?php echo $urlImg . Utilities::escapeInput($users[$i]['avatar']); ?>" alt="Avatar de l'utilisateur" style="width:70px; height: 70px; object-fit: cover;">

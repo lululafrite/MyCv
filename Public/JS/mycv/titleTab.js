@@ -2,20 +2,14 @@ let pageTitle = document.title;
 let pageIcon = document.getElementById("pageIcon");
 
 if (window.location.href.includes("index.php?page=home")) {
-
     pageTitle = "Ludovic FOLLACO - Accueil";
-    pageIcon = pageIcon.href = "img/icon/white_house.svg";
-
+    pageIcon = pageIcon.href = "img/common/icon/white_house.svg";
 }else if(window.location.href.includes("index.php?page=mycv")) {
-
     pageTitle = "Ludovic FOLLACO - Mon CV";
-    pageIcon = pageIcon.href = "img/icon/white_calendar2-event.svg";
-
+    pageIcon = pageIcon.href = "img/common/icon/white_calendar2-event.svg";
 }else if(window.location.href.includes("index.php?page=connexion")) {
-
     pageTitle = "Ludovic FOLLACO - Connexion";
-    pageIcon = pageIcon.href = "img/icon/white_person.svg";
-
+    pageIcon = pageIcon.href = "img/common/icon/white_person.svg";
 }
 
 document.getElementById("pageTitle").innerText = pageTitle;

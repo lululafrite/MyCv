@@ -161,7 +161,7 @@
                                 class="rounded-3"
                                 id="home_article_img_new"
                                 name="home_article_img_new"
-                                src="img/picture/img_umpty300x600.jpg"
+                                src="img/mycv/picture/img_umpty300x600.jpg"
                                 alt="image de l'article new"
                                 style="width: 150px; height: auto; object-fit: cover;"
                             >
@@ -532,7 +532,7 @@
                 class="rounded-3"
                 id="home_article_img_<?php echo $id; ?>"
                 name="home_article_img_<?php echo $id; ?>"
-                src="img/picture/<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
+                src="img/mycv/picture/<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
                 alt="image de l'article <?php echo $id; ?>"
                 style="width: <?php echo Utilities::escapeInput($article[$i]['home_article_img_width']);?>; height: <?php echo Utilities::escapeInput($article[$i]['home_article_img_height']);?>; object-fit: <?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']);?>;"
             >

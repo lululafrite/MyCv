@@ -13,7 +13,7 @@
     <?php
         if(!preg_match('/timeExpired/', $_SERVER['REQUEST_URI'])){
             require_once('../module/garageparrot/footer.php');  // Load the marker <footer>
-            require_once('./js/libraryJS.php');
+            require_once('./js/common/libraryJS.php');
         }
     ?>
 </body>

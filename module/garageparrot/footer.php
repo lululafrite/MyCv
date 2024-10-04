@@ -16,10 +16,10 @@
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div  class="col-3 text-center bg-dark bg-gradient rounded-5 px-0 py-2 mx-0 mt-5">
-                <img class="pb-3 pb-md-0" src="../img/garageparrot/icon/youtube_white_77x60.webp" alt="logo youtube" style="height: 40px;">
-                <img class="pb-3 pb-md-0" src="../img/garageparrot/icon/twitter_white_60x60.webp" alt="logo txitter ou x" style="height: 40px;">
-                <img class="pb-3 pb-md-0" src="../img/garageparrot/icon/instagram.png" alt="logo instagram" style="height: 40px;">
-                <img class="pb-3 pb-md-0" src="../img/garageparrot/icon/tiktok.webp" alt="logo txitter ou x" style="height: 40px;">
+                <img class="pb-3 pb-md-0" src="../img/common/icon/youtube_white_77x60.webp" alt="logo youtube" style="height: 40px;">
+                <img class="pb-3 pb-md-0" src="../img/common/icon/twitter_white_60x60.webp" alt="logo txitter ou x" style="height: 40px;">
+                <img class="pb-3 pb-md-0" src="../img/common/icon/instagram.png" alt="logo instagram" style="height: 40px;">
+                <img class="pb-3 pb-md-0" src="../img/common/icon/tiktok.webp" alt="logo txitter ou x" style="height: 40px;">
             </div>
         </div>
     </div>

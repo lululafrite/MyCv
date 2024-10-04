@@ -45,7 +45,7 @@
 
             <aside>
 
-                <img class="bg-light p-1" src="../img/goldorak/icon/camera-reels.svg" alt="icone cinéma">
+                <img class="bg-light p-1" src="../img/common/icon/camera-reels.svg" alt="icone cinéma">
                 <strong>Cinéma</strong><br>
 
                 <p class="div__p m-0 mb-3 p-0">
@@ -64,7 +64,7 @@
 
             <aside>
 
-                <img class="bg-light p-1" src="../img/goldorak/icon/tv.svg" alt="icone TV">
+                <img class="bg-light p-1" src="../img/common/icon/tv.svg" alt="icone TV">
                 <strong>TV</strong><br>
 
                 <p class="div__p m-0 p-0">
@@ -77,7 +77,7 @@
 
             <aside>
 
-                <img class="bg-light p-1" src="../img/goldorak/icon/book.svg" alt="Icone journal">
+                <img class="bg-light p-1" src="../img/common/icon/book.svg" alt="Icone journal">
                 <strong>Le journal du manga</strong><br>
 
                 <p class="div__p m-0 p-0">

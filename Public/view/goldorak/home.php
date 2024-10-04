@@ -277,6 +277,6 @@
 
 </form>
 
-<script src="../js/function.js"></script>
-<script src="../js/fetch.js"></script>
+<script src="../js/common/function.js"></script>
+<script src="../js/common/fetch.js"></script>
 <script src="../js/goldorak/home.js"></script>

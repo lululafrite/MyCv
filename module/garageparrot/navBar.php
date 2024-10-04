@@ -29,7 +29,7 @@
                 
                     <li class="nav-item custom-border-md-bottom">
                         <a class="nav-link" aria-current="page" href="garageparrot.php?page=home">
-                            <img class="p-2 h-75" src="../img/garageparrot/icon/house.svg" alt="icone du bouton s'identifier">
+                            <img class="p-2 h-75" src="../img/common/icon/black_house.svg" alt="icone du bouton s'identifier">
                             Accueil
                         </a>
                     </li>
@@ -41,13 +41,13 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="p-2 h-75" src="../img/garageparrot/icon/people.svg" alt="icone du bouton s'identifier">    
+                                <img class="p-2 h-75" src="../img/common/icon/people_black.svg" alt="icone du bouton s'identifier">    
                                 Profils
                             </a>
                             <ul class="dropdown-menu">
                                 <li>    
                                     <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=user">
-                                        <img class="p-2 h-75" src="../img/garageparrot/icon/search.svg" alt="icone du bouton s'identifier">
+                                        <img class="p-2 h-75" src="../img/common/icon/black_search.svg" alt="icone du bouton s'identifier">
                                         Profils
                                     </a>
                                 </li>
@@ -58,7 +58,7 @@
                                         <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">
 
                                         <button class="dropdown-item Nav_Span1" id="btn_navBar_new" name="btn_navBar_new" type="submit">
-                                            <img class="p-2 h-75" src="../img/garageparrot/icon/person-plus.svg" alt="icone du bouton s'identifier">
+                                            <img class="p-2 h-75" src="../img/common/icon/person-plus_black.svg" alt="icone du bouton s'identifier">
                                             Nouveau
                                         </button>
 
@@ -76,13 +76,13 @@
 
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="p-2 h-75" src="../img/garageparrot/icon/car-icon_71x75.png" alt="icone du bouton s'identifier">    
+                                <img class="p-2 h-75" src="../img/common/icon/car-icon_71x75.png" alt="icone du bouton s'identifier">    
                                 <span class="Nav_Span1">Nos véhicules<br><span class="Nav_Span2">d'occasions</span></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>    
                                     <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=car">
-                                        <img class="p-2 h-75" src="../img/garageparrot/icon/car-front.svg" alt="icone du bouton s'identifier">
+                                        <img class="p-2 h-75" src="../img/common/icon/car-front.svg" alt="icone du bouton s'identifier">
                                         Nos occasions
                                     </a>
                                 </li>
@@ -98,7 +98,7 @@
 
                                     <li>
                                         <button class="dropdown-item Nav_Span1" id="btn_carEdit_new" name="btn_carEdit_new" type="submit">
-                                            <img class="p-2" src="../img/garageparrot/icon/car-front-fill.svg" alt="icone du bouton s'identifier">
+                                            <img class="p-2" src="../img/common/icon/car-front-fill.svg" alt="icone du bouton s'identifier">
                                             Nouveau
                                         </button>
                                     </li>
@@ -114,7 +114,7 @@
 
                     <li class="nav-item dropdown custom-border-md-bottom">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="p-2 h-75" src="../img/garageparrot/icon/geo-alt.svg" alt="icone du bouton s'identifier">
+                            <img class="p-2 h-75" src="../img/common/icon/geo-alt.svg" alt="icone du bouton s'identifier">
                             <span class="Nav_Span1">Accéder<br><span class="Nav_Span2">sur notre site</span></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -135,27 +135,27 @@
 
                     <li class="nav-item custom-border-md-bottom">
                         <a class="nav-link" aria-current="page" href="tel:0608818390">
-                            <img class="p-2 h-75" src="../img/garageparrot/icon/telephone.svg" alt="icone du bouton s'identifier">
+                            <img class="p-2 h-75" src="../img/common/icon/telephone.svg" alt="icone du bouton s'identifier">
                             <span class="Nav_Span1">Contact<br><span class="Nav_Span2">06.08.81.83.90</span></span>
                         </a>
                     </li>
 
                     <li class="nav-item dropdown custom-border-md-bottom" style="width: 200px;">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- <img class="p-2 h-75" src="../img/garageparrot/icon/person.svg" alt="icone du menu s'identifier"> -->
-                            <img class="p-2 h-75" src="../img/avatar/<?php echo htmlspecialchars($_SESSION['dataConnect']['avatar'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
+                            <!-- <img class="p-2 h-75" src="../img/common/icon/person.svg" alt="icone du menu s'identifier"> -->
+                            <img class="p-2 h-75" src="../img/common/avatar/<?php echo htmlspecialchars($_SESSION['dataConnect']['avatar'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
                             <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=connexion">
-                                    <img class="p-2" src="../img/garageparrot/icon/login_25x25.png" alt="icone du bouton s'identifier">    
+                                    <img class="p-2" src="../img/common/icon/login_25x25.png" alt="icone du bouton s'identifier">    
                                     S'identifier
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=disconnect">
-                                    <img class="p-2" src="../img/garageparrot/icon/logout_25x25.png" alt="icone du bouton s'identifier">    
+                                    <img class="p-2" src="../img/common/icon/logout_25x25.png" alt="icone du bouton s'identifier">    
                                     Déconnexion
                                 </a>
                             </li>

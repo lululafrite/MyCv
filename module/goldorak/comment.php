@@ -29,7 +29,7 @@
                                 <div class="col-12 col-sm-5 col-lg-12 col-xxl-5 d-flex mx-0 px-0">
 
                                     <div class="col-1 col-xxl-2">
-                                        <img src="../img/goldorak/avatar/<?php echo $Comment[$i]['avatar']; ?>" alt="avatar du membre" style="width: 20px;">
+                                        <img src="../img/common/avatar/<?php echo $Comment[$i]['avatar']; ?>" alt="avatar du membre" style="width: 20px;">
                                     </div>
 
                                     <div class="col-11 col-xxl-10">

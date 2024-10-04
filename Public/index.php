@@ -19,7 +19,7 @@
 
     <?php require_once('../module/mycv/footer.php');  // Load the marker <footer> ?>
 
-    <?php require_once('./js/libraryJS.php'); ?>
+    <?php require_once('./js/common/libraryJS.php'); ?>
 
 </body>
 
