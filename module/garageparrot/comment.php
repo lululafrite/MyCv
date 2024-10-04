@@ -1,6 +1,6 @@
 <?php
     require_once('../controller/garageparrot/comment.controller.php');
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     use MyCv\Model\Utilities;
 ?>
 

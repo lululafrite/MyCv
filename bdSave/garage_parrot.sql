@@ -80,7 +80,7 @@ CREATE TABLE `car` (
   CONSTRAINT `rel_car_id_brand` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `rel_car_id_model` FOREIGN KEY (`id_model`) REFERENCES `model` (`id_model`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `rel_car_id_motorization` FOREIGN KEY (`id_motorization`) REFERENCES `motorization` (`id_motorization`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ LOCK TABLES `car` WRITE;
 INSERT INTO `car` VALUES
 (1,7,16,8,2023,3534,39612,'Oui','Options et description','golf_1.png','golf_2.webp','golf_3.webp','golf_4.webp','golf_5.webp'),
 (4,3,2,4,2022,58600,22500,'Oui','Véhicule en très bon état, 1ère main.\r\nCT OK \r\nEntretien complet Peugeot ','208_1.png','208_2.png','208_3.png','208_4.png','208_5.png'),
-(33,10,24,7,2022,3500,13690,'Oui','Véhicule parfait pour faible budget \r\nProche du neuf\r\nCouleur: bleu électron ','dacia-sandero-stepway_2024-02-17_19_22.png','dacia-sandero-inter1_2024-02-18_10_42.jpg','dacia-sandero-inter2_2024-02-18_10_41.jpg','dacia-sandero-inter3_2024-02-18_10_43.jpg','dacia-sandero-inter4_2024-02-18_10_44.jpg'),
+(33,10,24,7,2022,3500,13690,'Oui','Véhicule parfait pour faible budget\r\nProche du neuf\r\nCouleur: bleu électron ','dacia-sandero-stepway_2024-02-17_19_22.png','dacia-sandero-inter1_2024-02-18_10_42.jpg','dacia-sandero-inter2_2024-02-18_10_41.jpg','dacia-sandero-inter3_2024-02-18_10_43.jpg','dacia-sandero-inter4_2024-02-18_10_44.jpg'),
 (34,10,25,7,2021,33600,18650,'Oui','Véhicule 1ère main, 7 places, passe partout aussi bien en ville qu\'en montagne.\r\nEntretien complet Dacia\r\nPas de double des clés\r\nCT OK\r\n','dacia_joggerextreme_2024-02-17_19-22.png','dacia_jogger_inter1_2024-02-18_10-39.jpg','dacia_jogger_inter2_2024-02-18_10-40.jpg','dacia_jogger_inter3_2024-02-18_10-41.jpg','dacia_jogger_inter4_2024-02-18_10-42.jpg'),
 (35,6,37,8,2023,30000,59000,'Oui','Véhicule sportif (possible usage sur circuit)\r\nTrès peu de kilomètre\r\nEntretien complet Renault ','alpine-A110_2024-02-17_19-20.png','Alpine_A110_inter1_2024-02_18_10_49.webp','Alpine_A110_inter2_2024-02_18_10_50.webp','Alpine_A110_inter3_2024-02_18_10_51.webp','Alpine_A110_inter4_2024-02_18_10_52.webp'),
 (36,2,31,11,2022,50000,12000,'Oui','Clio full hybride toutes options. \r\nTrès bon état \r\nPhotos non contractuelles ','renaultcliofullhybride_2024-02-17_19-15.png','renaultcliofullhybride_2024-02-17_19-15.webp','renaultcliofullhybride_2024-02-17_19-16.webp','renaultcliofullhybride_2024-02-17_19-18.webp','renaultcliofullhybride_2024-02-17_19-19.webp'),
@@ -374,6 +374,33 @@ INSERT INTO `schedules` VALUES
 UNLOCK TABLES;
 
 --
+-- Table structure for table `subscription`
+--
+
+DROP TABLE IF EXISTS `subscription`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscription` (
+  `id_subscription` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_subscription`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscription`
+--
+
+LOCK TABLES `subscription` WRITE;
+/*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+INSERT INTO `subscription` VALUES
+(1,'Actarus'),
+(2,'Goldorak'),
+(3,'Vénusia');
+/*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -388,13 +415,14 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL DEFAULT 'nom.prenom@domaine.com',
   `phone` varchar(18) NOT NULL DEFAULT '## ## ## ## ##',
   `password` varchar(255) NOT NULL DEFAULT 'Mot de passe',
-  `avatar` varchar(255) NOT NULL DEFAULT '_',
-  `id_type` int(11) NOT NULL DEFAULT 4,
+  `avatar` varchar(255) NOT NULL DEFAULT 'avatar_membre_white.webp	',
+  `id_subscription` int(11) NOT NULL DEFAULT 3,
+  `id_type` int(11) NOT NULL DEFAULT 2,
   `pw` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   KEY `index_user_id_type` (`id_type`),
   CONSTRAINT `rel_user_id_type` FOREIGN KEY (`id_type`) REFERENCES `user_type` (`id_type`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,10 +432,12 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'ADMIN','Admin','Admin','admin@gmail.com','06 06 06 06 06','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',1,'admin123/'),
-(2,'USER','User','User','user@gmail.com','06 08 81 83 90','$2y$10$51s7GBDeD6vXRYbWpWc3zOwlAhtugaC2pgLU6S.po6nCrDRIFDxvC','avatar_user.webp',4,'User123/'),
-(3,'FOLLACO','Ludovic','Lululafrite','ludovic.follaco@free.fr','0608818390','$2y$10$GCc/TixJaqc7VFBZu7vQhu9jStRuh0FlP..rnvGEpnlCYLINeZ7Ee.','avatar_user.webp',1,'Lud123/*-'),
-(4,'NOM','Prénom','NomPrénom','nomprenomgmail@gmail.com','0608818390','Nom123/*-','_',4,'Nom123/*-');
+(1,'ADMIN','Admin','Admin','admin@gmail.com','0102030405','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',2,1,'admin123/'),
+(2,'USER','User','User','user@gmail.com','0607080910','$2y$10$irfSGt1nAb3s1dFqvCxTeuamP66kvFoXP5KDRAybBXXzgSjRF5rAa','avatar_user.webp',2,3,'User123/'),
+(3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'Actarus123/'),
+(4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'User123/'),
+(5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'Venusia123/'),
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$FAcGC9iwqgVykFllHp8pmuUGyHkAEqw02fDw1FjgGqJ0kJTDFSCke','professeur_procyon.webp',2,1,'Lud123/*-');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -422,7 +452,7 @@ CREATE TABLE `user_type` (
   `id_type` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(30) NOT NULL DEFAULT 'Guest',
   PRIMARY KEY (`id_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Type utilisateur pour la gestion des droits d''utilisation';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Type utilisateur pour la gestion des droits d''utilisation';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -433,7 +463,8 @@ LOCK TABLES `user_type` WRITE;
 /*!40000 ALTER TABLE `user_type` DISABLE KEYS */;
 INSERT INTO `user_type` VALUES
 (1,'Administrator'),
-(4,'User');
+(2,'Member'),
+(3,'User');
 /*!40000 ALTER TABLE `user_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -446,4 +477,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-06 18:08:07
+-- Dump completed on 2024-10-03 19:18:40

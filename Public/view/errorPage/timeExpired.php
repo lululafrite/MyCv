@@ -1,12 +1,7 @@
 <?php
-	$urlGoldorak = preg_match('/goldorak/', $_SERVER['REQUEST_URI']);
-	$urlGarageparrot = preg_match('/garageparrot/', $_SERVER['REQUEST_URI']);
-	$checkUrl = $urlGoldorak || $urlGarageparrot;
-	if($checkUrl){
-		require_once('../../model/utilities.class.php');
-	}else{
-		require_once('../model/utilities.class.php');
-	}
+	
+	require_once('../model/common/utilities.class.php');
+
 	use MyCv\Model\Utilities;
 	$local = Utilities::checkIfLocal();
 ?>

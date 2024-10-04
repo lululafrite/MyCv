@@ -1,6 +1,6 @@
 <?php
     
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     require_once('../model/garageparrot/comment.class.php');
 
     use GarageParrot\Model\Comment;

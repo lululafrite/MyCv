@@ -1,8 +1,8 @@
 <?php
-    require_once('../module/debug.php'); // Debugging add-ons: Comment before uploading
+    require_once('../module/common/debug.php'); // Debugging add-ons: Comment before uploading
     session_start();
     require_once('../vendor/autoload.php'); // add-on Vendor
-    require_once('../module/variable.php'); // Superglobal variables (mainly from SESSION)
+    require_once('../module/common/variable.php'); // Superglobal variables (mainly from SESSION)
     require_once('../module/garageparrot/head.php'); // Load the marker <head>
 ?>
 <body>

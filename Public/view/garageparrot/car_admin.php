@@ -1,8 +1,8 @@
 <?php
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     require_once('../controller/garageparrot/car.controller.php');
     require_once('../module/garageparrot/searchCarAdmin.php');
-    require('../module/select_page.php');
+    require_once('../module/common/select_page.php');
 
     use MyCv\Model\Utilities;
 ?>
@@ -249,7 +249,7 @@
 
 </section>
 
-<?php require('../module/select_page.php'); ?>
+<?php require_once('../module/common/select_page.php'); ?>
 
 <script>
 

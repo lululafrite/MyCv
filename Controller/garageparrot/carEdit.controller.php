@@ -5,7 +5,7 @@
     require_once('../model/garageparrot/model.class.php');
     require_once('../model/garageparrot/motorization.class.php');
     require_once('../model/garageparrot/carForm.class.php');
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
 
     use GarageParrot\Model\Car;
     use GarageParrot\Model\Brand;

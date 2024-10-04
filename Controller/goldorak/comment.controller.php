@@ -1,6 +1,6 @@
 <?php
     
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     require_once('../model/goldorak/comment.class.php');
 
     use \Goldorak\Model\Comment;

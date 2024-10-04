@@ -4,28 +4,24 @@
     if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
 
 		$urlImg = '../img/goldorak/avatar/';
-        /*require_once('../controller/user.controller.php');
-        require_once('../model/utilities.class.php');*/
 
 	}if(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
 
 		$urlImg = '../img/garageparrot/avatar/';
-        /*require_once('../../controller/user.controller.php');
-        require_once('../../model/utilities.class.php');*/
 	}
 
-    require_once('../controller/user.controller.php');
-    require_once('../model/utilities.class.php');
+    require_once('../controller/common/user.controller.php');
+    require_once('../model/common/utilities.class.php');
 
     use MyCv\Model\Utilities;
 ?>
 
 <div class="mt-5">
-    <?php require_once('../module/searchUser.php'); ?>
+    <?php require_once('../module/common/searchUser.php'); ?>
 </div>
 
 <div class="mt-3">
-    <?php require_once('../module/select_page.php'); ?>
+    <?php require_once('../module/common/select_page.php'); ?>
 </div>
 
 <div class="container">
@@ -129,5 +125,5 @@
 </div>
 
 <div class="mb-5">
-    <?php require('../module/select_page.php'); ?>
+    <?php require_once('../module/common/select_page.php'); ?>
 </div>

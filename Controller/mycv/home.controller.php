@@ -2,7 +2,7 @@
 
     require_once('../model/mycv/home.class.php');
     require_once('../model/mycv/article.class.php');
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     
 
     use Model\Mycv\Home;

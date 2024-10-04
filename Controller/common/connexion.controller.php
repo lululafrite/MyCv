@@ -1,7 +1,7 @@
 <?php
 
-    require_once('../model/utilities.class.php');
-    require_once('../model/user.class.php');
+    require_once('../model/common/utilities.class.php');
+    require_once('../model/common/user.class.php');
 
     use MyCv\Model\Utilities;
     use User\Model\User;

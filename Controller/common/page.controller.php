@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../model/page.class.php');
+    require_once('../model/common/page.class.php');
 
     use MyCv\Model\Page;
     $MyPage = new Page();

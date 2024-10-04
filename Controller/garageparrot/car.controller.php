@@ -1,8 +1,8 @@
 <?php
 
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     require_once('../model/garageparrot/car.class.php');
-    require_once('../controller/page.controller.php');
+    require_once('../controller/common/page.controller.php');
 
     use GarageParrot\Model\Car;
     use MyCv\Model\Utilities;

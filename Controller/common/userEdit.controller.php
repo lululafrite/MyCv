@@ -1,10 +1,10 @@
 <?php
 
-    require_once('../model/user.class.php');
-    require_once('../model/userForm.class.php');
-    require_once('../model/type.class.php');
-    require_once('../model/subscription.class.php');
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/user.class.php');
+    require_once('../model/common/userForm.class.php');
+    require_once('../model/common/type.class.php');
+    require_once('../model/common/subscription.class.php');
+    require_once('../model/common/utilities.class.php');
 
     use \User\Model\User;
     use \User\Model\UserForm;

@@ -2,7 +2,7 @@
 
 	namespace GarageParrot\Model;
 
-	require_once('../model/dbConnect.class.php');
+    require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;

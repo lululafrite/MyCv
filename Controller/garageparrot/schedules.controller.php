@@ -1,7 +1,7 @@
 <?php
 
     require_once('../model/garageparrot/schedules.class.php');
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
     
     use GarageParrot\Model\Schedules;
     use MyCv\Model\Utilities;

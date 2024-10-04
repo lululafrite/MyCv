@@ -376,8 +376,8 @@
 <?php } ?>
 
 <?php
-    require_once ('../controller/mycv/home.controller.php');
-    require_once ('../model/utilities.class.php');
+    require_once('../controller/mycv/home.controller.php');
+    require_once('../model/common/utilities.class.php');
     use MyCv\Model\Utilities;
 ?>
 

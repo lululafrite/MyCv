@@ -43,11 +43,10 @@ CREATE TABLE `comment` (
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 INSERT INTO `comment` VALUES
-(1,'2024-01-02','Vega78',5,'Cette Association est trop géniale, grace à elle, j\'ai enfin réussi à trouver la figurine FX357 du golgoth 12. Merci aux bénévoles qui font un travail formidable.',2,6),
-(2,'2024-01-15','PrinceEuphor',5,'Je suis le chanceux qui est parti à Tokyo avec toute l\'équipe, je m\'en souviendrais toute ma vie. Je n\'ai pas de mot! Un énorme merci à toute l\'équipe.',2,7),
-(3,'2024-03-05','VénusiaXXL',5,'Je suis allé au dernier rassemblement de septembre 2023, c\'était incroyable, l\'organisation était complétement dingue. Les costumes, la musique, les show, les animations.... Vivement la prochaine, moi c\'est sûr j\'y retourne. Merci à toute l\'équipe.',2,5),
-(4,'2024-03-18','Thomaslehooo',5,'Bravo! Super site!',0,11),
-(5,'2024-03-18','Thomaslehooo',5,'Bravo Ludo pour ce travail remarquable!',1,11);
+(1,'2024-01-02','Actarus',5,'Cette Association est trop géniale, grace à elle, j\'ai enfin réussi à trouver la figurine FX357 du golgoth 12. Merci aux bénévoles qui font un travail formidable.',2,3),
+(2,'2024-01-15','Goldorak',5,'Je suis le chanceux qui est parti à Tokyo avec toute l\'équipe, je m\'en souviendrais toute ma vie. Je n\'ai pas de mot! Un énorme merci à toute l\'équipe.',2,4),
+(4,'2024-03-18','Venusia',5,'Bravo! Super site!',2,5),
+(5,'2024-03-18','Professeur',5,'Bravo Ludo pour ce travail remarquable!',0,6);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,7 +124,7 @@ CREATE TABLE `user` (
   `phone` varchar(18) NOT NULL DEFAULT '## ## ## ## ##',
   `password` varchar(255) NOT NULL DEFAULT 'Mot de passe',
   `avatar` varchar(255) NOT NULL DEFAULT 'avatar_membre_white.webp',
-  `id_subscription` int(11) NOT NULL DEFAULT 4,
+  `id_subscription` int(11) NOT NULL DEFAULT 3,
   `id_type` int(11) NOT NULL DEFAULT 2,
   `pw` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`),
@@ -133,7 +132,7 @@ CREATE TABLE `user` (
   KEY `id_subscription` (`id_subscription`),
   CONSTRAINT `rel_user_id_type` FOREIGN KEY (`id_type`) REFERENCES `user_type` (`id_type`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_subscription`) REFERENCES `subscription` (`id_subscription`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,17 +142,12 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0102030405','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'Goldorak123/'),
-(2,'ADMIN','Admin','Admin','admin@gmail.com','01 02 03 04 05','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',2,1,'admin123/'),
-(3,'USER','User','User','user@gmail.com','06 08 81 83 90','$2y$10$irfSGt1nAb3s1dFqvCxTeuamP66kvFoXP5KDRAybBXXzgSjRF5rAa','avatar_user.webp',2,3,'User123/'),
-(4,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$FAcGC9iwqgVykFllHp8pmuUGyHkAEqw02fDw1FjgGqJ0kJTDFSCke','professeur_procyon.webp',2,1,'Admin123/'),
-(5,'FOLLACO','Marie','VénusiaXXL','marie.follaco@free.fr','06 59 58 55 15','$2y$10$QdxIS5VkviGyTXMhKvUQtOwam2mlEf.n5JngqX8ZkD2FY1QXHBBLm','avatar_venusia_01.webp',3,2,'Marie123/'),
-(6,'MARTEAU','Antonin','Vega78','antonin.marteau@gmail.com','## ## ## ## ##','$2y$10$JbBpiraMIV6Y/V93sDLQ3eYMNhiFjHkchkI7jE3jX2NlJTfGU8TO6','avatar_vega_01.webp',1,2,'Antonin123/'),
-(7,'TAVERNE','Pierre','PrinceEuphor','pierre.taverne@gmail.com','06 06 07 07 08','$2y$10$9bhwJJXGg1d7OTeBrQTxkOJP3fskVYG0XzzjcIPTX2kGjt8AgZwyq','avatar_princeEuphor.webp',2,2,'Pierre123/'),
-(8,'ACTARUS1','Actarus2','Actarus3','actarus4@gmail.com','010203040500','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'Actarus123/'),
-(9,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0102030405','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'Venusia123/'),
-(10,'CHIP','Pounette','Chipounette','chipounette@gmail.com','0102030405','$2y$10$vkBhqctqS7.9j3LNdG77M.wL77pgbWqpPGl96UQpLy8IbbEw8vTWG','avatar_venusia_01.webp',1,2,'Chip123/'),
-(11,'LEHOMME','Thomas','Thomaslehooo','tho@gmail.com','0613427516','$2y$10$ctt0PtXIwtz4CmcyUuK2u.YfMG15NDlOC.1fAfk1YG9gW29/lYtmy','avatar_soldat_vega.webp',2,2,'Tho123!!');
+(1,'ADMIN','Admin','Admin','admin@gmail.com','0102030405','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',2,1,'admin123/'),
+(2,'USER','User','User','user@gmail.com','0607080910','$2y$10$irfSGt1nAb3s1dFqvCxTeuamP66kvFoXP5KDRAybBXXzgSjRF5rAa','avatar_user.webp',2,3,'User123/'),
+(3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'Actarus123/'),
+(4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'Goldorak123/'),
+(5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'Venusia123/'),
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$FAcGC9iwqgVykFllHp8pmuUGyHkAEqw02fDw1FjgGqJ0kJTDFSCke','professeur_procyon.webp',2,1,'Admin123/');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-06 18:09:42
+-- Dump completed on 2024-10-03 19:18:08

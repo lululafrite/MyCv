@@ -1,8 +1,8 @@
 <?php
 
-    require_once('../model/utilities.class.php');
-    require_once('../model/user.class.php');
-    require_once("../controller/page.controller.php");
+    require_once('../model/common/utilities.class.php');
+    require_once('../model/common/user.class.php');
+    require_once('../controller/common/page.controller.php');
 
     use \User\Model\User;
     use MyCv\Model\Utilities;
@@ -94,8 +94,6 @@
     $whereClause = clauseWhere($name_umpty, $pseudo_umpty, $userType_umpty, $criteriaName, $criteriaPseudo, $criteriaType);
 
     $users = $MyUser->getUserList($whereClause, "'name'", 'ASC', $MyPage->getFirstProduct(), $MyPage->getProductPerPage());
-
-    //require_once("../controller/page.controller.php");
 
     $_SESSION['pagination']['nbOfProduct'] = User::checkNbOfProduct($whereClause);
     $_SESSION['pagination']['nbOfPage'] = ceil($_SESSION['pagination']['nbOfProduct'] / $MyPage->getProductPerPage());

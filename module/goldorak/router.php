@@ -1,7 +1,7 @@
 <?php
     //Routeur Goldorak
-    require_once('../model/utilities.class.php');
-    require_once('../controller/page.controller.php');
+    require_once('../model/common/utilities.class.php');
+    //require_once('../controller/page.controller.php');
     
     use \Firebase\JWT\JWT;
     use MyCv\Model\Utilities;
@@ -29,14 +29,14 @@
     }elseif ($page === 'connexion'){
         
         //resetUserVarSession();
-        require_once('view/connexion.php');
+        require_once('view/common/connexion.php');
 
     }elseif ($page === 'disconnect'){
         
         //resetUserVarSession();
 
         if($_SESSION['dataConnect']['type'] != "Guest"){
-            require_once 'view/disconnect.php';
+            require_once 'view/common/disconnect.php';
         }else{
             require_once 'view/errorPage/accessPage.php';
         }
@@ -71,7 +71,7 @@
                     
                     if($_SESSION['dataConnect']['type'] === 'Administrator'){
 
-                        require_once('view/user.php');
+                        require_once('view/common/user.php');
                     
                     }else{
                         require_once('view/errorPage/accessPage.php');
@@ -86,7 +86,7 @@
 
                     if($_SESSION['dataConnect']['type'] === 'Administrator'){
                         
-                        require_once('view/userEdit.php');
+                        require_once('view/common/userEdit.php');
 
                     }else{
                         require_once('view/errorPage/accessPage.php');

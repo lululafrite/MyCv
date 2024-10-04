@@ -1,7 +1,7 @@
 <?php
 
     require_once('../model/goldorak/home.class.php');
-	require_once('../model/utilities.class.php');
+	require_once('../model/common/utilities.class.php');
 
     use \Goldorak\Model\Home as HomeGoldorak;
 	use MyCv\Model\Utilities;

@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../model/utilities.class.php');
+    require_once('../model/common/utilities.class.php');
 
     use MyCv\Model\Utilities;
 
@@ -18,11 +18,11 @@
 
     }elseif($page === 'connexion'){
 
-        require_once('view/connexion.php');
+        require_once('view/common/connexion.php');
 
     }elseif($page === 'disconnect'){
 
-        require_once('view/disconnect.php');
+        require_once('view/common/disconnect.php');
 
     }else {
         

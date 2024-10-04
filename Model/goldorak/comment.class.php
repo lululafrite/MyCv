@@ -1,8 +1,8 @@
 <?php
 	namespace Goldorak\Model;
 
-	require_once('../model/dbConnect.class.php');
-	require_once('../model/utilities.class.php');
+    require_once('../model/common/dbConnect.class.php');
+	require_once('../model/common/utilities.class.php');
 
 	use MyCv\Model\dbConnect;
 	use MyCv\Model\Utilities;
