@@ -4,8 +4,8 @@
     require_once('../model/common/user.class.php');
     require_once('../controller/common/page.controller.php');
 
-    use \User\Model\User;
-    use MyCv\Model\Utilities;
+    use Model\User\User;
+    use Model\Utilities\Utilities;
 
 
     $MyUser = new User();
@@ -102,37 +102,37 @@
 
     function clauseWhere(bool $name_umpty, bool $pseudo_umpty, bool $userType_umpty, string $criteriaName, string $criteriaPseudo, string $criteriaType):string{
         
-        if($name_umpty && $pseudo_umpty && $userType_umpty){
-        
-            $whereClause = 1;
-
-        }elseif(!$name_umpty && !$pseudo_umpty && !$userType_umpty){
+        if(!$name_umpty && !$pseudo_umpty && !$userType_umpty){ //000 = 0
 
             $whereClause = $criteriaName . ' AND ' . $criteriaPseudo . ' AND ' . $criteriaType;
                             
-        }elseif($name_umpty && !$pseudo_umpty && !$userType_umpty){
+        }elseif(!$name_umpty && !$pseudo_umpty && $userType_umpty){ //001 = 1
 
-            $whereClause = $criteriaPseudo . ' AND ' . $criteriaType;
+            $whereClause = $criteriaName . ' AND ' . $criteriaPseudo;
             
-        }elseif($name_umpty && $pseudo_umpty && !$userType_umpty){
-
-            $whereClause = $criteriaType;
-            
-        }elseif($name_umpty && !$pseudo_umpty && $userType_umpty){
-
-            $whereClause = $criteriaPseudo;
-
-        }elseif(!$name_umpty && $pseudo_umpty && !$userType_umpty){
+        }elseif(!$name_umpty && $pseudo_umpty && !$userType_umpty){ //010 = 2
 
             $whereClause = $criteriaName . ' AND ' . $criteriaType;
             
-        }elseif(!$name_umpty && $pseudo_umpty && $userType_umpty){
+        }elseif(!$name_umpty && $pseudo_umpty && $userType_umpty){ //011 = 3
 
             $whereClause = $criteriaName;
-            
-        }elseif(!$name_umpty && !$pseudo_umpty && $userType_umpty){
 
-            $whereClause = $criteriaName . ' AND ' . $criteriaPseudo;
+        }elseif($name_umpty && !$pseudo_umpty && !$userType_umpty){ //100 = 4
+
+            $whereClause = $criteriaPseudo . ' AND ' . $criteriaType;
+            
+        }elseif($name_umpty && !$pseudo_umpty && $userType_umpty){ //101 = 5
+
+            $whereClause = $criteriaPseudo;
+            
+        }elseif($name_umpty && $pseudo_umpty && !$userType_umpty){ //110 = 6
+
+            $whereClause = $criteriaType;
+
+        }elseif($name_umpty && $pseudo_umpty && $userType_umpty){ //111 = 7
+        
+            $whereClause = 1;
 
         }
 

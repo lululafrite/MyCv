@@ -1,14 +1,16 @@
 <?php
-
-	namespace GarageParrot\Model;
+	//brand.class.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-04_16:31
+	namespace Model\Car;
 
     require_once('../model/common/dbConnect.class.php');
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\dbConnect;
-	use MyCv\Model\Utilities;
 	use \PDO;
 	use \PDOException;
+    use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 
 	class Brand
 	{
@@ -32,69 +34,65 @@
 
 		//-----------------------------------------------------------------------
 
-		private $brand;
-		public function getBrand(int $id_brand): array{
+        private $addBrand = false;
+        public function getAddBrand():bool{
+            return $this->addBrand;
+        }
+        public function setAddBrand(bool $new):void{
+            $this->addBrand = $new;
+        }
+
+		//-----------------------------------------------------------------------
+
+		private $currentBrand = array();
+		public function getCurrentBrand(int $id_brand):array{
 
 			if(Utilities::checkData('brand','id_brand', $id_brand)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 			
 				try{
-					$sql = $bdd->prepare("SELECT
-											`brand`.`id_brand`,
-											`brand`.`name`
-
-										FROM `brand`
-										
-										WHERE `brand`.`id_brand`=:id_brand
-									");
+					$sql = $bdd->prepare("SELECT `brand`.`id_brand`,
+												 `brand`.`name`
+										    FROM `brand`
+										   WHERE `brand`.`id_brand`=:id_brand");
 
 					$sql->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
+
 					$sql->execute();
 
-					$bdd=null;
+					$this->currentBrand = $sql->fetch(PDO::FETCH_ASSOC);
 
-					$this->brand = $sql->fetch(PDO::FETCH_ASSOC);
-					$this->brand['error'] = false;
-					$this->brand['message'] = 'The query is executed correctly!!!';
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
-					return $this->brand;
 				}catch (PDOException $e){
-					$bdd=null;
-
-					$this->brand['error'] = true;
-					$this->brand['message'] = 'Error to query : ' . $e->getMessage();
-					
-					return $this->brand;
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage() . '<br>';
 				}
 			}else{
-				$bdd=null;
-
-				$this->brand['error'] = true;
-				$this->brand['message'] = 'To id is not existing!!!';
-				
-				return $this->brand;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'To id is not existing!!!';
 			}
+
+			$bdd=null;
+			return $this->currentBrand;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $brandList;
+		private $brandList = array();
 		public function getBrandList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13): array{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
-			    $stmt = $bdd->prepare("SELECT
-										`brand`.`id_brand`,
-										`brand`.`name`
-									FROM
-										`brand`
-
-									WHERE $whereClause
-									ORDER BY :orderBy :ascOrDesc
-									LIMIT :firstLine, :linePerPage
-								");
+			    $stmt = $bdd->prepare("SELECT `brand`.`id_brand`,
+											  `brand`.`name`
+										 FROM `brand`
+										WHERE $whereClause
+									 ORDER BY :orderBy :ascOrDesc
+										LIMIT :firstLine, :linePerPage");
 
 				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
 				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
@@ -103,76 +101,72 @@
 
 				$stmt->execute();
 
-				$bdd=null;
-
 				$this->brandList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				$this->brandList['error'] = false;
-				$this->brandList['message'] = 'The query is executed correctly!!!';
-				
-				return $this->brandList;
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
 			}catch (PDOException $e){
-				$bdd=null;
-
-				$this->brandList['error'] = true;
-				$this->brandList['message'] = 'Error to query : ' . $e->getMessage();
-
-				return $this->brandList;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage() . '<br>';
 			}
+
+			$bdd=null;
+			return $this->brandList;
 		}
 
 		//-----------------------------------------------------------------------
-		private $insertBrand = array();
-		public function insertBrand(): array{
 
-			if(!Utilities::checkData('brand','name', $this->name)){
+		private $insertBrand = 0;
+		public function insertBrand():int{
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+			try{
+				if(!Utilities::checkData('brand','name', $this->name)){
 
-				try{
-					$bdd->exec("INSERT INTO `brand`(`name`)
-								VALUES('" . $this->name . "')");
-		
-					$stmt = $bdd->prepare("SELECT MAX(`id_brand`) AS id FROM `brand`");
+					$bdd = DbConnect::DbConnect(new DbConnect());
+					$stmt = $bdd->prepare('INSERT INTO `brand`(`name`) VALUES(:name)');
+					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
 					$stmt->execute();
-					$this->insertBrand = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+					$stmt = $bdd->prepare('SELECT MAX(`id_brand`) FROM `brand`');
+					$stmt->execute();
+					
+					$this->insertBrand = intval($stmt->fetchColumn());
+					
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "Brand is insert with success!!!";
 
-					$this->insertBrand['id_brand'] = intval($this->insertBrand['id']);
-					$this->insertBrand['erreur'] = false;
-					$this->insertBrand['message'] = "Brand is insert with success!!!";
-	
-					$bdd = null;
-					return $this->insertBrand;
+				}else{
+					
+					$bdd = DbConnect::DbConnect(new DbConnect());
 
-				} catch (PDOException $e) {
+					$stmt = $bdd->prepare('SELECT `id_brand` FROM `brand` WHERE `name` = :name');
+					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+					$stmt->execute();
 
-					$this->insertBrand['id_brand'] = 0;
-					$this->insertBrand['erreur'] = true;
-					$this->insertBrand['message'] = "Error to insert brand : " . $e->getMessage();
-	
-					$bdd = null;
-					return $this->insertBrand;
+					$this->insertBrand = intval($stmt->fetchColumn());
 
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "This brand is existing!!!";
 				}
 
-			}else{
-
-				$this->insertBrand['id_brand'] = 0;
-				$this->insertBrand['erreur'] = true;
-				$this->insertBrand['message'] = "Ce nom existe déjà!!!";
-
-				$bdd = null;
-				return $this->insertBrand;
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to insert brand : ' . $e->getMessage() . '<br>';
 			}
+
+			$bdd = null;
+			return $this->insertBrand;
 		}
 
 		//-----------------------------------------------------------------------
-		private $updateBrand = array();
-		public function updateBrand($id_brand): array{
+
+		private $updateBrand = false;
+		public function updateBrand(int $id_brand):bool{
 			
 			if(Utilities::checkData('brand','id_brand', $id_brand)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 
 				try{
 					$stmt = $bdd->prepare('UPDATE `brand` SET `name` = :name WHERE `id_brand` = :id_brand');
@@ -182,85 +176,69 @@
 
 					$stmt->execute();
 
-					$bdd=null;
+					$this->updateBrand = true;
 					
-					$this->updateBrand['erreur'] = false;
-					$this->updateBrand['message'] = "Brand is modifications with success!!!";
-
-					return $this->updateBrand;
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "Brand is modifications with success!!!";
 
 				}catch (PDOException $e){
-
-					$bdd=null;
-					
-					$this->updateBrand['erreur'] = true;
-					$this->updateBrand['message'] = "Error to update brand : " . $e->getMessage();
-
-					return $this->updateBrand;
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to update brand : ' . $e->getMessage() . '<br>';
 				}
-			}else{
-				
-				$this->updateBrand['erreur'] = true;
-				$this->updateBrand['message'] = "This brand is not existing!!!";
 
-				return $this->updateBrand;
+			}else{
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "This brand is not existing!!!";
 			}
+
+			$bdd=null;
+			return $this->updateBrand;
 		}
 
 		//-----------------------------------------------------------------------
-		private $deleteBrand = array();
-		public function deleteBrand($id_brand):array{
+
+		private $deleteBrand = false;
+		public function deleteBrand(int $id_brand):bool{
 			
 			if(Utilities::checkData('brand','id_brand', $id_brand)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 
 				try{
-					$stmt = $bdd->prepare('DELETE FROM brand WHERE id_brand = :id_brand');
+					$stmt = $bdd->prepare('SELECT COUNT(*) FROM car WHERE id_brand = :id_brand');
 					$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
 					$stmt->execute();
-					
-					$bdd=null;
 
-					$this->deleteBrand['erreur'] = false;
-					$this->deleteBrand['message'] = "Brand is delete with success!!!";
+					$result = $stmt->fetchColumn();
 
-					return $this->deleteBrand;
+					if($result > 0){
 
-				}catch (PDOException $e){
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "This brand is used by a car!!!";
 
-					$bdd=null;
-	
-					$this->deleteBrand['erreur'] = true;
-					$this->deleteBrand['message'] = "Error to delete brand : " . $e->getMessage();
-	
-					return $this->deleteBrand;
+					}else{
+
+						$stmt = $bdd->prepare('DELETE FROM brand WHERE id_brand = :id_brand');
+						$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
+						$stmt->execute();
+
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "Brand is delete with success!!!";
+
+						$this->deleteBrand = true;
+					}
+
+				}catch(PDOException $e){
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error query to delete brand : ' . $e->getMessage() . '<br>';
 				}
 			}else{
-
-				$bdd=null;
-				$this->deleteBrand['erreur'] = true;
-				$this->deleteBrand['message'] = "This brand is not existing!!!";
-
-				return $this->deleteBrand;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "This brand is not existing!!!";
 			}
+
+			$bdd=null;
+			return $this->deleteBrand;
 		}
-
-        //__Ajouter user?___________________________________________
-        
-        /*public function getAddBrand()
-        {
-            if(is_null($_SESSION['car']['addBrand']))
-            {
-                $_SESSION['car']['addBrand']=false;
-            }
-            return $_SESSION['car']['addBrand'];
-        }
-        public function setAddBrand($new)
-        {
-            $_SESSION['car']['addBrand']=$new;
-        }*/
-
-	}
-	
+	}	
 ?>

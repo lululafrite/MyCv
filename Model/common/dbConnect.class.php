@@ -1,14 +1,16 @@
 <?php
-
-	namespace MyCv\Model;
+	//dbConnect.class.php
+	//author : Ludovic FOLLACO
+	//checked to 2024-10-04_15:25
+	namespace Model\DbConnect;
 
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\Utilities;
 	use \PDO;
 	use \PDOException;
+	use Model\Utilities\Utilities;
 
-	class dbConnect
+	class DbConnect
 	{
 		private static function connectDb(): PDO{
 			
@@ -83,7 +85,7 @@
 
 		public static function dbConnect(): PDO{
 
-			$bdd = dbConnect::connectDb();
+			$bdd = DbConnect::connectDb();
 			date_default_timezone_set($_SESSION['other']['timeZone']);
 
 			if($bdd){
@@ -129,7 +131,7 @@
 
 		public static function dbConnectGP(): PDO{
 
-			$bdd = dbConnect::connectDbGP();
+			$bdd = DbConnect::connectDbGP();
 			date_default_timezone_set($_SESSION['other']['timeZone']);
 
 			if($bdd){

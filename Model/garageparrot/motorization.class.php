@@ -1,12 +1,12 @@
 <?php
 
-	namespace GarageParrot\Model;
+	namespace Model\Car;
 
     require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+    use Model\DbConnect\DbConnect;
 
 	class Motorization
 	{
@@ -38,7 +38,7 @@
 		private $theMotorization;
 		public function getmotorization($idMotorization)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -68,7 +68,7 @@
 		private $motorizationList;
 		public function getMotorizationList($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -97,7 +97,7 @@
 
 		public function addMotorization()
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$bdd->exec("INSERT INTO `motorization`(`name`)
@@ -122,7 +122,7 @@
 
 		public function updatemotorization($idMotorization)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try
 			{
@@ -144,7 +144,7 @@
 
 		public function deleteMotorization($id)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try
 			{

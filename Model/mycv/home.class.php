@@ -6,7 +6,7 @@
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+	use Model\DbConnect\DbConnect;
 
 	class Home
 	{
@@ -53,7 +53,7 @@
 		private $getHome;
 		public function getHome(int $home_id):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare('SELECT `home`.`home_id`,
@@ -86,7 +86,7 @@
 		private $homeList;
 		public function getHomeList(string $whereClause, string $orderBy = 'home_id', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -126,7 +126,7 @@
 		private $updateHome = false;
 		public function updateHome(int $home_id):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home`
@@ -161,7 +161,7 @@
 		private $deleteHome = false;
 		public function deleteHome(int $home_id):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare('DELETE FROM home WHERE home_id = :home_id');
@@ -189,7 +189,7 @@
 		private $insertHome = false;
 		public function insertHome():bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 	
 			try{
 				$stmt = $bdd->prepare("INSERT INTO `home` (`home_title`,

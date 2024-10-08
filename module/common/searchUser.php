@@ -1,6 +1,6 @@
 <?php
     require_once('../model/common/type.class.php');
-    use \User\Model\Type As UserType;
+    use Model\User\Type As UserType;
 ?>
 
 <div class="container">

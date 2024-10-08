@@ -7,7 +7,7 @@
 
     use Model\Mycv\Home;
     use MyCv\Model\HomeArticle;
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 
     $homes = new Home();
     $homeArticles = new HomeArticle();

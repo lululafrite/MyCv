@@ -4,7 +4,7 @@
     require_once('../module/garageparrot/searchCarAdmin.php');
     require_once('../module/common/select_page.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <section class="m-5 d-flex flex-wrap justify-content-center">

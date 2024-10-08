@@ -7,12 +7,12 @@
     require_once('../model/garageparrot/carForm.class.php');
     require_once('../model/common/utilities.class.php');
 
-    use GarageParrot\Model\Car;
-    use GarageParrot\Model\Brand;
-    use GarageParrot\Model\Model;
-    use GarageParrot\Model\Motorization;
-    use GarageParrot\Model\CarForm;
-    use MyCv\Model\Utilities;
+    use Model\Car\Car;
+    use Model\Car\Brand;
+    use Model\Car\Model;
+    use Model\Car\Motorization;
+    use Model\Car\CarForm;
+    use Model\Utilities\Utilities;
     
     $MyCar = new Car();
     $MyCarForm = new CarForm();
@@ -97,7 +97,7 @@
 
             if($MyCar->getId() === 0){
                     
-                $MyCar->setId($MyCar->InsertCar());
+                $MyCar->setId($MyCar->insertCar());
                 $cars = initTabcar($cars, $MyCar, $MyCarForm);
 
                 return;

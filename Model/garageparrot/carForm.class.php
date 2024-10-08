@@ -1,6 +1,8 @@
 <?php
-
-	namespace GarageParrot\Model;
+	//carForm.class.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-04_16:49
+	namespace Model\Car;
 
 	class CarForm
 	{

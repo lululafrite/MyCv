@@ -2,7 +2,7 @@
     require_once('../controller/common/connexion.controller.php');
     require_once('../model/common/utilities.class.php');
 
-    use  MyCv\Model\Utilities;
+    use  Model\Utilities\Utilities;
 
     $theSite = 'index';
     if(Utilities::checkValueInUrl('goldorak')){

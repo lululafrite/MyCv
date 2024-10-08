@@ -6,11 +6,11 @@
     require_once('../model/common/subscription.class.php');
     require_once('../model/common/utilities.class.php');
 
-    use \User\Model\User;
-    use \User\Model\UserForm;
-    use \User\Model\Type As UserType;
-    use \User\Model\Subscription;
-    use MyCv\Model\Utilities;
+    use Model\User\User;
+    use Model\User\UserForm;
+    use Model\User\Type As UserType;
+    use Model\User\Subscription;
+    use Model\Utilities\Utilities;
     
     $MyUser = new User();
     $MyUserForm = new UserForm();

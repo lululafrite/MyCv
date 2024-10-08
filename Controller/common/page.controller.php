@@ -2,9 +2,11 @@
 
     require_once('../model/common/page.class.php');
 
-    use MyCv\Model\Page;
+    use Model\Page\Page;
     $MyPage = new Page();
-
+    $next = false;
+    $previous = false;
+    
     //-----------------------------------------------------------------------------------
 
     $MyPage->setThePage($_SESSION['pagination']['thePage']);
@@ -17,10 +19,30 @@
     //-----------------------------------------------------------------------------------
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        isset($_POST['nbOfProduct']) ? $MyPage->setProductPerPage($_POST['nbOfProduct']) : $MyPage->setProductPerPage($_SESSION['pagination']['productPerPage']);
+        if(isset($_POST['nbOfProduct'])){
 
-        $next = isset($_POST['next']) ? true : false;
-        $previous = isset($_POST['previous']) ? true : false;
+            $MyPage->setProductPerPage($_POST['nbOfProduct']);
+            $_SESSION['pagination']['productPerPage'] = $MyPage->getProductPerPage();
+
+            $MyPage->setThePage(1);
+            $_SESSION['pagination']['thePage'] = 1;
+
+            
+            $MyPage->setFirstProduct(0);
+            $_SESSION['pagination']['firstProduct'] = 0;
+
+            unset($_POST['nbOfProduct']);
+
+        }else if(isset($_POST['next'])){
+
+            $next = true;
+            unset($_POST['next']);
+
+        }else if(isset($_POST['previous'])){
+
+            $previous = true;
+            unset($_POST['previous']);
+        }
 
         if($next){
 

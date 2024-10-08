@@ -4,7 +4,7 @@
     //require_once('../controller/page.controller.php');
     
     use \Firebase\JWT\JWT;
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
     
     $jwt1 = JWT::jsondecode($_SESSION['token']['jwt']['tokenJwt']);
     $jwt2 = JWT::jsondecode(Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']));

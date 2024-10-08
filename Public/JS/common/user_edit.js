@@ -1,9 +1,9 @@
 //Permet de remplir les input avec une valeur quelquonque. Utile si l'on a cliqué sur le bouton nouveau et que l'on veut annuler. 
 
     function retour() {        
-        setInputValue('txt_userEdit_name', '_');
-        setInputValue('txt_userEdit_surname', '_');
-        setInputValue('txt_userEdit_pseudo', '_');
+        setInputValue('txt_userEdit_name', 'Ton Nom');
+        setInputValue('txt_userEdit_surname', 'Ton Prénom');
+        setInputValue('txt_userEdit_pseudo', 'Ton pseudo');
         setInputValue('txt_userEdit_email', 'user@gmail.com');
         setInputValue('txt_userEdit_phone', '00 00 00 00 00');
         setInputValue('list_userEdit_type', 'User');
@@ -21,22 +21,22 @@
 
     //Initialise les couleurs input list
     document.addEventListener('DOMContentLoaded', function() {
-        var myInput = document.getElementById('list_userEdit_type');
+        let myInput = document.getElementById('list_userEdit_type');
         myInput.style.backgroundColor = '#DADADA';
     });
 
     //vérifier si la valeur saisie existe dans la liste de choix
     function validateInput(input , datalist, myLabel, myMessage){
         
-        var myInput = document.getElementById(input);
-        var errorMessage = document.getElementById(myLabel);
-        var isError = false;
+        let myInput = document.getElementById(input);
+        let errorMessage = document.getElementById(myLabel);
+        let isError = false;
         
         if(datalist!=''){
             
-            var myDatalist = document.getElementById(datalist);
+            let myDatalist = document.getElementById(datalist);
 
-            var isValid = Array.from(myDatalist.options).some(function(option) {
+            let isValid = Array.from(myDatalist.options).some(function(option) {
                 return option.value === myInput.value;
             });
 
@@ -46,30 +46,32 @@
             
             isError = true;
 
+        }else if(input === 'txt_userEdit_pseudo'){
+            
+            let pseudoInput = document.getElementById(input).value;
+
+            // Vérifier que le nombre de caractères est ente 4 et 20
+            if (pseudoInput.length > 3 && pseudoInput.length < 21) {
+                isError=false;
+            }else{
+                isError=true;
+            }
+
         }else if(input === 'txt_userEdit_password'){
 
-            var passwordInput = document.getElementById(input).value;
+            let passwordInput = document.getElementById(input).value;
 
             // Vérifier que la longueur est de 8 caractères
             if (passwordInput.length < 8) {
-                //alert("Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial parmi les suivants (_-/*-@!)");
                 isError=true;
             }else{
                 isError=false;
             }
-
-            //Vérifier au moins une majuscule, une minuscule, un chiffre, et un caractère spécial
-            var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[_\-/*-@!])[\w\-/*-@!]{8,255}$/;
-            
-            if (!regex.test(passwordInput)) {
-                //alert("Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial parmi les suivants (_-/*-@!)");
-                isError=true;
-            }
             
         }else if(input === 'txt_userEdit_confirm'){
 
-            var password = document.getElementById('txt_userEdit_password').value;
-            var passwordConfirm = document.getElementById(input).value;
+            let password = document.getElementById('txt_userEdit_password').value;
+            let passwordConfirm = document.getElementById(input).value;
 
             if(passwordConfirm === password){
                 isError=false;
@@ -109,15 +111,15 @@
 
     document.getElementById('formUserEdit').addEventListener('submit', function (event) {
 
-        var MessageName = "Saisissez le Nom (50 caractères maximum).";
-        var MessageSurname = "Saisissez le Prénom (50 caractères maximum).";
-        var MessagePseudo = "Saisissez le pseudonyme (20 caractères maximum).";
-        var MessageEmail = "Saisissez l'adresse email (255 caractères maximum).";
-        var MessagePhone = "Saisissez le N° de téléphone.";
-        var MessageType = "Selectionnez le type d'utilisateur dans la liste de choix.";
-        var MessagePassword = "Saisissez un mot de passe de 255 caractères maximum et 8 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /*-.!?@";
+        let MessageName = "Saisissez le Nom (50 caractères maximum).";
+        let MessageSurname = "Saisissez le Prénom (50 caractères maximum).";
+        let MessagePseudo = "Saisissez le pseudonyme (20 caractères maximum).";
+        let MessageEmail = "Saisissez l'adresse email (255 caractères maximum).";
+        let MessagePhone = "Saisissez le N° de téléphone.";
+        let MessageType = "Selectionnez le type d'utilisateur dans la liste de choix.";
+        let MessagePassword = "Saisissez un mot de passe de 255 caractères maximum et 8 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /*-.!?@";
         
-        var isError = false;
+        let isError = false;
         
         if (!validateInput('txt_userEdit_name', '', 'labelMessageName', MessageName)){
             isError = true;
@@ -151,7 +153,7 @@
             isError = true;
         }
 
-        var messageAlerte = 'Vous avez un ou plusieurs champs dont la valeur n\'est pas conforme. Veuillez vérifier et corriger le ou les champs concernés';
+        let messageAlerte = 'Vous avez un ou plusieurs champs dont la valeur n\'est pas conforme. Veuillez vérifier et corriger le ou les champs concernés';
         
         if (isError === true){
             event.preventDefault();

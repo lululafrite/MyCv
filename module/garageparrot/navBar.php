@@ -6,7 +6,7 @@
         </a>
     </div>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary p-0 m-0">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary p-0 m-0 pe-5">
 
         <div class="d-flex flex-column align-items-center">
 
@@ -140,17 +140,26 @@
                         </a>
                     </li>
 
-                    <li class="nav-item dropdown custom-border-md-bottom" style="width: 200px;">
+                    <li class="nav-item dropdown custom-border-md-bottom">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- <img class="p-2 h-75" src="../img/common/icon/person.svg" alt="icone du menu s'identifier"> -->
-                            <img class="p-2 h-75" src="../img/common/avatar/<?php echo htmlspecialchars($_SESSION['dataConnect']['avatar'], ENT_QUOTES, 'UTF-8'); ?>" alt="icone du menu s'identifier">
+                            <img class="p-2 h-75"
+                                alt="icone de l'utilisateur"
+                                src="<?php
+                                        if($_SESSION['dataConnect']['type'] != 'Guest'){
+                                            echo "../img/common/avatar/" . $_SESSION['dataConnect']['avatar']; 
+                                        }else{
+                                            echo "../img/common/icon/person.svg"; 
+                                        }
+                                      ?>"
+                                 
+                            >
                             <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=connexion">
-                                    <img class="p-2" src="../img/common/icon/login_25x25.png" alt="icone du bouton s'identifier">    
-                                    S'identifier
+                                    <img class="p-2" src="../img/common/icon/login_25x25.png" alt="icone du bouton connexion">    
+                                    Connexion
                                 </a>
                             </li>
                             <li>

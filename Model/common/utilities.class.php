@@ -1,10 +1,13 @@
 <?php
-
-    namespace MyCv\Model;
+    //utilities.class.php
+    //author: Ludovic FOLLACO
+    //checked to 2024-10-04_16:06
+    namespace Model\Utilities;
     
-    use Firebase\JWT\JWT;
     use \PDO;
     use \PDOException;
+    use Model\DbConnect\DbConnect;
+    use Firebase\JWT\JWT;
 
     class Utilities {
 
@@ -36,12 +39,14 @@
             return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
         }
 
+        // Filter Input
         public static function filterInput($input, $method = INPUT_POST):string{
             return filter_input($method, $input, FILTER_DEFAULT);
         }
 
         // Upload image
         public static function uploadImg(string $session1, string $session2, string $post, string $file, string $directory){
+            
             $_SESSION[$session1][$session2] = isset($_POST[$post]) ? self::escapeInput($_POST[$post]) : false;
             $fileError = isset($_FILES[$file]) ? $_FILES[$file]["error"] : UPLOAD_ERR_NO_FILE;
 
@@ -66,12 +71,14 @@
             }
         }
 
+        // Check if value is in url
         public static function checkValueInUrl(string $value):bool{
             $current_url = $_SERVER['REQUEST_URI'];
             $regEx = '/' . preg_quote($value, '/') . '/';
             return preg_match($regEx, $current_url);
         }
 
+        // Check and return value in url
         public static function checkAndReturnValueInUrl():string{
             if(self::checkValueInUrl('goldorak')){
                 return "goldorak";
@@ -81,6 +88,7 @@
             return "index";
         }
 
+        // Check if local server
         public static function checkIfLocal():bool{
             return isset($_SESSION['other']['local']) ? boolval($_SESSION['other']['local']) : false;
         }
@@ -97,7 +105,7 @@
         // Check if id is existing
 		public static function checkData(string $table, string $columnId, int $id):bool{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			$stmt = $bdd->prepare("SELECT COUNT(*) FROM $table WHERE $columnId = :id");
 			$stmt->bindParam(':id', $id, PDO::PARAM_INT);

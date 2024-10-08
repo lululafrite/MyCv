@@ -1,6 +1,6 @@
 <?php
-    use garageparrot\model\Brand;
-    use garageparrot\model\Model;
+    use Model\Car\Brand;
+    use Model\Car\Model;
 ?>
 
 <form action="" method="post">

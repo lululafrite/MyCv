@@ -1,7 +1,7 @@
 <?php
 	require_once('../controller/garageparrot/home.controller.php');
 	require_once('../model/common/utilities.class.php');
-	use MyCv\Model\Utilities;
+	use Model\Utilities\Utilities;
 ?>
 
 <form action="" method="post">
@@ -312,8 +312,37 @@
 
 </form>
 
-<div class="container pt-3">
+<div class="col-12 bg-dark d-flex justify-content-center text-light mx-auto mb-3 rounded-3">
+    <h2 class="px-0 py-3 m-0">Partagez votre expérience, laissez un commentaire!</h2>
+</div>
 
-	<?php require_once("../module/garageparrot/comment.php");?>
+<div class="container d-flex flex-column flex-lg-row justify-content-center">
+
+	<div class="col-12 col-lg-5 mx-0 px-0 mb-md-3">
+
+		<div class="col-12 bg-dark d-flex justify-content-center text-light py-3 mx-0 px-0 rounded-3">
+			Commentez votre expérience
+		</div>
+
+		<?php include "../module/common/commentForm.php"; ?>
+
+	</div>
+
+	<div class="col-12 col-lg-5 ms-auto me-0 px-0 pt-3 pt-sm-0">
+
+		<div class="col-12 bg-dark d-flex justify-content-center text-light py-3 mx-0 px-0 rounded-3">
+			Commentaires de nos clients
+		</div>
+
+		<div class="overflow-auto p-0 m-0" style="max-height: 280px;">
+
+			<?php include "../module/common/comment.php"; ?>
+
+		</div>
+
+	</div>
 
 </div>
+
+<script src="../js/common/function.js"></script>
+<script src="../js/common/fetch.js"></script>

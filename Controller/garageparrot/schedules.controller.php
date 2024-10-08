@@ -3,8 +3,8 @@
     require_once('../model/garageparrot/schedules.class.php');
     require_once('../model/common/utilities.class.php');
     
-    use GarageParrot\Model\Schedules;
-    use MyCv\Model\Utilities;
+    use Model\GarageParrot\Schedules;
+    use Model\Utilities\Utilities;
 
     $scheldule = new Schedules();
     

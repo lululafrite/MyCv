@@ -1,7 +1,7 @@
 <?php
     require_once('../controller/goldorak/home.controller.php');
     require_once('../model/common/utilities.class.php');
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <form method="post" id="formHome"  enctype="multipart/form-data">
@@ -135,7 +135,7 @@
 
                             <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body text-light" style="text-align: justify;">
-                                    <?php include "../module/goldorak/commentForm.php"; ?>
+                                    <?php include "../module/common/commentForm.php"; ?>
                                 </div>
                             </div>
 
@@ -143,7 +143,7 @@
                     </div>
 
                     <div class="mt-3">
-                        <?php include "../module/goldorak/comment.php"; ?>
+                        <?php include "../module/common/comment.php"; ?>
                     </div>
 
                 </div>

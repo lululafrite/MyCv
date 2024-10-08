@@ -3,8 +3,8 @@
     require_once('../model/common/utilities.class.php');
     require_once('../model/common/user.class.php');
 
-    use MyCv\Model\Utilities;
-    use User\Model\User;
+    use Model\Utilities\Utilities;
+    use Model\User\User;
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 

@@ -1,11 +1,14 @@
 <?php
-	namespace GarageParrot\Model;
+	//car.class.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-04_16:48
+	namespace Model\Car;
 
     require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+    use Model\DbConnect\DbConnect;
 
 	class Car
 	{
@@ -178,30 +181,36 @@
 			$this->criteriaPrice = $new;
 		}
 
-
 		//-----------------------------------------------------------------------
 
-		private $newCar;
-		public function getNewCar()
-		{
-			if(empty($_SESSION['car']['newCar'])){
-				$_SESSION['car']['newCar'] = false;
-				$this->newCar = false;
-			}
-			return $_SESSION['car']['newCar'];
+		private $newCar = false;
+		public function getNewCar():bool{
+			$_SESSION['car']['newCar'] = $this->newCar;
+			return $this->newCar;
 		}
-		public function setNewCar($new)
-		{
+		public function setNewCar(bool $new):void{
 			$_SESSION['car']['newCar'] = $new;
 			$this->newCar = $new;
 		}
 
+        //__Ajouter car?___________________________________________
+
+        private $addCar = false;
+        public function getAddCar():bool{
+            $_SESSION['car']['addCar']=$this->addCar;
+            return $this->addCar;
+        }
+        public function setAddCar(bool $new):void{
+            $_SESSION['car']['addCar']=$new;
+			$this->addCar = $new;
+        }
+
 		//-----------------------------------------------------------------------
 
-		private $currentCar;
+		private $currentCar = array();
 		public function getCurrentCar(int $id_car):array{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -250,10 +259,10 @@
 
 		//-----------------------------------------------------------------------
 
-		private $carList;
+		private $carList = array();
 		public function getCarList(string $whereClause, string $orderBy = 'price', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 			    $sql = $bdd->prepare("SELECT
@@ -307,12 +316,11 @@
 		}
 
 		//-----------------------------------------------------------------------
+		
+		private $insertCar = 0;
+		public function insertCar():int{
 
-		public function InsertCar():int{
-			
-			$this->id_car = 0;
-
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("INSERT INTO `car` (`id_brand`,
@@ -365,8 +373,8 @@
 				$stmt->execute();
 
 				$stmt = $bdd->query("SELECT MAX(`id_car`) FROM `car`");
-				$maxId = $stmt->fetchColumn();
-				$this->id_car = intval($maxId);
+
+				$this->insertCar = intval($stmt->fetchColumn());
 
 				$_SESSION['other']['error'] = false;
 				$_SESSION['other']['message'] = "The car is inserted with success!!!";
@@ -377,13 +385,15 @@
 			}
 
 			$bdd=null;
-			return $this->id_car;
+			return $this->insertCar;
 		}
 
 		//-----------------------------------------------------------------------
+
 		private $updateCar = false;
 		public function updateCar(int $id_car):bool{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `car`
@@ -439,7 +449,6 @@
 			}
 
 			$bdd = null;
-
 			return $this->updateCar;
 		}
 
@@ -450,7 +459,7 @@
 			
 			if(self::checkIdCar($id_car)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 
 				try{
 					$stmt = $bdd->prepare('DELETE FROM car WHERE id_car = :id_car');
@@ -471,15 +480,17 @@
 				$_SESSION['other']['error'] = true;
 				$_SESSION['other']['message'] = "The car with id " . $id_car . " is not existing!!!";
 			}
+
 			$bdd = null;
 			return $this->deleteCar;
 		}
 
 
 		//-----------------------------------------------------------------------
+
 		private $checkCar = 0;
 		public function checkCar(string $brand, string $model, string $motorization, int $year, int $mileage, int $price):int{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) AS `number`
@@ -525,25 +536,10 @@
 			return $this->checkCar;
 		}
 
-        //__Ajouter car?___________________________________________
-        
-        public function getAddCar()
-        {
-            if(is_null($_SESSION['car']['addCar']))
-            {
-                $_SESSION['car']['addCar']=false;
-            }
-            return $_SESSION['car']['addCar'];
-        }
-        public function setAddCar($new)
-        {
-            $_SESSION['car']['addCar']=$new;
-        }
-
 		private static $checkIdCar = false;
 		public static function checkIdCar(int $id_car):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `car` WHERE `id_car` = :id_car");
@@ -576,7 +572,7 @@
 		private static  $checkNbOfProduct = 0;
 		public static function checkNbOfProduct(string $whereClause):int{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT * FROM `car` WHERE $whereClause ");
@@ -601,7 +597,7 @@
 		private static $checkNbOfCar = 0;
 		public static function getCheckNbOfCar(string $whereClause):int{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 			    $sql = $bdd->prepare("SELECT

@@ -1,12 +1,14 @@
 <?php
-
-	namespace User\Model;
+	//type.class.php
+	//author : Ludovic FOLLACO
+	//2024-10-04_16:00
+	namespace Model\User;
 
     require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+	use Model\DbConnect\DbConnect;
 
 	class Type
 	{
@@ -30,10 +32,10 @@
 
 		//-----------------------------------------------------------------------
 
-		private $theType;
+		private $theType = array();
 		public function getType(int $id_type):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT `user_type`.`id_type`,
@@ -61,10 +63,10 @@
 
 		//-----------------------------------------------------------------------
 
-		private $typeList;
+		private $typeList = array();
 		public function getTypeList(string $whereClause, string $orderBy = 'type', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$sql = $bdd->prepare("SELECT `user_type`.`id_type`,
@@ -97,10 +99,10 @@
 
 		//-----------------------------------------------------------------------
 		
-		private $insertType;
+		private $insertType = 0;
 		public function InsertType():int{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("INSERT INTO `user_type`(`type`) VALUES(:type)");
@@ -122,10 +124,10 @@
 		}
 
 		//-----------------------------------------------------------------------
+		private $updateType = false;
+		public function updateUserType(int $id_type):bool{
 
-		public function updateUserType($id_type):void{
-
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `user_type` SET `name` = :name WHERE `id_type` = :id_type");
@@ -138,19 +140,22 @@
 				$_SESSION['other']['error'] = false;
 				$_SESSION['other']['message'] = "The type is updated!!!";
 
+				$this->updateType = true;
+
 			}catch(PDOException $e){
 				$_SESSION['other']['error'] = true;
 				$_SESSION['other']['message'] = "The type is not updated!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->updateType;
 		}
 
 		//-----------------------------------------------------------------------
+		private $deleteType = false;
+		public function deleteUserType(int $id_type):bool{
 
-		public function deleteUserType(int $id_type):void{
-
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare('DELETE FROM user_type WHERE id_type = :id_type');
@@ -162,12 +167,15 @@
 				$_SESSION['other']['error'] = false;
 				$_SESSION['other']['message'] = "The type is deleted!!!";
 
+				$this->deleteType = true;
+
 			}catch (PDOException $e){
 				$_SESSION['other']['error'] = true;
 				$_SESSION['other']['message'] = "The type is not deleted!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->deleteType;
 		}
 	}
 ?>

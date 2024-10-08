@@ -3,8 +3,8 @@
     require_once('../model/common/utilities.class.php');
     require_once('../model/garageparrot/home.class.php');
     
-    use GarageParrot\Model\Home;
-    use MyCv\Model\Utilities;
+    use Model\GarageParrot\Home;
+    use Model\Utilities\Utilities;
 
     $homes = new Home();
 

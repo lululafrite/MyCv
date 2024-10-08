@@ -2,7 +2,7 @@
 	
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\Utilities;
+	use Model\Utilities\Utilities;
 	$local = Utilities::checkIfLocal();
 ?>
 

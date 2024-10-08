@@ -2,7 +2,7 @@
 
     require_once('../model/common/utilities.class.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 
     $_SESSION['other']['local'] = true; //set to false if online server and to true if local server
 

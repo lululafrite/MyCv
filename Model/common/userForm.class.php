@@ -1,6 +1,8 @@
 <?php
-
-	namespace User\Model;
+	//userForm.class.php
+	//author : Ludovic FOLLACO
+	//checked to 2024-10-04_16:02
+	namespace Model\User;
 
 	class UserForm
 	{

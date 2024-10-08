@@ -2,7 +2,7 @@
     require_once('../controller/common/userEdit.controller.php');
     require_once('../model/common/utilities.class.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <section class="container">
@@ -31,17 +31,34 @@
                         <div class="me-2">
 
                         <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
-                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
+                            <button
+                                class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_cancel"
+                                style="width: 100px;"
+                                onclick="retour();"
+                            >Retour</button>
                         <?php } ?>
                         
-                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_save" id="btn_userEdit_save" style="width: 100px;" value="Enregistrer">
+                            <input
+                                class="btn btn-lg btn-success fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_save"
+                                id="btn_userEdit_save"
+                                style="width: 100px;"
+                                value="Enregistrer"
+                            >
                         
                         </div>
 
                     <?php if($_SESSION['dataConnect']['type'] != 'Administrator' && $_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <div>
 
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete">Supprimer mon compte</button>
+                            <button
+                                class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_delete"
+                            >Supprimer mon compte</button>
                         
                         </div>
                     <?php } ?>
@@ -49,8 +66,21 @@
                     <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
                         <div>
 
-                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_new" id="btn_userEdit_new" style="width: 100px;" value="Nouveau">
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete"style="width: 100px;">Supprimer</button>
+                            <input
+                                class="btn btn-lg btn-info fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_new"
+                                id="btn_userEdit_new"
+                                style="width: 100px;"
+                                value="Nouveau"
+                            >
+
+                            <button
+                                class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_delete"
+                                style="width: 100px;"
+                            >Supprimer</button>
                         
                         </div>
                     <?php } ?>
@@ -61,7 +91,11 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message1" id="message1"><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
+                    <div
+                        class="text-center text-black bg-warning px-5 rounded-5"
+                        name="message1"
+                        id="message1"
+                    ><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
                 </td>
             </tr>
 
@@ -72,11 +106,14 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 bg-dark text-light" id="txt_userEdit_id" name="txt_userEdit_id" type="text" readonly style="font-size: 1.6rem;"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['id_user']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 bg-dark text-light"
+                        id="txt_userEdit_id"
+                        name="txt_userEdit_id"
+                        type="text"
+                        readonly
+                        style="font-size: 1.6rem;"
+                        value="<?php echo Utilities::escapeInput($users['id_user']); ?>"
                     >
                 </td>
 
@@ -98,15 +135,22 @@
             <tr class="m-0 p-0">
 
                 <td class="text-end m-0 p-0">
-                    <label class="form-label m-0 p-0 pe-3" for="list_userEdit_subscription">Formule<span style="color:red;">*</span></label>
+                    <label
+                        class="form-label m-0 p-0 pe-3"
+                        for="list_userEdit_subscription"
+                    >Formule<span style="color:red;">*</span>
+                    </label>
                 </td>
 
                 <td class="m-0 p-0">
-                    <input list="datalist_userEdit_subscription" name="list_userEdit_subscription" id="list_userEdit_subscription" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez une formule" oninput="validateInput('list_userEdit_subscription','datalist_userEdit_subscription','labelMessageSubscription','Selectionnez votre formule dans la liste de choix.')"
-                    value=
-                        "<?php
-                            echo Utilities::escapeInput($users['subscription']);
-                        ?>"
+                    <input
+                        list="datalist_userEdit_subscription"
+                        name="list_userEdit_subscription"
+                        id="list_userEdit_subscription"
+                        class="form-control-lg m-0 p-0 ps-3 border border-black fs-4"
+                        placeholder="Selectionnez une formule"
+                        oninput="validateInput('list_userEdit_subscription','datalist_userEdit_subscription','labelMessageSubscription','Selectionnez votre formule dans la liste de choix.')"
+                        value= "<?php echo Utilities::escapeInput($users['subscription']); ?>"
                     >
                     <datalist id="datalist_userEdit_subscription">
                         <?php
@@ -138,11 +182,15 @@
                 </td>
 
                 <td class="m-0 p-0" readonly>
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_name" name="txt_userEdit_name" type="text" placeholder="Saisissez votre NOM" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_name','','labelMessageName','Saisissez votre Nom d\'une longueur de 50 caractères maximum.')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['name']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black"
+                        id="txt_userEdit_name"
+                        name="txt_userEdit_name"
+                        type="text"
+                        placeholder="Saisissez votre NOM"
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_name','','labelMessageName','Saisissez votre Nom d\'une longueur de 50 caractères maximum.')"
+                        value= "<?php echo Utilities::escapeInput($users['name']); ?>"
                     >
                 </td>
 
@@ -168,11 +216,15 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_surname" name="txt_userEdit_surname" type="text" placeholder="Saisissez votre Prénom" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_surname','','labelMessageSurname','Saisissez votre Prénom d\'une longueur de 50 caractères maximum.')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['surname']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black"
+                        id="txt_userEdit_surname"
+                        name="txt_userEdit_surname"
+                        type="text"
+                        placeholder="Saisissez votre Prénom"
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_surname','','labelMessageSurname','Saisissez votre Prénom d\'une longueur de 50 caractères maximum.')"
+                        value= "<?php echo Utilities::escapeInput($users['surname']); ?>"
                     >
                 </td>
 
@@ -198,11 +250,15 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_pseudo" name="txt_userEdit_pseudo" type="text" placeholder="Saisissez votre Pseudo" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_pseudo')"
-                    value=
-                        "<?php
-                            echo Utilities::escapeInput($users['pseudo']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>"
+                        id="txt_userEdit_pseudo"
+                        name="txt_userEdit_pseudo"
+                        type="text"
+                        placeholder="Saisissez votre Pseudo" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?>
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_pseudo','','labelMessagePseudo','Saisissez un pseudonyme entre 4 et 20 caractères maximum.')"
+                        value="<?php echo Utilities::escapeInput($users['pseudo']); ?>"
                     >
                 </td>
 
@@ -227,11 +283,15 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>" id="txt_userEdit_email" name="txt_userEdit_email" type="email" placeholder="Saisissez votre courriel" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?> style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_email','','labelMessageEmail','Saisissez votre adresse de courriel d\'une longueur maximum de 255 caractères.')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['email']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'bg-dark text-light' : ''; ?>"
+                        id="txt_userEdit_email"
+                        name="txt_userEdit_email"
+                        type="email"
+                        placeholder="Saisissez votre courriel" <?php echo ($_SESSION['dataConnect']['type'] === 'Member' || $_SESSION['dataConnect']['type'] === 'User') ? 'readonly' : ''; ?>
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_email','','labelMessageEmail','Saisissez votre adresse de courriel d\'une longueur maximum de 255 caractères.')"
+                        value= "<?php echo Utilities::escapeInput($users['email']); ?>"
                     > 
                 </td>
 
@@ -257,11 +317,15 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_phone" name="txt_userEdit_phone" type="tel" placeholder="## ## ## ## ##" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_phone','','labelMessagePhone','Saisissez votre N° de téléphone.')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['phone']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black"
+                        id="txt_userEdit_phone"
+                        name="txt_userEdit_phone"
+                        type="tel"
+                        placeholder="## ## ## ## ##"
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_phone','','labelMessagePhone','Saisissez votre N° de téléphone.')"
+                        value= "<?php echo Utilities::escapeInput($users['phone']); ?>"
                     >
                 </td>
 
@@ -288,11 +352,14 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input list="datalist_userEdit_type" name="list_userEdit_type" id="list_userEdit_type" class="form-control-lg m-0 p-0 ps-3 border border-black fs-4" placeholder="Selectionnez un type" oninput="validateInput('list_userEdit_type','datalist_userEdit_type','labelMessageType','Selectionnez le type d\'utilisateur dans la liste de choix.')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['type']);
-                        ?>"
+                    <input
+                        list="datalist_userEdit_type"
+                        name="list_userEdit_type"
+                        id="list_userEdit_type"
+                        class="form-control-lg m-0 p-0 ps-3 border border-black fs-4"
+                        placeholder="Selectionnez un type"
+                        oninput="validateInput('list_userEdit_type','datalist_userEdit_type','labelMessageType','Selectionnez le type d\'utilisateur dans la liste de choix.')"
+                        value= "<?php echo Utilities::escapeInput($users['type']); ?>"
                     >
                     <datalist id="datalist_userEdit_type">
                         <?php
@@ -334,20 +401,37 @@
 
                                     <div class="col-12 col-lg-3 pb-3 pb-lg-0">
 
-                                        <input class="form-control-lg bg-dark text-light border border-black m-0 p-0 " id="txt_userEdit_avatar" name="txt_userEdit_avatar" type="text" placeholder="Saisissez le nom de l'avatar" readonly style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_avatar','','labelMessageavatar','Saisissez le nom de l\'avatar (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une avatar depuis votre disque local. ATTENTION!!! Dimmentions avatar au ratio de 70px sur 70px.')"
-                                            value=
-                                            "<?php
-                                                echo Utilities::escapeInput($users['avatar']);
-                                            ?>"
+                                        <input
+                                            class="form-control-lg bg-dark text-light border border-black m-0 p-0 "
+                                            id="txt_userEdit_avatar"
+                                            name="txt_userEdit_avatar"
+                                            type="text"
+                                            placeholder="Saisissez le nom de l'avatar"
+                                            readonly style="font-size: 1.6rem;"
+                                            oninput="validateInput('txt_userEdit_avatar','','labelMessageavatar','Saisissez le nom de l\'avatar (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une avatar depuis votre disque local. ATTENTION!!! Dimmentions avatar au ratio de 70px sur 70px.')"
+                                            value= "<?php echo Utilities::escapeInput($users['avatar']); ?>"
                                         >
                                     </div>
 
                                     <div class="col-12 col-lg-5 d-flex align-items-center pb-3 pb-lg-0">
-                                        <input class="fs-4" type="file" name="fileAvatar" id="fileAvatar" accept="image/jpeg, image/png, image/webp" directory="./img/common/avatar/">
+                                        <input
+                                            class="fs-4"
+                                            type="file"
+                                            name="fileAvatar"
+                                            id="fileAvatar"
+                                            accept="image/jpeg, image/png, image/webp"
+                                            directory="./img/common/avatar/"
+                                        >
                                     </div>
 
                                     <div class="col-12 col-lg-4 d-flex align-items-center pb-3 pb-lg-0">
-                                        <input class="btn btn-lg btn-primary fs-4" type="submit" name="btn_avatar" id="btn_avatar" value="Télécharger">
+                                        <input
+                                            class="btn btn-lg btn-primary fs-4"
+                                            type="submit"
+                                            name="btn_avatar"
+                                            id="btn_avatar"
+                                            value="Télécharger"
+                                        >
                                     </div>
 
                                 </div>  
@@ -382,11 +466,15 @@
                 </td>
 
                 <td class="m-0 p-0">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_password" name="txt_userEdit_password" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_password')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['password']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black"
+                        id="txt_userEdit_password"
+                        name="txt_userEdit_password"
+                        type="password"
+                        placeholder=""
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_password','','labelMessagePassword','Saisissez un mot de passe de 255 caractères maximum et 8 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /\*-.!?@')"
+                        value= "<?php echo Utilities::escapeInput($users['password']); ?>"
                     >
                 </td>
 
@@ -414,11 +502,15 @@
                 </td>
 
                 <td class="m-0 p-0 w-90">
-                    <input class="form-control-lg m-0 p-0 ps-3 border border-black" id="txt_userEdit_confirm" name="txt_userEdit_confirm" type="password" placeholder="" style="font-size: 1.6rem;" oninput="validateInput('txt_userEdit_confirm')"
-                        value=
-                        "<?php
-                            echo Utilities::escapeInput($users['password']);
-                        ?>"
+                    <input
+                        class="form-control-lg m-0 p-0 ps-3 border border-black"
+                        id="txt_userEdit_confirm"
+                        name="txt_userEdit_confirm"
+                        type="password"
+                        placeholder=""
+                        style="font-size: 1.6rem;"
+                        oninput="validateInput('txt_userEdit_confirm','','labelMessageConfirm','Saisissez un mot de passe identique à votre première saisie!!!')"
+                        value= "<?php echo Utilities::escapeInput($users['password']); ?>"
                     >
                 </td>
 
@@ -447,17 +539,33 @@
                         <div class="me-2">
 
                         <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
-                            <button class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_cancel" style="width: 100px;" onclick="retour();">Retour</button>
+                            <button
+                                class="btn btn-lg btn-warning fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_cancel"
+                                style="width: 100px;"
+                                onclick="retour();"
+                            >Retour</button>
                         <?php } ?>
                         
-                            <input class="btn btn-lg btn-success fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_save_1" id="btn_userEdit_save_1" style="width: 100px;" value="Enregistrer">
+                            <input
+                                class="btn btn-lg btn-success fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_save_1"
+                                id="btn_userEdit_save_1"
+                                style="width: 100px;"
+                                value="Enregistrer">
                         
                         </div>
 
                     <?php if($_SESSION['dataConnect']['type'] != 'Administrator' && $_SESSION['dataConnect']['type'] != 'Guest'){ ?>
                         <div>
 
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete">Supprimer mon compte</button>
+                            <button
+                                class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_delete"
+                            >Supprimer mon compte</button>
                         
                         </div>
                     <?php } ?>
@@ -465,8 +573,21 @@
                     <?php if($_SESSION['dataConnect']['type'] === 'Administrator'){ ?>
                         <div>
 
-                            <input class="btn btn-lg btn-info fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_new" id="btn_userEdit_new_1" style="width: 100px;" value="Nouveau">
-                            <button class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0" type="submit" name="btn_userEdit_delete"style="width: 100px;">Supprimer</button>
+                            <input
+                                class="btn btn-lg btn-info fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_new"
+                                id="btn_userEdit_new_1"
+                                style="width: 100px;"
+                                value="Nouveau"
+                            >
+
+                            <button
+                                class="btn btn-lg btn-danger fs-4 mb-2 mb-md-0"
+                                type="submit"
+                                name="btn_userEdit_delete"
+                                style="width: 100px;"
+                            >Supprimer</button>
                         
                         </div>
                     <?php } ?>
@@ -478,7 +599,11 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="text-center text-black bg-warning px-5 rounded-5" name="message2" id="message2"><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
+                    <div
+                        class="text-center text-black bg-warning px-5 rounded-5"
+                        name="message2"
+                        id="message2"
+                    ><?php if(!empty($users['message'])){echo Utilities::escapeInput($users['message']);} ?></div>
                 </td>
             </tr>
 
@@ -487,8 +612,6 @@
     </form>
 
 </section>
-
-<?php //$_SESSION['other']['message'] =''; ?>
 
 <script src="../js/common/function.js"></script>
 <script src="../js/common/fetch.js"></script>

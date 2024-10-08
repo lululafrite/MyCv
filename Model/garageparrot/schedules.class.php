@@ -1,12 +1,12 @@
 <?php
 
-	namespace GarageParrot\Model;
+	namespace Model\GarageParrot;
 
     require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+    use Model\DbConnect\DbConnect;
 
 	class Schedules
 	{
@@ -194,7 +194,7 @@
 		private $schedule;
 		public function getSchedule(int $id_schedules):array{
 			
-			$bdd = dbConnect::dbConnectGP(new dbConnect());
+			$bdd = DbConnect::DbConnectGP(new DbConnect());
 			
 			try
 			{
@@ -239,7 +239,7 @@
 		private $scheduleList;
 		public function getScheduleList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -282,7 +282,7 @@
 
 		public function addSchedules()
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$bdd->exec("INSERT INTO `schedules`(`id_schedules`,`lundiMatin`,`lundiAM`,`mardiMatin`,`mardiAM`,
@@ -326,7 +326,7 @@
 
 		public function updateSchedules()
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try
 			{
@@ -363,7 +363,7 @@
 
 		public function deleteSchedules($id)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try
 			{

@@ -1,188 +1,252 @@
 <?php
-
-	namespace GarageParrot\Model;
+	//home.class.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-08_16:04
+	namespace Model\Car;
 
     require_once('../model/common/dbConnect.class.php');
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+    use Model\DbConnect\DbConnect;
 
 	class Model
 	{
-
 		private $id_model;
-		public function getId()
-		{
+		public function getId():int{
 			return $this->id_model;
 		}
-		public function setId($new)
-		{
+		public function setId(int $new):void{
 			$this->id_model = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $name;
-		public function getName()
-		{
+		public function getName():string{
 			return $this->name;
 		}
-		public function setName($new)
-		{
+		public function setName(string $new):void{
 			$this->name = $new;
 		}
 
 		//-----------------------------------------------------------------------
+        private $addModel = false;
+        public function getAddModel():bool{
+            return $this->addModel;
+        }
+        public function setAddModel(bool $new):void{
+            $this->addModel = $new;
+        }
 
-		private $theModel;
-		public function getmodel($idModel)
-		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+		//-----------------------------------------------------------------------
+
+		private $currentModel = array();
+		public function getCurrentModel(int $id_model):array{
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
-			try
-			{
-			    $sql = $bdd->query("SELECT
-										`model`.`id_model`,
-										`model`.`name`
+			try{
+			    $stmt = $bdd->prepare("SELECT `model`.`id_model`,
+											  `model`.`name`
+										 FROM `model`
+										WHERE `model`.`id_model`=:id_model");
 
-									FROM `model`
-									
-									WHERE `model`.`id_model`=$idModel
-								");
+				$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+				$stmt->execute();
 
-				/*while ($this->theContact[] = $sql->fetch());*/
-				$this->theModel[] = $sql->fetch();
-				return $this->theModel;
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
+				$this->currentModel = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The model is found!!!";
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The model is not found!!!" . $e->GetMessage() . "<br>";
 			}
 
 			$bdd=null;
+			return $this->currentModel;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $modelList;
-		public function getModelList($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13)
-		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+		private $modelList = array();
+		public function getModelList($whereClause, $orderBy = 'name', $ascOrDesc = 'ASC', $firstLine = 0, $linePerPage = 13):array{
 			
-			try
-			{
-			    $sql = $bdd->prepare("SELECT
-										`model`.`id_model`,
-										`model`.`name`,
-										`model`.`id_brand`
-
-										FROM `model`
-
+			$bdd = DbConnect::DbConnect(new DbConnect());
+			
+			try{
+			    $stmt = $bdd->prepare("SELECT `model`.`id_model`,
+											  `model`.`name`,
+											  `model`.`id_brand`
+										 FROM `model`
 										WHERE $whereClause
-										ORDER BY $orderBy $ascOrDesc
-										LIMIT :firstLine, :linePerPage
-									");
+									 ORDER BY :orderBy :ascOrDesc
+										LIMIT :firstLine, :linePerPage");
 
-				$sql->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
-				$sql->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
-				$sql->execute();
+				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
+				$stmt->bindParam(':ascOrDesc', $ascOrDesc, PDO::PARAM_STR);
+				$stmt->bindParam(':firstLine', $firstLine, PDO::PARAM_INT);
+				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
+
+				$stmt->execute();
 				
-				$this->modelList = $sql->fetchAll(PDO::FETCH_ASSOC);
-				return $this->modelList;
+				$this->modelList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				/*while ($this->modelList[] = $sql->fetch());
-				return $this->modelList;*/
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The query is executed correctly!!!";
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to query : " . $e->getMessage() . "<br>";
 			}
 
 			$bdd=null;
+			return $this->modelList;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function addModel()
-		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+		private $insertModel = 0;
+		public function insertModel():int{
+
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
-				$bdd->exec("INSERT INTO `model`(`name`)
-							VALUES('" . $this->name . "')");
+				$stmt = $bdd->prepare('SELECT COUNT(*) FROM `model` WHERE `name` = :name');
+				$stmt->bindParam(':name', $this->getName(), PDO::PARAM_STR);
+				$stmt->execute();
 
-				$sql = $bdd->query("SELECT MAX(`id_model`) FROM `model`");
-				$id_model = $sql->fetch();
-				$this->id_model = intval($id_model['id_model']);
+				$result = $stmt->fetchColumn();
+				//The model is existing if $result > 0 
+				if($result > 0){
 
-				echo '<script>alert("L\'enregistrement est effectué!");</script>';
+					$stmt = $bdd->prepare("SELECT `id_model` FROM `model` WHERE `name` = :name");
+					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+					$stmt->execute();
 
-			} catch (PDOException $e) {
-				
-				echo "Erreur de la requête : " . $e->getMessage();
+					$this->insertModel = intval($stmt->fetchColumn());
 
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The model is existing!!!";
+
+				}else{
+					$stmt = $bdd->prepare("INSERT INTO `model`(`name`) VALUES ('" . $this->name . "')");
+					$stmt->execute();
+
+					$stmt = $bdd->prepare("SELECT MAX(`id_model`) FROM `model`");
+					$stmt->execute();
+
+					$this->insertModel = intval($stmt->fetchColumn());
+
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The model is inserted!!!";
+				}
+
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The model is not inserted!!!" . $e->GetMessage() . "<br>";
 			}
 
 			$bdd=null;
+			return $this->insertModel;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function updatemodel($idModel)
+		private $updateModel = false;
+		public function updatemodel(int $id_model)
 		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
-			try
-			{
-				$bdd->exec("UPDATE `model` SET `name` = '" . $this->name . "'
-							WHERE `id_model` = " . intval($idModel) . "
-							");
-				
-				echo '<script>alert("Les modifications sont enregistrées!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
+			try{
+				$stmt = $bdd->prepare('SELECT COUNT(*) FROM `model` WHERE `id_model` = :id_model');
+				$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+				//The model is existing if $result > 0
+				if($result > 0){
+
+					$stmt = $bdd->prepare('UPDATE `model`
+											SET `name` = :name
+											WHERE `id_model` = :id_model');
+					
+					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+					$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The model is updated!!!";
+								
+					$this->updateModel = true;
+
+				}else{
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The model is not existing!!!";
+				}
+			
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The model is not updated!!!" . $e->GetMessage() . "<br>";
 			}
 
 			$bdd=null;
+			return $this->updateModel;
 		}
 
 		//-----------------------------------------------------------------------
 
-		public function deleteModel($id)
-		{
-			$bdd = dbConnect::dbConnect(new dbConnect());
+		private $deleteModel = false;
+		public function deleteModel(int $id_model):bool{
 
-			try
-			{
-			    $bdd->exec('DELETE FROM model WHERE id_model=' . $id);
-				echo '<script>alert("Cet enregistrement est supprimé!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo '<script>alert("Erreur de la requête : ' . $e->getMessage() . '");</script>';
+			$bdd = DbConnect::DbConnect(new DbConnect());
+
+			try{
+				$stmt = $bdd->prepare('SELECT COUNT(*) FROM `model` WHERE `id_model` = :id_model');
+				$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				if($result > 0){
+
+					$stmt = $bdd->prepare('SELECT COUNT(*) FROM `car` WHERE `id_model` = :id_model');
+					$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+					$stmt->execute();
+
+					$result = $stmt->fetchColumn();
+
+					if($result > 0){
+
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "The model is not deleted because it is used by a car!!!";
+						
+					}else{
+
+						$stmt = $bdd->prepare('DELETE FROM model WHERE id_model= :id_model');
+						$stmt->bindParam(':id_model', $id_model, PDO::PARAM_INT);
+						$stmt->execute();
+
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "The model is deleted!!!";
+
+						$this->deleteModel = true;
+					}
+
+				}else{
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The model is not existing!!!";
+				}
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "error query : " . $e->GetMessage() . "<br>";
 			}
 
 			$bdd=null;
+			return $this->deleteModel;
 		}
-
-        //__Ajouter user?___________________________________________
-        
-        public function getAddmodel()
-        {
-            if(is_null($_SESSION['car']['addModel']))
-            {
-                $_SESSION['car']['addModel']=false;
-            }
-            return $_SESSION['car']['addModel'];
-        }
-        public function setAddmodel($new)
-        {
-            $_SESSION['car']['addModel']=$new;
-        }
-
-	}
-	
+	}	
 ?>

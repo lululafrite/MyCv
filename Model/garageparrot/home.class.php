@@ -1,14 +1,16 @@
 <?php
-
-	namespace GarageParrot\Model;
+	//home.class.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-04_17:40
+	namespace Model\GarageParrot;
 	
     require_once('../model/common/dbConnect.class.php');
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\dbConnect;
-	use MyCv\Model\Utilities;
 	use \PDO;
 	use \PDOException;
+    use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 
 	class Home
 	{
@@ -182,15 +184,15 @@
 
 		//-----------------------------------------------------------------------
 
-		private $theHome;
+		private $home = array();
 		public function getHome(int $id_home):array{
 
 			if(Utilities::checkData('home','id_home', $id_home)){
 				
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 
 				try{
-					$sql = $bdd->prepare("SELECT
+					$stmt = $bdd->prepare("SELECT
 											`home`.`id_home`,
 											`home`.`titre1`,
 											`home`.`intro_chapter1`,
@@ -211,44 +213,35 @@
 
 										FROM `home`
 
-										WHERE `home`.`id_home`=:id_home
-									");
+										WHERE `home`.`id_home`=:id_home");
 
-					$sql->bindParam(':id_home', $id_home, PDO::PARAM_INT);
-					$sql->execute();
+					$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
+					$stmt->execute();
 
-					$bdd=null;
+					$this->home = $stmt->fetch(PDO::FETCH_ASSOC);
 
-					$this->theHome = $sql->fetch(PDO::FETCH_ASSOC);
-					$this->theHome['error'] = false;
-					$this->theHome['message'] = 'The query is executed correctly!!!';
-					
-					return $this->theHome;
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
 				}catch (PDOException $e){
-					$bdd=null;
-
-					$this->theHome['error'] = true;
-					$this->theHome['message'] = 'Error to query : ' . $e->getMessage();
-					
-					return $this->theHome;
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 				}
 			}else{
-				$bdd=null;
-
-				$this->theHome['error'] = true;
-				$this->theHome['message'] = 'To id is not existing!!!';
-				
-				return $this->theHome;
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'To id is not existing!!!';
 			}
+
+			$bdd=null;
+			return $this->home;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $homeList;
+		private $homeList = array();
 		public function get(string $whereClause, string $orderBy = 'id_home', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 				
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 			    $stmt = $bdd->prepare("SELECT
@@ -274,8 +267,7 @@
 
 									WHERE :whereClause
 									ORDER BY :orderBy :ascOrDesc
-									LIMIT :firstLine, :linePerPage
-								");
+									LIMIT :firstLine, :linePerPage");
 
 				$stmt->bindParam(':whereClause', $whereClause, PDO::PARAM_STR);
 				$stmt->bindParam(':orderBy', $orderBy, PDO::PARAM_STR);
@@ -285,32 +277,28 @@
 
 				$stmt->execute();
 
-				$bdd=null;
-
 				$this->homeList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				$this->homeList['error'] = false;
-				$this->homeList['message'] = 'The query is executed correctly!!!';
 
-				return $this->homeList;
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'The query is executed correctly!!!';
 
 			}catch (PDOException $e){
-				$bdd=null;
-
-				$this->homeList['error'] = true;
-				$this->homeList['message'] = 'Error to query : ' . $e->getMessage();
-
-				return $this->homeList;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 			}
+
+			$bdd=null;
+			return $this->homeList;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $updateHome;
-		public function updateHome(int $id_home):array{
+		private $updateHome = false;
+		public function updateHome(int $id_home):bool{
 
 			if(Utilities::checkData('home','id_home', $id_home)){
 				
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 				try{
 					$stmt = $bdd->prepare("UPDATE `home`
 											SET `titre1` = :titre1,
@@ -325,8 +313,7 @@
 												`article2_chapter1` = :article2_chapter1,
 												`article2_titre2` = :article2_titre2,
 												`article2_chapter2` = :article2_chapter2
-											WHERE `id_home` = :id_home"
-										);
+											WHERE `id_home` = :id_home");
 
 					$stmt->bindParam(':titre1', $this->titre1, PDO::PARAM_STR);
 					$stmt->bindParam(':intro_chapter1', $this->intro_chapter1, PDO::PARAM_STR);
@@ -344,69 +331,56 @@
 
 					$stmt->execute();
 
-					$bdd=null;
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'The modifications is correctly executed!!!';
 
-					$this->updateHome['error'] = false;
-					$this->updateHome['message'] = 'The modifications is correctly executed!!!';
-
-					return $this->updateHome;
+					$this->updateHome = true;
 
 				}catch(PDOException $e){
-					$bdd=null;
-
-					$this->updateHome['error'] = true;
-					$this->updateHome['message'] = 'Error to query : ' . $e->getMessage();
-
-					return $this->updateHome;
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 				}
 			}else{
-				$bdd=null;
-
-				$this->updateHome['error'] = true;
-				$this->updateHome['message'] = 'to id is not existing!!!';
-
-				return $this->updateHome;
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'to id is not existing!!!';
 			}
+
+			$bdd=null;
+			return $this->updateHome;
 		}
 		
 		//-----------------------------------------------------------------------
-		private $deleteHome;
-		public function deleteHome(int $id_home):array{
+
+		private $deleteHome = false;
+		public function deleteHome(int $id_home):bool{
 
 			if(Utilities::checkData('home','id_home', $id_home)){
 				
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 
-				try
-				{
-					$sql = $bdd->prepare('DELETE FROM home WHERE id_home = :id_home');
+				try{
+					$stmt = $bdd->prepare('DELETE FROM home WHERE id_home = :id_home');
 					
-					$sql->bindParam(':id_home', $id_home, PDO::PARAM_INT);
-					$sql->execute();
+					$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
 
-					$bdd=null;
+					$stmt->execute();
 
-					$this->deleteHome['error'] = false;
-					$this->deleteHome['message'] = 'Data is delete!!!';
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = 'Data is delete!!!';
 
-					return $this->deleteHome;
+					$this->deleteHome = true;
 
-				}catch (PDOException $e){
-					$bdd=null;
-
-					$this->deleteHome['error'] = true;
-					$this->deleteHome['message'] = 'Error to query : ' . $e->getMessage();
-
-					return $this->deleteHome;
+				}catch(PDOException $e){
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 				}
 			}else{
-				$bdd=null;
-
-				$this->deleteHome['error'] = true;
-				$this->deleteHome['message'] = 'to id is not existing!!!';
-
-				return $this->deleteHome;
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'to id is not existing!!!';
 			}
+
+			$bdd=null;
+			return $this->deleteHome;
 		}
 	}
 ?>

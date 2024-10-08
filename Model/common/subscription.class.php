@@ -1,12 +1,14 @@
 <?php
-
-	namespace User\Model;
+	//subscription.class.php
+	//author : Ludovic FOLLACO
+	//checked to 2024-10-04_15:54
+	namespace Model\User;
 
     require_once('../model/common/dbConnect.class.php');
 
+	use PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
-use PDO;
+	use Model\DbConnect\DbConnect;
 
 	class Subscription
 	{
@@ -30,10 +32,10 @@ use PDO;
 
 		//-----------------------------------------------------------------------
 
-		private $theSubscription;
+		private $theSubscription = array();
 		public function getTheSubscription(int $id_subscription):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 			    $stmt = $bdd->prepare("SELECT `subscription`.`id_subscription`,
@@ -60,10 +62,10 @@ use PDO;
 
 		//-----------------------------------------------------------------------
 
-		private $subscriptionList;
+		private $subscriptionList = array();
 		public function getSubscriptionList(string $whereClause, string $orderBy = 'subscription', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 50):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 			    $stmt = $bdd->prepare("SELECT `subscription`.`id_subscription`,
@@ -95,10 +97,10 @@ use PDO;
 		}
 
 		//-----------------------------------------------------------------------
-		private $insertSubscription;
+		private $insertSubscription = 0;
 		public function insertSubscription():int{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare('INSERT INTO `subscription`(`subscription`) VALUES (:subscription)');
@@ -124,9 +126,10 @@ use PDO;
 
 		//-----------------------------------------------------------------------
 
-		public function updateUserSubscription(int $id_subscription):void{
+		private $updateSubscription = false;
+		public function updateUserSubscription(int $id_subscription):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare('UPDATE `subscription`
@@ -140,6 +143,8 @@ use PDO;
 
 				$_SESSION['other']['error'] = false;
 				$_SESSION['other']['message'] = "Subscription is updated!!!";
+
+				$this->updateSubscription = true;
 			
 			}catch (PDOException $e){
 				$_SESSION['other']['error'] = true;
@@ -147,13 +152,14 @@ use PDO;
 			}
 
 			$bdd=null;
+			return $this->updateSubscription;
 		}
 
 		//-----------------------------------------------------------------------
-
-		public function deleteUsersubscription(int $id_subscription):void{
+		private $deleteSubscription = false;
+		public function deleteUsersubscription(int $id_subscription):bool{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 			    $stmt = $bdd->prepare('DELETE FROM subscription WHERE id_subscription = :id_subscription');
@@ -162,6 +168,8 @@ use PDO;
 
 				$_SESSION['other']['error'] = false;
 				$_SESSION['other']['message'] = "This subscription is deleted!";
+
+				$this->deleteSubscription = true;
 			
 			}catch (PDOException $e){
 				$_SESSION['other']['error'] = true;
@@ -169,6 +177,7 @@ use PDO;
 			}
 
 			$bdd=null;
+			return $this->deleteSubscription;
 		}
 	}
 ?>

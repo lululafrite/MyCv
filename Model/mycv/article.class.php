@@ -6,7 +6,7 @@
 
 	use \PDO;
 	use \PDOException;
-	use MyCv\Model\dbConnect;
+	use Model\DbConnect\DbConnect;
 
 	class HomeArticle
 	{
@@ -113,7 +113,7 @@
 		private $article;
 		public function getArticle(int $home_article_id):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -156,7 +156,7 @@
 		private $articleList;
 		public function getArticleList(string $whereClause, string $orderBy = 'home_article_sort', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -203,7 +203,7 @@
 		private $updateArticle = false;
 		public function updateArticle(int $home_article_id):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home_article`
@@ -251,7 +251,7 @@
 		private $deleteArticle = false;
 		public function deleteArticle(int $home_article_id): bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -278,7 +278,7 @@
 		private $newArticle = false;
 		public function newArticle():bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 	
 			try
 			{

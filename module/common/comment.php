@@ -1,4 +1,4 @@
-<?php require_once "../controller/goldorak/comment.controller.php"; ?>
+<?php require_once "../controller/common/comment.controller.php"; ?>
         
 <div class="me-0 px-0 pt-3 pt-sm-0">
         
@@ -116,3 +116,5 @@
     </div>
 
 </div>
+
+<script src="../js/common/comment.js"></script>

@@ -1,18 +1,21 @@
 <?php
-
-    namespace MyCv\Model;
+    //page.class.php
+	//author : Ludovic FOLLACO
+    //checked to 2024-10-04_15:49
+    namespace Model\Page;
 
     require_once('../model/common/dbConnect.class.php');
 
-	use MyCv\Model\dbConnect;
+	use \PDO;
 	use \PDOException;
+	use Model\DbConnect\DbConnect;
     use function PHPUnit\Framework\isNull;
 
 	class Page
     {
         // __Nombre de ligne__________________________________________
 
-        private $nbOfProduct = 1; //$_SESSION['pagination']['nbOfProduct'] = 1;
+        private $nbOfProduct = 1;
         public function getNbOfProduct():int{
             return $this->nbOfProduct;
         }
@@ -22,7 +25,7 @@
         
         // __Première ligne de la page active__________________________________________
         
-        private $firstLine = 0; //$_SESSION['pagination']['firstProduct'] = 0;
+        private $firstLine = 0;
         public function getFirstProduct():int{
             return $this->firstLine;
         }
@@ -32,7 +35,7 @@
         
         // __Nombre de ligne par page__________________________________________
         
-        private $nbProductPerPage = 3; //$_SESSION['pagination']['productPerPage'] = 3;
+        private $nbProductPerPage = 3;
         public function getProductPerPage():int{
             return $this->nbProductPerPage;
         }
@@ -42,7 +45,7 @@
         
         // __La page active__________________________________________
 
-        private $thePage = 1; //$_SESSION['pagination']['thePage'] = 1;
+        private $thePage = 1;
         public function getThePage():int{
             return $this->thePage;
         }
@@ -52,7 +55,7 @@
         
         // __Nombre de page__________________________________________
 
-        private $nbOfPage = 1; //$_SESSION['pagination']['nbOfPage'] = 1;
+        private $nbOfPage = 1;
         public function getNbOfPage():int{
             return $this->nbOfPage;
         }
@@ -62,7 +65,7 @@
 
         // __Page suivante ou précédente__________________________________________
 
-        private $nextOrPrevious = 1; //$_SESSION['pagination']['NextOrPrevious'] = false;
+        private $nextOrPrevious = 1;
 		public function getNextOrPrevious():bool{
 			return $this->nextOrPrevious;
 		}
@@ -75,7 +78,7 @@
         private static $checkNumberOfProduct = 0;
 		public static function checkNumberOfProduct(string $table , string $whereClause = null):int{
 			
-            $bdd = dbConnect::dbConnect(new dbConnect());
+            $bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
                 if(isNull($whereClause)){

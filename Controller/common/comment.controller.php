@@ -1,23 +1,26 @@
 <?php
     
     require_once('../model/common/utilities.class.php');
-    require_once('../model/goldorak/comment.class.php');
+    require_once('../model/common/comment.class.php');
 
-    use \Goldorak\Model\Comment;
-    use MyCv\Model\Utilities;
+    use Model\Comment\Comment;
+    use Model\Utilities\Utilities;
     use \Firebase\JWT\JWT;
-    
-    $bt_save_comment = isset($_POST['bt_save_comment']) ? true : false;
-    unset($_POST['bt_save_comment']);
 
-    $bt_comment_delete = isset($_POST['bt_comment_delete']) ? true : false;
-    unset($_POST['bt_comment_delete']);
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    $bt_comment_validate = isset($_POST['bt_comment_validate']) ? true : false;
-    unset($_POST['bt_comment_validate']);
+        $bt_save_comment = isset($_POST['bt_save_comment']) ? true : false;
+        unset($_POST['bt_save_comment']);
 
-    $bt_comment_refuse = isset($_POST['bt_comment_refuse']) ? true : false;
-    unset($_POST['bt_comment_refuse']);
+        $bt_comment_delete = isset($_POST['bt_comment_delete']) ? true : false;
+        unset($_POST['bt_comment_delete']);
+
+        $bt_comment_validate = isset($_POST['bt_comment_validate']) ? true : false;
+        unset($_POST['bt_comment_validate']);
+
+        $bt_comment_refuse = isset($_POST['bt_comment_refuse']) ? true : false;
+        unset($_POST['bt_comment_refuse']);
+    }
 
     if(!isset($comments)){
         $comments = new Comment();
@@ -30,7 +33,7 @@
 
         if($jwt1->{'pseudo'} === $jwt2->{'pseudo'} && $jwt1->{'key'} === $jwt2->{'key'}){
 
-            if(Utilities::ckeckCsrf() && $_SERVER['REQUEST_METHOD'] === 'POST'){
+            if(!Utilities::ckeckCsrf()){
                 
                 $idComment = Utilities::filterInput('txt_comment_id');
 
@@ -44,7 +47,7 @@
                     
                     if($comment_ != ""){
 
-                        $comments->setDate_(date("Y-m-d"));
+                        $comments->setDate(date("Y-m-d"));
                         $comments->setPseudo($pseudo_);
                         $comments->setRating($rating_);
                         $comments->setComment($comment_);

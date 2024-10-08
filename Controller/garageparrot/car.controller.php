@@ -4,8 +4,8 @@
     require_once('../model/garageparrot/car.class.php');
     require_once('../controller/common/page.controller.php');
 
-    use GarageParrot\Model\Car;
-    use MyCv\Model\Utilities;
+    use Model\Car\Car;
+    use Model\Utilities\Utilities;
 
     $MyCar = new Car();
 
@@ -59,7 +59,7 @@
             $criteriaMileage = "`car`.`mileage` <= '" . $MyCar->getCriteriaMileage() . "' ";
 
             unset($_POST['select_car_mileage']);
-            $model_umpty = false;
+            $mileage_umpty = false;
         }
 
         if(isset($_POST['select_car_price']) && $_POST['select_car_price'] != "Selectionnez un prix maxi"){

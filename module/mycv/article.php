@@ -378,7 +378,7 @@
 <?php
     require_once('../controller/mycv/home.controller.php');
     require_once('../model/common/utilities.class.php');
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <?php function homeArticleId($article, $i){ 

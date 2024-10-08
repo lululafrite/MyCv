@@ -1,11 +1,11 @@
 <?php
-	namespace Goldorak\Model;
+	namespace Model\Goldorak;
 
     require_once('../model/common/dbConnect.class.php');
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\dbConnect;
-	use MyCv\Model\Utilities;
+	use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 	use \PDO;
 	use \PDOException;
 
@@ -96,7 +96,7 @@
 	
 			if(Utilities::checkData('home','id_home', $id_home)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 				
 				try{
 					$stmt = $bdd->prepare("SELECT
@@ -149,7 +149,7 @@
 		private $homeList;
 		public function getHomeList(string $whereClause, string $orderBy = 'id_home', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -198,7 +198,7 @@
 		private $updateHome;
 		public function updateHome(int $id_home):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("UPDATE `home`
@@ -247,7 +247,7 @@
 		private $deleteHome;
 		public function deleteHome(int $id_home):array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try
 			{
@@ -276,7 +276,7 @@
 		private $insertHome;
 		public function insertHome():array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("INSERT INTO `home` (`titre1`,

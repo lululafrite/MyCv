@@ -18,7 +18,7 @@
     require_once('../controller/common/user.controller.php');
     require_once('../model/common/utilities.class.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <div class="mt-5">

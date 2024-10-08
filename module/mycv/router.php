@@ -2,7 +2,7 @@
 
     require_once('../model/common/utilities.class.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 
     $page = isset($_GET['page']) ? Utilities::escapeInput($_GET['page']) : 'home';
     

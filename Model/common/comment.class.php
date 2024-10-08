@@ -1,11 +1,14 @@
 <?php
-	namespace Goldorak\Model;
+	//comment.class.php
+	//author : Ludovic FOLLACO
+	//checked to 2024-10-08_15:10
+	namespace Model\Comment;
 
     require_once('../model/common/dbConnect.class.php');
 	require_once('../model/common/utilities.class.php');
 
-	use MyCv\Model\dbConnect;
-	use MyCv\Model\Utilities;
+	use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 	use \PDO;
 	use \PDOException;
 
@@ -25,7 +28,7 @@
 		public function getDate():string{
 			return $this->date;
 		}
-		public function setDate_(string $new):void{
+		public function setDate(string $new):void{
 			$this->date = $new;
 		}
 
@@ -76,7 +79,7 @@
 	
 			if(Utilities::checkData('comment','id_comment', $id_comment)){
 
-				$bdd = dbConnect::dbConnect(new dbConnect());
+				$bdd = DbConnect::DbConnect(new DbConnect());
 				
 				try{
 					$stmt = $bdd->prepare("SELECT
@@ -135,7 +138,7 @@
 		private $commentList;
 		public function getCommentList(string $whereClause, string $orderBy = 'date_', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 50):array{
 			
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT 
@@ -188,7 +191,7 @@
 		private $insertComment;
 		public function insertComment():array{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
 				$stmt = $bdd->prepare("SELECT `comment`.`id_comment`
@@ -215,16 +218,18 @@
 																	`rating`,
 																	`comment`,
 																	`id_member`)
-                        					VALUES (:date_,
+                        					VALUES (:date,
 													:pseudo,
 													:rating,
 													:comment,
-													(SELECT id_user FROM user WHERE `pseudo` = :pseudo))");
+													(SELECT id_user FROM user WHERE `pseudo` = :pseudo2))");
 
-					$stmt->bindParam(':date', $this->date);
-					$stmt->bindParam(':pseudo', $this->pseudo);
-					$stmt->bindParam(':rating', $this->rating);
-					$stmt->bindParam(':comment', $this->comment);
+					$stmt->bindParam(':date', $this->date, PDO::PARAM_STR);
+					$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+					$stmt->bindParam(':rating', intval($this->rating), PDO::PARAM_INT);
+					$stmt->bindParam(':comment', $this->comment, PDO::PARAM_STR);
+					$stmt->bindParam(':pseudo2', $this->pseudo, PDO::PARAM_STR);
+					//$stmt->bindParam(':publication', 0, PDO::PARAM_INT);
 
 					$stmt->execute();
 
@@ -254,119 +259,112 @@
 		}
 
 		//-----------------------------------------------------------------------
+		private $updateComment = false;
+		public function updateComment(int $id_comment):bool{
 
-		public function updateComment(int $idComment)
-		{
-
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try
 			{
-				// Requête préparée
-				$query = $bdd->prepare("UPDATE `comment`
-				SET `date_` = :date_,
-					`pseudo` = :pseudo,
-					`rating` = :rating,
-					`comment` = :comment
-				WHERE `id_comment` = :idComment");
+				$stmt = $bdd->prepare("UPDATE `comment`
+										  SET `date_` = :date,
+											  `pseudo` = :pseudo,
+											  `rating` = :rating,
+											  `comment` = :comment
+										WHERE `id_comment` = :id_comment");
 
-				// Liaison des valeurs
-				$query->bindParam(':date_', $this->date);
-				$query->bindParam(':pseudo', $this->pseudo);
-				$query->bindParam(':rating', $this->rating);
-				$query->bindParam(':comment', $this->comment);
-				$query->bindParam(':idComment', $idComment);
+				$stmt->bindParam(':date', $this->date, PDO::PARAM_STR);
+				$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+				$stmt->bindParam(':rating', $this->rating, PDO::PARAM_INT);
+				$stmt->bindParam(':comment', $this->comment, PDO::PARAM_STR);
+				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
 
-				// Exécution de la requête
-				$query->execute();
-				
-				echo '<script>alert("Les modifications sont enregistrées!");</script>';
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+				$stmt->execute();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = 'The data is updated correctly!!!';
+
+				$this->updateComment = true;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 			}
 
 			$bdd=null;
+			return $this->updateComment;
 		}
 
 		//-----------------------------------------------------------------------
+		private $modereComment = false;
+		public function modereComment(int $id_comment, string $publication):bool{
 
-		public function modereComment(int $idComment, string $publication)
-		{
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
-
-			try
-			{
-				// Requête préparée
-				$query = $bdd->prepare("UPDATE `comment`
+			try{
+				$stmt = $bdd->prepare("UPDATE `comment`
 										SET `publication` = :publication
-										WHERE `id_comment` = :idComment"
-									);
+										WHERE `id_comment` = :id_comment");
 
-				// Liaison des valeurs
-				$query->bindParam(':idComment', $idComment);
-				$query->bindParam(':publication', $publication);
+				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
+				$stmt->bindParam(':publication', $publication, PDO::PARAM_INT);
 
-				// Exécution de la requête
-				$query->execute();
-				
-				echo '<script>alert("Les modifications sont enregistrées!");</script>';
+				$stmt->execute();
+
+				$_SESSION['other']['error'] = false;
+				$_SESSION['other']['message'] = "The comment is moderated!!!";
+
+				$this->modereComment = true;
 			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
+			catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "The comment is not moderated!!!" . $e->GetMessage();
 			}
 
 			$bdd=null;
+			return $this->modereComment;
 		}
 
 		//-----------------------------------------------------------------------
-		
-		public function deleteComment(int $id)
-		{
+		private $deleteComment = false;
+		public function deleteComment(int $id_comment):bool{
 
-			$bdd = dbConnect::dbConnect(new dbConnect());
+			$bdd = DbConnect::DbConnect(new DbConnect());
 
-			try {
-				// Requête préparée pour la sélection
-				$query = $bdd->prepare("SELECT `comment`.`id_comment`
+			try{
+				$stmt = $bdd->prepare("SELECT `comment`.`id_comment`
 										FROM  `comment`
-										WHERE `comment`.`id_comment` = :id");
+										WHERE `comment`.`id_comment` = :id_comment");
 
-				// Liaison de la valeur
-				$query->bindParam(':id', $id);
+				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
+				$stmt->execute();
 
-				// Exécution de la requête
-				$query->execute();
+				$result = $stmt->fetchColumn(); //(PDO::FETCH_COLUMN);
 
-				// Récupération du résultat
-				$id_comment = $query->fetch(PDO::FETCH_COLUMN);
+				if($result !== false){
 
-				// Vérification si l'ID existe
-				if ($id_comment !== false) {
-					// Requête préparée pour la suppression
 					$deleteQuery = $bdd->prepare('DELETE FROM comment WHERE id_comment = :id_comment');
 
-					// Liaison de la valeur
-					$deleteQuery->bindParam(':id_comment', $id_comment);
+					$deleteQuery->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
 
-					// Exécution de la requête de suppression
 					$deleteQuery->execute();
 
-					echo '<script>alert("Cet enregistrement est supprimé!");</script>';
-				} else {
-					// L'ID n'existe pas, gestion de l'erreur si nécessaire
-					echo '<script>alert("L\'enregistrement avec cet ID n\'existe pas!");</script>';
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The comment is deleted!!!";
+
+					$this->deleteComment = true;
+
+				}else{
+					$_SESSION['other']['error'] = false;
+					$_SESSION['other']['message'] = "The comment is not existent!!!";
 				}
-			} catch (PDOException $e) {
-				echo "Erreur de la requête : " . $e->getMessage();
+			}catch(PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "error query, the comment is not deleted!!!" . $e->GetMessage();
 			}
 
 			$bdd = null;
+			return $this->deleteComment;
 		}
-
 	}
-	
 ?>

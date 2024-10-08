@@ -1,4 +1,4 @@
-<?php require_once "../controller/goldorak/comment.controller.php"; ?>
+<?php require_once "../controller/common/comment.controller.php"; ?>
 
 <table class="table table-dark table-bordered">
 
@@ -77,5 +77,4 @@
 
 </table>
 
-<script src="../js/goldorak/rating.js"></script>
-<script src="../js/comment.js"></script>
+<script src="../js/common/rating.js"></script>

@@ -2,7 +2,7 @@
     require_once('../model/common/utilities.class.php'); // Utilities
     require_once ('../controller/mycv/home.controller.php');
 
-    use MyCv\Model\Utilities;
+    use Model\Utilities\Utilities;
 ?>
 
 <div class="container-fluid m-0 p-0 fixed-top">
