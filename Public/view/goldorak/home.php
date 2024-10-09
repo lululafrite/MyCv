@@ -234,7 +234,7 @@
                     <!-- Start button subscription -->
 
                     <div class="d-flex justify-content-end p-0 m-3 m-md-0 me-md-5 <?php echo ($_SESSION['dataConnect']['type'] === 'Administrator') ? 'd-none' : ''; ?>">
-                        <button class="btn btn-primary btn-lg mt-0 btAdherer"><a class="text-light" href="index.php?page=adherer">Adhérer</a></button>
+                        <button class="btn btn-primary btn-lg mt-0 btAdherer"><a class="text-light" href="goldorak.php?page=adherer">Adhérer</a></button>
                     </div>
 
                     <!-- End button subscription -->

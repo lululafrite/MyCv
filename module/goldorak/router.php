@@ -80,17 +80,19 @@
                 }elseif ($page === 'userEdit'){
         
                     resetCarVarSession();            
-                    resetPageVarSession();
+                    //resetPageVarSession();
 
                     $_SESSION['other']['message'] = '';
+                        
+                    require_once('view/common/userEdit.php');
 
-                    if($_SESSION['dataConnect']['type'] === 'Administrator'){
+                    /*if($_SESSION['dataConnect']['type'] === 'Administrator'){
                         
                         require_once('view/common/userEdit.php');
 
                     }else{
                         require_once('view/errorPage/accessPage.php');
-                    }
+                    }*/
 
                 }elseif($page === 'media'){
         

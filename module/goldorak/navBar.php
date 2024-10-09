@@ -132,8 +132,12 @@
                         <img class="p-2 h-75"
                             alt="icone du l'utilisateur"
                             src="<?php
-                                    if($_SESSION['dataConnect']['type'] != 'Guest'){
-                                        echo "../img/common/avatar/" . $_SESSION['dataConnect']['avatar']; 
+                                    if($_SESSION['dataConnect']['type'] === 'Administrator'){
+                                        echo "../img/common/avatar/avatar_admin_white.webp";
+
+                                    }else if($_SESSION['dataConnect']['type'] != 'Guest'){
+                                        echo "../img/common/avatar/" . $_SESSION['dataConnect']['avatar'];
+
                                     }else{
                                         echo "../img/common/icon/person.svg"; 
                                     }

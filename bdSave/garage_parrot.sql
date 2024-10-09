@@ -147,9 +147,9 @@ CREATE TABLE `comment` (
   `rating` int(11) NOT NULL DEFAULT 5,
   `comment` text NOT NULL,
   `publication` tinyint(1) NOT NULL DEFAULT 0,
-  `image` varchar(255) NOT NULL DEFAULT 'avatar.webp',
+  `id_member` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id_comment`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,9 +159,9 @@ CREATE TABLE `comment` (
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 INSERT INTO `comment` VALUES
-(44,'2024-01-02','Patrick92',5,'Top!',1,'_.webp'),
-(45,'2024-01-08','Ornella',4,'Accueillant professionnel et honnete. Je recommande!',1,'_.webp'),
-(46,'2024-01-15','Cobra',5,'Un passionne de bagnole! Ca fait plaisir!',1,'_.webp');
+(1,'2024-01-02','Actarus',5,'Top!',2,3),
+(2,'2024-01-08','Goldorak',4,'Accueillant professionnel et honnete. Je recommande!',2,4),
+(3,'2024-01-15','Venusia',5,'Un passionne de bagnole! Ca fait plaisir!',2,5);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,4 +477,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-03 19:18:40
+-- Dump completed on 2024-10-08 17:42:47

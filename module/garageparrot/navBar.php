@@ -148,7 +148,7 @@
                                         if($_SESSION['dataConnect']['type'] != 'Guest'){
                                             echo "../img/common/avatar/" . $_SESSION['dataConnect']['avatar']; 
                                         }else{
-                                            echo "../img/common/icon/person.svg"; 
+                                            echo "../img/common/icon/black_person.svg"; 
                                         }
                                       ?>"
                                  

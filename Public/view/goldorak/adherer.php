@@ -2,7 +2,7 @@
     </br><h2>Adhérer : Découvrez les formules pour adhérer au Club Goldorak</h2></br>
 </div>
 
-<form action="index.php?page=userEdit" method="post">
+<form action="goldorak.php?page=userEdit" method="post">
 
 <div class="container">
 
