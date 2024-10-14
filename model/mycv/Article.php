@@ -1,14 +1,11 @@
 <?php
-
-	namespace MyCv\Model;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\Article;
 
 	use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
 
-	class HomeArticle
+	class Article
 	{
 		private $homeArticleId;
 		public function getHomeArticleId():int{

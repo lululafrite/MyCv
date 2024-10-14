@@ -2,9 +2,7 @@
 	//subscription.class.php
 	//author : Ludovic FOLLACO
 	//checked to 2024-10-04_15:54
-	namespace Model\User;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\Subscription;
 
 	use PDO;
 	use \PDOException;

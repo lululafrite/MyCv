@@ -1,15 +1,12 @@
 <?php
-	namespace Model\Goldorak;
+	namespace Model\GoldorakHome;
 
-    require_once('../model/common/dbConnect.class.php');
-	require_once('../model/common/utilities.class.php');
-
-	use Model\DbConnect\DbConnect;
-	use Model\Utilities\Utilities;
 	use \PDO;
 	use \PDOException;
+	use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 
-	class Home
+	class GoldorakHome
 	{
 		private $id_home;
 		public function getId():int{

@@ -1,7 +1,4 @@
 <?php
-    
-    require_once('../model/common/utilities.class.php');
-    
     use \Firebase\JWT\JWT;
     use Model\Utilities\Utilities;
 
@@ -18,7 +15,7 @@
 
         $_SESSION['other']['message'] = '';
         
-        require_once 'view/garageparrot/home.php';
+        require_once('view/garageparrot/home.php');
 
     }elseif ($page === 'connexion'){
         
@@ -28,7 +25,7 @@
 
         $_SESSION['other']['message'] = '';
 
-        require_once 'view/common/connexion.php';
+        require_once('view/common/connexion.php');
 
     }elseif ($page === 'disconnect'){
         
@@ -38,11 +35,26 @@
 
         $_SESSION['other']['message'] = '';
 
-        require_once 'view/common/disconnect.php';
+        require_once('view/common/disconnect.php');
+
+    }elseif ($page === 'userPwRequestNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwRequestNew.php');
+
+    }elseif ($page === 'userPwResetNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwResetNew.php');
 
     }elseif ($page === 'api'){
 
-        require_once '../api/garageparrot/car.api.php';
+        require_once('../api/garageparrot/car.api.php');
+
+    }elseif ($page === 'accessMethod'){
+        
+        //resetUserVarSession();
+        require_once 'view/errorPage/accessMethod.php';
 
     }elseif ($page === 'accessPage'){
         
@@ -72,7 +84,7 @@
 
         $_SESSION['other']['message'] = '';
 
-        require_once 'view/garageparrot/kanban.php';
+        require_once('view/garageparrot/kanban.php');
 
     }elseif ($page === 'mokup'){
         
@@ -82,7 +94,7 @@
 
         $_SESSION['other']['message'] = '';
 
-        require_once 'view/garageparrot/mokup.php';
+        require_once('view/garageparrot/mokup.php');
 
     }elseif($page === 'car'){
         
@@ -122,6 +134,7 @@
                 }elseif ($page === 'user'){
 
                     resetCarVarSession();
+
                     $_SESSION['other']['message'] = '';
                     
                     if($_SESSION['dataConnect']['type'] === 'Administrator'){

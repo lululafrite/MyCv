@@ -1,7 +1,4 @@
 <?php
-
-    require_once('../model/common/utilities.class.php');
-
     use Model\Utilities\Utilities;
 
     $_SESSION['other']['local'] = true; //set to false if online server and to true if local server
@@ -18,6 +15,7 @@
         //resetOtherVarSession();
         resetTokenJwtVarSession();
         $_SESSION['token']['csrf'] = bin2hex(random_bytes(32));
+        $_SESSION['other']['messagePw']="";
     }
 
 /********************** Functions reset variables ********************* */

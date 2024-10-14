@@ -1,16 +1,8 @@
 <?php
-
-    require_once('../model/goldorak/home.class.php');
-	require_once('../model/common/utilities.class.php');
-
-    use Model\Goldorak\Home as HomeGoldorak;
+    use Model\GoldorakHome\GoldorakHome as HomeGoldorak;
 	use Model\Utilities\Utilities;
 
     $homes = new HomeGoldorak();
-    
-    /*if(!isset($homes)){
-        $homes = new Home();
-    }*/
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){ //(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){
 

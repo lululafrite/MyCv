@@ -2,17 +2,14 @@
 	//home.class.php
 	//Author: Ludovic FOLLACO
 	//checked to 2024-10-04_17:40
-	namespace Model\GarageParrot;
-	
-    require_once('../model/common/dbConnect.class.php');
-	require_once('../model/common/utilities.class.php');
+	namespace Model\GpHome;
 
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;
 	use Model\Utilities\Utilities;
 
-	class Home
+	class GpHome
 	{
 		private $id_home;
 		public function getId():int{

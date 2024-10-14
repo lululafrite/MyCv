@@ -1,12 +1,8 @@
 <?php
-
-    require_once('../model/garageparrot/schedules.class.php');
-    require_once('../model/common/utilities.class.php');
-    
-    use Model\GarageParrot\Schedules;
+    use Model\GpSchedules\GpSchedules;
     use Model\Utilities\Utilities;
 
-    $scheldule = new Schedules();
+    $scheldule = new GpSchedules();
     
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bt_schedules'])){
         

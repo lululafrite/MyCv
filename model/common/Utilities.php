@@ -74,7 +74,7 @@
         // Check if value is in url
         public static function checkValueInUrl(string $value):bool{
             $current_url = $_SERVER['REQUEST_URI'];
-            $regEx = '/' . preg_quote($value, '/') . '/';
+            $regEx = '/' . $value . '/i';
             return preg_match($regEx, $current_url);
         }
 

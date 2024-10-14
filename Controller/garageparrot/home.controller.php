@@ -1,12 +1,8 @@
 <?php
-    
-    require_once('../model/common/utilities.class.php');
-    require_once('../model/garageparrot/home.class.php');
-    
-    use Model\GarageParrot\Home;
+    use Model\GpHome\GpHome;
     use Model\Utilities\Utilities;
 
-    $homes = new Home();
+    $homes = new GpHome();
 
     // Vérification du token CSRF
     if($_SERVER['REQUEST_METHOD'] === 'POST'){ //(Utilities::verifCsrf('csrf') && $_SERVER['REQUEST_METHOD'] === 'POST'){

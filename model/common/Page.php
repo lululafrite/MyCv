@@ -4,9 +4,7 @@
     //checked to 2024-10-04_15:49
     namespace Model\Page;
 
-    require_once('../model/common/dbConnect.class.php');
-
-	use \PDO;
+    use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
     use function PHPUnit\Framework\isNull;

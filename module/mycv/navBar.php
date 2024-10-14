@@ -104,7 +104,7 @@
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="index.php?page=connexion">
                                     <img class="p-2" src="img/common/icon/login_25x25.png" alt="icone du bouton s'identifier">    
-                                    S'identifier
+                                    Connexion
                                 </a>
                             </li>
                         <?php } ?>

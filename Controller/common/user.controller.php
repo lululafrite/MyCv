@@ -1,12 +1,8 @@
 <?php
-
-    require_once('../model/common/utilities.class.php');
-    require_once('../model/common/user.class.php');
     require_once('../controller/common/page.controller.php');
 
     use Model\User\User;
     use Model\Utilities\Utilities;
-
 
     $MyUser = new User();
 

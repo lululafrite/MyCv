@@ -4,8 +4,6 @@
 	//checked to 2024-10-04_16:48
 	namespace Model\Car;
 
-    require_once('../model/common/dbConnect.class.php');
-
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;

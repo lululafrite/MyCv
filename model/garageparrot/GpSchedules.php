@@ -1,14 +1,11 @@
 <?php
-
-	namespace Model\GarageParrot;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\GpSchedules;
 
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;
 
-	class Schedules
+	class GpSchedules
 	{
 
 		private $id_schedules;

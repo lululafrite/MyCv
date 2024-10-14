@@ -2,9 +2,7 @@
 	//type.class.php
 	//author : Ludovic FOLLACO
 	//2024-10-04_16:00
-	namespace Model\User;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\Type;
 
 	use \PDO;
 	use \PDOException;

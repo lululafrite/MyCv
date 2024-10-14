@@ -1,8 +1,4 @@
 <?php
-
-    require_once('../model/common/utilities.class.php');
-    require_once('../model/common/user.class.php');
-
     use Model\Utilities\Utilities;
     use Model\User\User;
 

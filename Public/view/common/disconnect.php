@@ -1,1 +1,1 @@
-<?php require("../controller/common/disconnect.controller.php"); ?>
+<?php require('../controller/common/disconnect.controller.php'); ?>

@@ -4,8 +4,6 @@
 	//checked to 2024-10-04_15:25
 	namespace Model\DbConnect;
 
-	require_once('../model/common/utilities.class.php');
-
 	use \PDO;
 	use \PDOException;
 	use Model\Utilities\Utilities;
@@ -77,8 +75,8 @@
 
 			}catch (PDOException $e){
 				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage();
-				return false;
+				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage() . "<br>";
+				return $bdd;
 			}
 
 		}
@@ -91,9 +89,13 @@
 			if($bdd){
 				return $bdd;
 			}else{
-				return false;
+				return $bdd;
 			}
 		}
+
+//**************************************************************************************************************************** */
+//**************************************************** GARAGE PARROT *************************************************************** */
+//**************************************************************************************************************************** */
 
 		private static function connectDbGP():PDO{
 			
@@ -124,8 +126,8 @@
 
 			}catch (PDOException $e){
 				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage();
-				return false;
+				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage() . "<br>";
+				return $bdd;
 			}
 		}
 
@@ -137,7 +139,58 @@
 			if($bdd){
 				return $bdd;
 			}else{
-				return false;
+				return $bdd;
+			}
+		}
+
+//**************************************************************************************************************************** */
+//**************************************************** GOLDORAK *************************************************************** */
+//**************************************************************************************************************************** */
+
+		private static function connectDbGoldorak():PDO{
+			
+			$local = Utilities::checkIfLocal();
+				
+				if($local){
+					$DB_HOST = 'localhost';
+					$DB_USER = 'root';
+					$DB_PASS = '';
+					$BD_PORT = '3307';
+					$DB_NAME = 'goldorak';
+				}
+				else{
+					
+					$DB_HOST = 'db5015520267.hosting-data.io';
+					$DB_NAME = 'dbs12677679';
+					$DB_USER = 'dbu4075604';
+					$DB_PASS = 'MarLud7772!';
+					$BD_PORT = '3306';
+				}
+
+			$bdd = null;
+
+			try{
+				$bdd = new PDO("mysql:host=$DB_HOST; dbname=$DB_NAME;charset=utf8mb4;port=$BD_PORT", $DB_USER, $DB_PASS);
+				$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$bdd->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+				return $bdd;
+
+			}catch (PDOException $e){
+				$_SESSION['other']['error'] = true;
+				$_SESSION['other']['message'] = "Error to connexion in the database :" . $e->getMessage() . "<br>";
+				return $bdd;
+			}
+		}
+
+		public static function dbConnectGoldorak(): PDO{
+
+			$bdd = DbConnect::connectDbGoldorak();
+			date_default_timezone_set($_SESSION['other']['timeZone']);
+
+			if($bdd){
+				return $bdd;
+			}else{
+				return $bdd;
 			}
 		}
 	}

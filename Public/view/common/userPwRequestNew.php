@@ -1,5 +1,5 @@
 <?php
-    require_once('../controller/common/connexion.controller.php');
+    require_once('../controller/common/userPwSentEmail.controller.php');
 
     use Model\Utilities\Utilities;
 
@@ -16,9 +16,8 @@
     <div class="row">
         
         <div class="d-flex flex-column justify-content-center align-items-center">
- <!-- "index.php?page=connexion" -->
             <form
-                action="<?php echo $theSite . '.php?page=connexion'; ?>"
+                action="<?php echo $theSite . '.php?page=userPwRequestNew'; ?>"
                 method="post"
             >
 
@@ -26,7 +25,7 @@
 
                 <fieldset class="bg-dark bg-opacity-75 rounded-4 p-5">
                     
-                    <legend class="text-center text-light mb-3" >Connexion</legend>
+                    <legend class="text-center text-light mb-3" >Recover your password <br> Récupérer votre mot de passe</legend>
 
                     <div class="form-group mb-3">
 
@@ -42,28 +41,14 @@
 
                     </div>
 
-                    <div class="form-group mb-3">
-
-                        <label class="text-light w-100" for="password">mot de passe</label>
-
-                        <input
-                            class=""
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Saisissez votre mot de passe"
-                        >
-
-                    </div>
-
                     <div class="form-group my-5">
 
                         <input
                             class="btn btn-lg btn-primary"
                             type="submit"
-                            name="envoyer"
-                            id="envoyer"
-                            value="Se connecter"
+                            name="pwForgot"
+                            id="pwForgot"
+                            value="envoyer"
                         >
 
                     </div>
@@ -71,11 +56,8 @@
                 </fieldset>
 
                 <div style='color:red;'>
-                    <p class=" text-center fs-2 pt-3"> <?php echo $_SESSION['other']['message'] != '' ? htmlspecialchars_decode($_SESSION['other']['message']) : '' ?> </p>
-                    <p class=" text-center fs-2 pt-3"> <?php echo $_SESSION['other']['messagePw'] != '' ? htmlspecialchars_decode($_SESSION['other']['messagePw']) : '' ?> </p>
+                    <p class=" text-center fs-2 pt-3"> <?php echo htmlspecialchars_decode($_SESSION['other']['message']); ?> </p>
                 </div>
-
-                <div class="d-flex justify-content-center pb-5"><a href="<?php echo $theSite . '.php?page=userPwRequestNew'; ?>">Mot de passe oublié ?</a></div>
 
             </form>
 
@@ -84,8 +66,3 @@
     </div>
 
 </div>
-
-<?php
-    $_SESSION['other']['message'] = '';
-    $_SESSION['other']['messagePw'] = '';
-?>

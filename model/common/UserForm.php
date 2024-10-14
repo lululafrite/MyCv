@@ -2,7 +2,7 @@
 	//userForm.class.php
 	//author : Ludovic FOLLACO
 	//checked to 2024-10-04_16:02
-	namespace Model\User;
+	namespace Model\UserForm;
 
 	class UserForm
 	{

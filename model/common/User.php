@@ -4,8 +4,6 @@
 	//checked to 2024-10-04_15:22
 	namespace Model\User;
 
-    require_once('../model/common/dbConnect.class.php');
-
 	use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
@@ -112,6 +110,24 @@
 
 		//-----------------------------------------------------------------------
 
+		private $token = "";
+		public function getToken():string{
+			return $this->token;
+		}
+		public function setToken(string $new):void{
+			$this->token = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $timer_token = 0;
+		public function getTimerToken():int{
+			return $this->timer_token;
+		}
+		public function setTimerToken(int $new):void{
+			$this->timer_token = $new;
+		}
+
 		private $pw = "";
 		public function getPw():string{
 			return $this->pw;
@@ -204,7 +220,7 @@
 
 		private $userList = array();
 		public function getUserList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
-
+			
 			$bdd = DbConnect::DbConnect(new DbConnect());
 
 			try{
@@ -255,72 +271,131 @@
 
 		private $insertUser = 0;
 		public function insertUser():int{
-		
-			if(!self::checkEmail($this->email)){
 
-				if(!self::checkPseudo($this->pseudo)){
-					
-					try{
-						$hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-						$bdd = DbConnect::DbConnect(new DbConnect());
+			$this->setToken(bin2hex(random_bytes(32)));
+			$this->setTimerToken(date('U'));
 
-						$stmt = $bdd->prepare("INSERT INTO `user`(`name`,
-																	`surname`,
-																	`pseudo`,
-																	`email`,
-																	`phone`,
-																	`password`,
-																	`avatar`,
-																	`id_subscription`,
-																	`id_type`,
-																	`pw`)
-												VALUES(:name,
-														:surname,
-														:pseudo,
-														:email,
-														:phone,
-														:password,
-														:avatar,
-														(SELECT `id_subscription` FROM `subscription` WHERE `subscription`=:subscription),
-														(SELECT `id_type` FROM `user_type` WHERE `type`=:type),
-														:pw)");
-		
-						$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-						$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
-						$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
-						$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-						$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
-						$stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-						$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
-						$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
-						$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
-						$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
-		
-						$stmt->execute();
-		
-						// Récupérer l'ID de l'utilisateur nouvellement inséré
-						$stmt = $bdd->prepare("SELECT MAX(`id_user`) AS id_user FROM `user`");
-						$stmt->execute();
+			$emailExist = false;
+			$pseudoExist = false;
 
-						$this->insertUser = $stmt->fetchColumn();
-						$this->insertUser = intval($this->insertUser);
+			for($i=0; $i<3; $i++){
+				
+				if ($i === 0){
 
-						$_SESSION['other']['error'] = false;
-						$_SESSION['other']['message'] = "The user is add with success!!!";
+					if(!self::checkEmail($this->email, 'mycv')){
+
+						if(!self::checkPseudo($this->pseudo, 'mycv')){
+							$bdd = DbConnect::dbConnect(new DbConnect());
+						}else{
+							$pseudoExist = true;
+						}
+
+					}else{
+						$emailExist = true;
+					}
+
+				}elseif ($i === 1){
+
+					if(!self::checkEmail($this->email, 'goldorak')){
+
+						if(!self::checkPseudo($this->pseudo, 'goldorak')){
+							$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+						}else{
+							$pseudoExist = true;
+						}
+
+					}else{
+						$emailExist = true;
+					}
+
+				}elseif ($i === 2){
+
+					if(!self::checkEmail($this->email, 'garage_parrot')){
+
+						if(!self::checkPseudo($this->pseudo, 'garage_parrot')){
+							$bdd = DbConnect::dbConnectGP(new DbConnect());
+						}else{
+							$pseudoExist = true;
+						}
+
+					}else{
+						$emailExist = true;
+					}
+				}
+
+				if(!$emailExist){
+
+					if(!$pseudoExist){
 						
-					}catch(PDOException $e){
+						try{
+							$hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+
+							$stmt = $bdd->prepare("INSERT INTO `user`(`name`,
+																		`surname`,
+																		`pseudo`,
+																		`email`,
+																		`phone`,
+																		`password`,
+																		`avatar`,
+																		`id_subscription`,
+																		`id_type`,
+																		`token`,
+																		`timer_token`,
+																		`pw`)
+													VALUES(:name,
+															:surname,
+															:pseudo,
+															:email,
+															:phone,
+															:password,
+															:avatar,
+															(SELECT `id_subscription` FROM `subscription` WHERE `subscription`=:subscription),
+															(SELECT `id_type` FROM `user_type` WHERE `type`=:type),
+															:token,
+															:timer_token,
+															:pw)");
+			
+							$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+							$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
+							$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+							$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+							$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
+							$stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+							$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+							$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+							$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+							$stmt->bindParam(':token', $this->getToken(), PDO::PARAM_STR);
+							$stmt->bindParam(':timer_token', $this->getTimerToken(), PDO::PARAM_INT);
+							$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
+			
+							$stmt->execute();
+			
+							// Récupérer l'ID de l'utilisateur nouvellement inséré
+							$stmt = $bdd->prepare("SELECT MAX(`id_user`) AS id_user FROM `user`");
+							$stmt->execute();
+
+							$this->insertUser = intval($stmt->fetchColumn());
+
+							$_SESSION['other']['error'] = false;
+							$_SESSION['other']['message'] = "The user is add with success!!!";
+							
+						}catch(PDOException $e){
+							$_SESSION['other']['error'] = true;
+							$_SESSION['other']['message'] = "Error to query!!! function insertUser() in user.class.php" . $e->getMessage();
+						}
+
+					}else{
 						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "Error to query!!! function insertUser() in user.class.php" . $e->getMessage();
+						$_SESSION['other']['message'] = "This pseudonyme is existent!!! function insertUser() in user.class.php";
 					}
 
 				}else{
 					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = "This pseudonyme is existent!!! function insertUser() in user.class.php";
+					$_SESSION['other']['message'] = "This email is existent!!! function insertUser() in user.class.php";
 				}
-
-			}else{
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "This email is existent!!! function insertUser() in user.class.php";
+				
+				$emailExist = false;
+				$pseudoExist = false;
 			}
 		
 			$bdd = null;
@@ -331,47 +406,72 @@
 		private $updateUser = false;
 		public function updateUser(int $id_user):bool{
 			
-			if(self::checkIdUser($id_user)){
+			$idUserExist = false;
 
-				$bdd = DbConnect::DbConnect(new DbConnect());
+			for($i=0; $i<3; $i++){
 				
-				try{
-					$stmt = $bdd->prepare("UPDATE `user`
-											SET `name` = :name,
-												`surname` = :surname,
-												`pseudo` = :pseudo,
-												`email` = :email,
-												`phone` = :phone,
-												`avatar` = :avatar,
-												`id_subscription` = (SELECT `id_subscription` FROM `subscription` WHERE `subscription`=:subscription),
-												`id_type` = (SELECT `id_type` FROM `user_type` WHERE `type`=:type)
+				if ($i === 0){
 
-											WHERE `id_user` = :idUser");
-					
-					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-					$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
-					$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
-					$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-					$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
-					$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
-					$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
-					$stmt->bindParam(':idUser', $id_user, PDO::PARAM_INT);
-					
-					$stmt->execute();
-					
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "The user with id " . $id_user . " is update with success!!!";
-					
-					$this->updateUser = true;
+					if(self::checkIdUser($id_user, 'mycv')){
+						$bdd = DbConnect::dbConnect(new DbConnect());
+						$idUserExist = true;
+					}
 
-				}catch(PDOException $e){
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "Error to query!!! function updateUser() in user.class.php :" . $e->GetMessage();
+				}elseif ($i === 1){
+
+					if(self::checkIdUser($id_user, 'goldorak')){
+						$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+						$idUserExist = true;
+					}
+
+				}elseif ($i === 2){
+					if(self::checkIdUser($id_user, 'garage_parrot')){
+						$bdd = DbConnect::dbConnectGP(new DbConnect());
+						$idUserExist = true;
+					}
 				}
-			}else{
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
+			
+				if($idUserExist){
+					
+					try{
+						$stmt = $bdd->prepare("UPDATE `user`
+												SET `name` = :name,
+													`surname` = :surname,
+													`pseudo` = :pseudo,
+													`email` = :email,
+													`phone` = :phone,
+													`avatar` = :avatar,
+													`id_subscription` = (SELECT `id_subscription` FROM `subscription` WHERE `subscription`=:subscription),
+													`id_type` = (SELECT `id_type` FROM `user_type` WHERE `type`=:type)
+
+												WHERE `id_user` = :idUser");
+						
+						$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+						$stmt->bindParam(':surname', $this->surname, PDO::PARAM_STR);
+						$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+						$stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+						$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
+						$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+						$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
+						$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+						$stmt->bindParam(':idUser', $id_user, PDO::PARAM_INT);
+						
+						$stmt->execute();
+						
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "The user with id " . $id_user . " is update with success!!!";
+						
+						$this->updateUser = true;
+
+					}catch(PDOException $e){
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "Error to query!!! function updateUser() in user.class.php :" . $e->GetMessage();
+					}
+				}else{
+					$_SESSION['other']['error'] = true;
+					$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
+				}
+				$idUserExist = false;
 			}
 
 			$bdd=null;
@@ -383,28 +483,58 @@
 		private $deleteUser = false;
 		public function deleteUser(int $id_user):bool{
 			
-			if(self::checkIdUser($id_user)){
+			$idUserExist = false;
 
-				$bdd = DbConnect::DbConnect(new DbConnect());
+			for($i=0; $i<3; $i++){
+				
+				if ($i === 0){
+
+					if(self::checkIdUser($id_user, 'mycv')){
+						$bdd = DbConnect::dbConnect(new DbConnect());
+						$idUserExist = true;
+					}else{
+						$_SESSION['other']['error'] = true;
+						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
+					}
+
+				}elseif ($i === 1){
+
+					if(self::checkIdUser($id_user, 'goldorak')){
+						$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+						$idUserExist = true;
+					}else{
+						$_SESSION['other']['error'] = true;
+						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
+					}
+
+				}elseif ($i === 2){
+					if(self::checkIdUser($id_user, 'garage_parrot')){
+						$bdd = DbConnect::dbConnectGP(new DbConnect());
+						$idUserExist = true;
+					}else{
+						$_SESSION['other']['error'] = true;
+						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
+					}
+				}
 			
-				try{
-					$stmt = $bdd->prepare('DELETE FROM user WHERE id_user = :id_user');
-					$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-					$stmt->execute();
+				if($idUserExist){
+			
+					try{
+						$stmt = $bdd->prepare('DELETE FROM user WHERE id_user = :id_user');
+						$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+						$stmt->execute();
 
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "The user with id " . $id_user . " is delete with success!!!";
+						$_SESSION['other']['error'] = false;
+						$_SESSION['other']['message'] = "The user with id " . $id_user . " is delete with success!!!";
 
-					$this->deleteUser = true;
+						$this->deleteUser = true;
 
-				}catch (PDOException $e){
-					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = "Error to delete user : " . $e->getMessage();
+					}catch (PDOException $e){
+						$_SESSION['other']['error'] = true;
+						$_SESSION['other']['message'] = "Error to delete user : " . $e->getMessage();
+					}
 				}
 
-			}else{
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
 			}
 
 			$bdd=null;
@@ -458,9 +588,15 @@
         }
 		
 		private static $checkIdUser = false;
-		public static function checkIdUser(int $id_user):bool{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkIdUser(int $id_user, string $bd = 'mycv'):bool{
+			
+			if($bd === 'goldorak'){
+				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+			}elseif($bd === 'garage_parrot'){
+				$bdd = DbConnect::DbConnectGP(new DbConnect());
+			}else{
+				$bdd = DbConnect::DbConnect(new DbConnect());
+			}
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `id_user` = :id_user");
@@ -491,9 +627,15 @@
 		//-----------------------------------------------------------------------
 		
 		private static $checkPseudo = false;
-		public static function checkPseudo(string $pseudo):bool{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkPseudo(string $pseudo, string $bd = 'mycv'):bool{
+			
+			if($bd === 'goldorak'){
+				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+			}elseif($bd === 'garage_parrot'){
+				$bdd = DbConnect::DbConnectGP(new DbConnect());
+			}else{
+				$bdd = DbConnect::DbConnect(new DbConnect());
+			}
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `pseudo` = :pseudo");
@@ -524,9 +666,15 @@
 		//-----------------------------------------------------------------------
 		
 		private static $checkEmail = false;
-		public static function checkEmail(string $email):bool{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkEmail(string $email, string $bd = 'mycv'):bool{
+			
+			if($bd === 'goldorak'){
+				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
+			}elseif($bd === 'garage_parrot'){
+				$bdd = DbConnect::DbConnectGP(new DbConnect());
+			}else{
+				$bdd = DbConnect::DbConnect(new DbConnect());
+			}
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `email` = :email");

@@ -1,21 +1,13 @@
 <?php
-
-    require_once('../model/mycv/home.class.php');
-    require_once('../model/mycv/article.class.php');
-    require_once('../model/common/utilities.class.php');
-    
-
-    use Model\Mycv\Home;
-    use MyCv\Model\HomeArticle;
+    use Model\Home\Home;
+    use Model\Article\Article;
     use Model\Utilities\Utilities;
 
     $homes = new Home();
-    $homeArticles = new HomeArticle();
+    $homeArticles = new Article();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         
-        
-
         resetDataConnectVarSession();
         resetOtherVarSession();
         

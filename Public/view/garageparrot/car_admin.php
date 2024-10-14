@@ -1,5 +1,4 @@
 <?php
-    require_once('../model/common/utilities.class.php');
     require_once('../controller/garageparrot/car.controller.php');
     require_once('../module/garageparrot/searchCarAdmin.php');
     require_once('../module/common/select_page.php');
@@ -13,7 +12,7 @@
 
 <article class="mb-5 p-3 border rounded-4">
     
-    <form action="../garageparrot/index.php?page=carEdit" method="post">
+    <form action="../garageparrot.php?page=carEdit" method="post">
 
     <!-- input hidden csrf -->
     <input type="hidden" name="csrf" value="<?php echo $_SESSION['token']['csrf'];?>">

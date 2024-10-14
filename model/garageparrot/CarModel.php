@@ -2,15 +2,13 @@
 	//home.class.php
 	//Author: Ludovic FOLLACO
 	//checked to 2024-10-08_16:04
-	namespace Model\Car;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\CarModel;
 
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;
 
-	class Model
+	class CarModel
 	{
 		private $id_model;
 		public function getId():int{

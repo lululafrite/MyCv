@@ -1,7 +1,4 @@
 <?php
-	
-	require_once('../model/common/utilities.class.php');
-
 	use Model\Utilities\Utilities;
 	$local = Utilities::checkIfLocal();
 ?>

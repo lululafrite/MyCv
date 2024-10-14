@@ -1,9 +1,8 @@
 <?php
-
-    require_once('../model/common/page.class.php');
-
     use Model\Page\Page;
+
     $MyPage = new Page();
+    
     $next = false;
     $previous = false;
     

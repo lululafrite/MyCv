@@ -1,15 +1,8 @@
 <?php
-
-    require_once('../model/common/user.class.php');
-    require_once('../model/common/userForm.class.php');
-    require_once('../model/common/type.class.php');
-    require_once('../model/common/subscription.class.php');
-    require_once('../model/common/utilities.class.php');
-
     use Model\User\User;
-    use Model\User\UserForm;
-    use Model\User\Type As UserType;
-    use Model\User\Subscription;
+    use Model\UserForm\UserForm;
+    use Model\Type\Type;
+    use Model\Subscription\Subscription;
     use Model\Utilities\Utilities;
     
     $MyUser = new User();
@@ -72,6 +65,8 @@
         $MyUser->setAvatar(isset($_POST['txt_userEdit_avatar']) ? Utilities::filterInput('txt_userEdit_avatar') : 'avatar_membre_white.webp'); //input in the form to user (userEdit.php)
         $MyUser->setSubscription(isset($_POST['list_userEdit_subscription']) ? Utilities::filterInput('list_userEdit_subscription') : ''); //input in the form to user (userEdit.php)
         $MyUser->setPassword(isset($_POST['txt_userEdit_password']) ? Utilities::filterInput('txt_userEdit_password') : ''); //input in the form to user (userEdit.php)
+    }else{
+        Utilities::redirectToPage('accessMethod');
     }
 
 //***********************************************************************************************
@@ -334,7 +329,7 @@
     //Fonction traitement de la BD pour récupérer les données destinées à l'input liste type
     function myType():array{
         
-        $Types = new UserType();
+        $Types = new Type();
         $myType = array();
 
         $myType = $Types->getTypeList(1,'type', 'ASC', 0, 50);

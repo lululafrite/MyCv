@@ -4,19 +4,16 @@
     $page_ = 'index';
     if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
 
-		//$urlImg = '../img/goldorak/avatar/';
         $urlImg = '../img/common/avatar/';
         $page_ = 'goldorak';
 
 	}if(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
 
-		//$urlImg = '../img/garageparrot/avatar/';
         $urlImg = '../img/common/avatar/';
         $page_ = 'garageparrot';
 	}
 
     require_once('../controller/common/user.controller.php');
-    require_once('../model/common/utilities.class.php');
 
     use Model\Utilities\Utilities;
 ?>

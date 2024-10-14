@@ -1,17 +1,9 @@
 <?php
-
-    require_once('../model/garageparrot/car.class.php');
-    require_once('../model/garageparrot/brand.class.php');
-    require_once('../model/garageparrot/model.class.php');
-    require_once('../model/garageparrot/motorization.class.php');
-    require_once('../model/garageparrot/carForm.class.php');
-    require_once('../model/common/utilities.class.php');
-
     use Model\Car\Car;
-    use Model\Car\Brand;
-    use Model\Car\Model;
-    use Model\Car\Motorization;
-    use Model\Car\CarForm;
+    use Model\CarBrand\CarBrand;
+    use Model\CarModel\CarModel;
+    use Model\CarMotorization\CarMotorization;
+    use Model\CarForm\CarForm;
     use Model\Utilities\Utilities;
     
     $MyCar = new Car();
@@ -72,6 +64,8 @@
         $MyCar->setImage5(isset($_POST["txt_carEdit_image5"]) ? Utilities::filterInput("txt_carEdit_image5") : '_.webp');
 
         $btnImage = $MyCarForm->getBtnImage1() || $MyCarForm->getBtnImage2() || $MyCarForm->getBtnImage3() || $MyCarForm->getBtnImage4() || $MyCarForm->getBtnImage5();
+    }else{
+        Utilities::redirectToPage('accessMethod');
     }
 
     //***********************************************************************************************
@@ -88,6 +82,10 @@
         $MyMotorization = myMotorization();
 
         return;
+
+    }elseif($MyCarForm->getBtnCancel()){
+
+        Utilities::redirectToPage('car');
 
     }
     
@@ -220,7 +218,7 @@
     //Fonction traitement de la BD pour récupérer les données destinées à l'input liste brand
     function myBrand():array{
         
-        $Brand = new Brand();
+        $Brand = new CarBrand();
         $myBrand = array();
 
         $myBrand = $Brand->getBrandList(1,'name', 'ASC', 0, 50);
@@ -231,7 +229,7 @@
     //Fonction traitement de la BD pour récupérer les données destinées à l'input liste model
     function myModel():array{
         
-        $Model = new Model();
+        $Model = new CarModel();
         $myModel = array();
 
         $myModel = $Model->getModelList(1,'name', 'ASC', 0, 50);
@@ -242,7 +240,7 @@
     //Fonction traitement de la BD pour récupérer les données destinées à l'input liste motorization
     function myMotorization():array{
         
-        $Motorization = new Motorization();
+        $Motorization = new CarMotorization();
         $myMotorization = array();
 
         $myMotorization = $Motorization->getMotorizationList(1,'name', 'ASC', 0, 50);

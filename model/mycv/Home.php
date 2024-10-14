@@ -1,8 +1,5 @@
 <?php
-
-	namespace Model\Mycv;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\Home;
 
 	use \PDO;
 	use \PDOException;

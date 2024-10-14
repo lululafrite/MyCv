@@ -1,6 +1,5 @@
 <?php
-    require_once('../model/common/type.class.php');
-    use Model\User\Type As UserType;
+    use Model\Type\Type;
 ?>
 
 <div class="container">
@@ -51,7 +50,7 @@
                         <option value='Selectionnez un type'>Selectionnez un type</option>
                         
                     <?php
-                        $Types = new UserType();
+                        $Types = new Type();
                         $MyType = $Types->getTypeList(1,'type', 'ASC', 0, 50);
                         unset($Types);
                         for($i=0;$i != count($MyType);$i++) { ?>

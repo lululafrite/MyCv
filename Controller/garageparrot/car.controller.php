@@ -1,7 +1,4 @@
 <?php
-
-    require_once('../model/common/utilities.class.php');
-    require_once('../model/garageparrot/car.class.php');
     require_once('../controller/common/page.controller.php');
 
     use Model\Car\Car;

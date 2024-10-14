@@ -2,17 +2,14 @@
 	//brand.class.php
 	//Author: Ludovic FOLLACO
 	//checked to 2024-10-04_16:31
-	namespace Model\Car;
-
-    require_once('../model/common/dbConnect.class.php');
-	require_once('../model/common/utilities.class.php');
+	namespace Model\CarBrand;
 
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;
 	use Model\Utilities\Utilities;
 
-	class Brand
+	class CarBrand
 	{
 		private $id_brand;
 		public function getId(): int{

@@ -156,18 +156,21 @@
                             <span class="Nav_Span1">Mon compte<br><span class="Nav_Span2"><?php if($_SESSION['dataConnect']['pseudo']!= 'Guest'){echo 'Hello ' . $_SESSION['dataConnect']['pseudo'] . ' !';}?></span></span>
                         </a>
                         <ul class="dropdown-menu">
+                        <?php if(!$_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=connexion">
                                     <img class="p-2" src="../img/common/icon/login_25x25.png" alt="icone du bouton connexion">    
                                     Connexion
                                 </a>
                             </li>
+                        <?php }else{ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=disconnect">
                                     <img class="p-2" src="../img/common/icon/logout_25x25.png" alt="icone du bouton s'identifier">    
                                     Déconnexion
                                 </a>
                             </li>
+                        <?php } ?>
                         </ul>
                     </li>
 

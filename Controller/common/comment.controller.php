@@ -1,7 +1,4 @@
 <?php
-    
-    require_once('../model/common/utilities.class.php');
-    require_once('../model/common/comment.class.php');
 
     use Model\Comment\Comment;
     use Model\Utilities\Utilities;

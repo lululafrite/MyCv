@@ -1,6 +1,6 @@
 <?php
-    use Model\Car\Brand;
-    use Model\Car\Model;
+    use Model\CarBrand\CarBrand;
+    use Model\CarModel\CarModel;
 ?>
 
 <form action="" method="post">
@@ -22,9 +22,7 @@
                 <option value='<?php echo $_SESSION['car']['criteriaBrand']; ?>'><?php echo $_SESSION['car']['criteriaBrand']; ?></option>";
                 <option value='Selectionnez une marque'>Selectionnez une marque</option>
             <?php
-
-                require_once('../model/garageparrot/brand.class.php');
-                $Brands = new Brand();
+                $Brands = new CarBrand();
                 $MyBrand = $Brands->getBrandList(1,'name', 'ASC', 0, 50);
                 unset($Brands);
                 for($i=0;$i != count($MyBrand)-1;$i++) { ?>
@@ -46,9 +44,7 @@
                 <option value='<?php echo $_SESSION['car']['criteriaModel']; ?>'><?php echo $_SESSION['car']['criteriaModel']; ?></option>";
                 <option value='Selectionnez un modele'>Selectionnez un modele</option>";
             <?php
-
-                require_once('../model/garageparrot/model.class.php');
-                $Models = new Model();
+                $Models = new CarModel();
                 if($_SESSION['car']['criteriaBrand'] != 'Selectionnez une marque'){
                     $MyModel = $Models->getModelList('`model`.`id_brand` = (SELECT `brand`.`id_brand` FROM `brand` WHERE `brand`.`name` = \'' . $_SESSION['car']['criteriaBrand'] . '\')','name', 'ASC', 0, 50);
                 }else{

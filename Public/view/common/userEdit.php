@@ -1,6 +1,5 @@
 <?php
     require_once('../controller/common/userEdit.controller.php');
-    require_once('../model/common/utilities.class.php');
 
     use Model\Utilities\Utilities;
 ?>

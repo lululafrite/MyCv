@@ -4,11 +4,11 @@
             <div class="row">
                 <!-- <div class="col-12 col-lg-5 mx-auto ms-lg-0 text-center "> -->
                 <div class="col-12 col-lg-5 mx-auto ms-lg-0">
-                    <?php include ('../module/garageparrot/schedules.php'); ?>
+                    <?php require_once('../module/garageparrot/schedules.php'); ?>
                 </div>
                 <!-- <div class="col-12 col-lg-5 mx-auto me-lg-0 text-center "> -->
                 <div class="col-12 col-lg-5 mx-auto me-lg-0">
-                    <?php include ('../module/garageparrot/contact.php'); ?>
+                    <?php require_once('../module/garageparrot/contact.php'); ?>
                 </div>
             </div>
         </div>

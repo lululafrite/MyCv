@@ -4,13 +4,10 @@
 	//checked to 2024-10-08_15:10
 	namespace Model\Comment;
 
-    require_once('../model/common/dbConnect.class.php');
-	require_once('../model/common/utilities.class.php');
-
-	use Model\DbConnect\DbConnect;
-	use Model\Utilities\Utilities;
 	use \PDO;
 	use \PDOException;
+	use Model\DbConnect\DbConnect;
+	use Model\Utilities\Utilities;
 
 	class Comment
 	{

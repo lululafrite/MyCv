@@ -4,6 +4,6 @@
         <h1 class="bg-dark opacity-75 rounded-3">Club Goldorak</h1>
     </div>
 
-    <?php include "../module/goldorak/navBar.php"; ?>
+    <?php require_once('../module/goldorak/navBar.php'); ?>
 
 </header>

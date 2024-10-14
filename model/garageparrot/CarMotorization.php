@@ -1,14 +1,11 @@
 <?php
-
-	namespace Model\Car;
-
-    require_once('../model/common/dbConnect.class.php');
+	namespace Model\CarMotorization;
 
 	use \PDO;
 	use \PDOException;
     use Model\DbConnect\DbConnect;
 
-	class Motorization
+	class CarMotorization
 	{
 
 		private $id_motorization;

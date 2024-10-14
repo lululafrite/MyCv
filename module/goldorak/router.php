@@ -1,8 +1,5 @@
 <?php
-    //Routeur Goldorak
-    require_once('../model/common/utilities.class.php');
-    //require_once('../controller/page.controller.php');
-    
+    //Routeur Goldorak    
     use \Firebase\JWT\JWT;
     use Model\Utilities\Utilities;
     
@@ -40,6 +37,21 @@
         }else{
             require_once 'view/errorPage/accessPage.php';
         }
+
+    }elseif ($page === 'userPwRequestNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwRequestNew.php');
+
+    }elseif ($page === 'userPwResetNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwResetNew.php');
+
+    }elseif ($page === 'accessMethod'){
+        
+        //resetUserVarSession();
+        require_once 'view/errorPage/accessMethod.php';
 
     }elseif ($page === 'accessPage'){
         

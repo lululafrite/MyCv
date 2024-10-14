@@ -1,7 +1,4 @@
 <?php
-
-    require_once('../model/common/utilities.class.php');
-
     use Model\Utilities\Utilities;
 
     $page = isset($_GET['page']) ? Utilities::escapeInput($_GET['page']) : 'home';
@@ -24,9 +21,19 @@
 
         require_once('view/common/disconnect.php');
 
+    }elseif ($page === 'userPwRequestNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwRequestNew.php');
+
+    }elseif ($page === 'userPwResetNew'){
+        
+        //resetUserVarSession();
+        require_once('view/common/userPwResetNew.php');
+
     }else {
         
-        require_once('errorPage/unknownPage.php');
+        require_once('view/errorPage/unknownPage.php');
         
         /*resetDataConnectVarSession();
         require_once('errorPage/timeExpired.php');*/
