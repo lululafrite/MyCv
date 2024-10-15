@@ -40,28 +40,28 @@
 
         $MyCarForm->setNewError(isset($_GET['newError']) ? Utilities::filterInput('newError', INPUT_GET) : false);
 
-        $MyCar->setId(isset($_POST["txt_car_id"]) ? Utilities::filterInput("txt_car_id") : 0);
-        $MyCar->setBrand(isset($_POST["list_carEdit_brand"]) ? Utilities::filterInput("list_carEdit_brand") : '');
-        $MyCar->setModel(isset($_POST["list_carEdit_model"]) ? Utilities::filterInput("list_carEdit_model") : '');
-        $MyCar->setMotorization(isset($_POST["list_carEdit_motorization"]) ? Utilities::filterInput("list_carEdit_motorization") : '');
-        $MyCar->setYear(isset($_POST["txt_carEdit_year"]) ? Utilities::filterInput("txt_carEdit_year") : 2000);
+        $MyCarForm->setId(isset($_POST["txt_car_id"]) ? Utilities::filterInput("txt_car_id") : 0);
+        $MyCarForm->setBrand(isset($_POST["list_carEdit_brand"]) ? Utilities::filterInput("list_carEdit_brand") : '');
+        $MyCarForm->setModel(isset($_POST["list_carEdit_model"]) ? Utilities::filterInput("list_carEdit_model") : '');
+        $MyCarForm->setMotorization(isset($_POST["list_carEdit_motorization"]) ? Utilities::filterInput("list_carEdit_motorization") : '');
+        $MyCarForm->setYear(isset($_POST["txt_carEdit_year"]) ? Utilities::filterInput("txt_carEdit_year") : 2000);
         
         $mileage = isset($_POST['txt_carEdit_mileage']) ? Utilities::filterInput('txt_carEdit_mileage') : '0 kms';
         $mileage = str_replace(" kms", "", $mileage);
-        $MyCar->setMileage(intval($mileage));
+        $MyCarForm->setMileage(intval($mileage));
 
         $price = isset($_POST["txt_carEdit_price"]) ? Utilities::filterInput("txt_carEdit_price") : '0 € TTC';
         $price = str_replace(" € TTC", "", $price);
-        $MyCar->setPrice(intval($price));
+        $MyCarForm->setPrice(intval($price));
 
-        $MyCar->setSold(isset($_POST["list_carEdit_sold"]) ? Utilities::filterInput("list_carEdit_sold") : 'Oui');
-        $MyCar->setDescription(isset($_POST["txt_carEdit_description"]) ? Utilities::filterInput("txt_carEdit_description") : '');
+        $MyCarForm->setSold(isset($_POST["list_carEdit_sold"]) ? Utilities::filterInput("list_carEdit_sold") : 'Oui');
+        $MyCarForm->setDescription(isset($_POST["txt_carEdit_description"]) ? Utilities::filterInput("txt_carEdit_description") : '');
         
-        $MyCar->setImage1(isset($_POST["txt_carEdit_image1"]) ? Utilities::filterInput("txt_carEdit_image1") : '_.webp');
-        $MyCar->setImage2(isset($_POST["txt_carEdit_image2"]) ? Utilities::filterInput("txt_carEdit_image2") : '_.webp');
-        $MyCar->setImage3(isset($_POST["txt_carEdit_image3"]) ? Utilities::filterInput("txt_carEdit_image3") : '_.webp');
-        $MyCar->setImage4(isset($_POST["txt_carEdit_image4"]) ? Utilities::filterInput("txt_carEdit_image4") : '_.webp');
-        $MyCar->setImage5(isset($_POST["txt_carEdit_image5"]) ? Utilities::filterInput("txt_carEdit_image5") : '_.webp');
+        $MyCarForm->setImage1(isset($_POST["txt_carEdit_image1"]) ? Utilities::filterInput("txt_carEdit_image1") : '_.webp');
+        $MyCarForm->setImage2(isset($_POST["txt_carEdit_image2"]) ? Utilities::filterInput("txt_carEdit_image2") : '_.webp');
+        $MyCarForm->setImage3(isset($_POST["txt_carEdit_image3"]) ? Utilities::filterInput("txt_carEdit_image3") : '_.webp');
+        $MyCarForm->setImage4(isset($_POST["txt_carEdit_image4"]) ? Utilities::filterInput("txt_carEdit_image4") : '_.webp');
+        $MyCarForm->setImage5(isset($_POST["txt_carEdit_image5"]) ? Utilities::filterInput("txt_carEdit_image5") : '_.webp');
 
         $btnImage = $MyCarForm->getBtnImage1() || $MyCarForm->getBtnImage2() || $MyCarForm->getBtnImage3() || $MyCarForm->getBtnImage4() || $MyCarForm->getBtnImage5();
     }else{
@@ -74,7 +74,7 @@
     
     if($MyCarForm->getBtnCarEdit()){
 
-        $cars = $MyCar->getCurrentCar($MyCar->getId());
+        $cars = $MyCarForm->getCurrentCar($MyCarForm->getId());
         $cars['message'] = $_SESSION['other']['message'];
 
         $MyBrand = myBrand();
@@ -93,17 +93,17 @@
 
         if($btnUpdate){
 
-            if($MyCar->getId() === 0){
+            if($MyCarForm->getId() === 0){
                     
-                $MyCar->setId($MyCar->insertCar());
-                $cars = initTabcar($cars, $MyCar, $MyCarForm);
+                $MyCarForm->setId($MyCarForm->insertCar());
+                $cars = initTabcar($cars, $MyCarForm, $MyCarForm);
 
                 return;
 
             }else{
 
-                $updateCar = $MyCar->updateCar($MyCar->getId());
-                $cars = initTabcar($cars, $MyCar, $MyCarForm);
+                $updateCar = $MyCarForm->updateCar($MyCarForm->getId());
+                $cars = initTabcar($cars, $MyCarForm, $MyCarForm);
 
                 $cars['message'] = $_SESSION['other']['message'];
                 
@@ -116,8 +116,8 @@
 
         }elseif($MyCarForm->getBtnInsert() || $MyCarForm->getBtnNavBarInsert()){
             
-            resetCarVar($MyCar, $MyCarForm);
-            $cars = initTabCar($cars, $MyCar, $MyCarForm);
+            resetCarVar($MyCarForm);
+            $cars = initTabCar($cars, $MyCarForm);
 
             $MyBrand = myBrand();
             $MyModel = myModel();
@@ -127,7 +127,7 @@
 
         }elseif($MyCarForm->getBtnDelete()){
                 
-            $deleteCar = $MyCar->deleteCar($MyCar->getId());
+            $deleteCar = $MyCarForm->deleteCar($MyCarForm->getId());
             Utilities::redirectToPage('car');
 
         }elseif($MyCarForm->getBtnCancel()){
@@ -138,11 +138,11 @@
             
             $uploadDirectory = './img/vehicle/';
 
-            $_SESSION['car']['uploadImage1'] = $MyCar->getImage1();
-            $_SESSION['car']['uploadImage2'] = $MyCar->getImage2();
-            $_SESSION['car']['uploadImage3'] = $MyCar->getImage3();
-            $_SESSION['car']['uploadImage4'] = $MyCar->getImage4();
-            $_SESSION['car']['uploadImage5'] = $MyCar->getImage5();
+            $_SESSION['car']['uploadImage1'] = $MyCarForm->getImage1();
+            $_SESSION['car']['uploadImage2'] = $MyCarForm->getImage2();
+            $_SESSION['car']['uploadImage3'] = $MyCarForm->getImage3();
+            $_SESSION['car']['uploadImage4'] = $MyCarForm->getImage4();
+            $_SESSION['car']['uploadImage5'] = $MyCarForm->getImage5();
 
             if (isset($_FILES["fileInput1"]) && $_FILES["fileInput1"]["error"] == UPLOAD_ERR_OK){
 
@@ -151,7 +151,7 @@
                 $destinationFile = $uploadDirectory . basename($_FILES["fileInput1"]["name"]);
                 unset($_FILES["fileInput1"]);
                 
-                $MyCar->setImage1($_SESSION['car']['uploadImage1']);
+                $MyCarForm->setImage1($_SESSION['car']['uploadImage1']);
 
             }elseif (isset($_FILES["fileInput2"]) && $_FILES["fileInput2"]["error"] == UPLOAD_ERR_OK){
 
@@ -160,7 +160,7 @@
                 $destinationFile = $uploadDirectory . basename($_FILES["fileInput2"]["name"]);
                 unset($_FILES["fileInput2"]);
                 
-                $MyCar->setImage2($_SESSION['car']['uploadImage2']);
+                $MyCarForm->setImage2($_SESSION['car']['uploadImage2']);
 
             }elseif (isset($_FILES["fileInput3"]) && $_FILES["fileInput3"]["error"] == UPLOAD_ERR_OK){
 
@@ -169,7 +169,7 @@
                 $destinationFile = $uploadDirectory . basename($_FILES["fileInput3"]["name"]);
                 unset($_FILES["fileInput3"]);
                 
-                $MyCar->setImage3($_SESSION['car']['uploadImage3']);
+                $MyCarForm->setImage3($_SESSION['car']['uploadImage3']);
 
             }elseif (isset($_FILES["fileInput4"]) && $_FILES["fileInput4"]["error"] == UPLOAD_ERR_OK){
 
@@ -178,7 +178,7 @@
                 $destinationFile = $uploadDirectory . basename($_FILES["fileInput4"]["name"]);
                 unset($_FILES["fileInput4"]);
                 
-                $MyCar->setImage4($_SESSION['car']['uploadImage4']);
+                $MyCarForm->setImage4($_SESSION['car']['uploadImage4']);
 
             }elseif (isset($_FILES["fileInput5"]) && $_FILES["fileInput5"]["error"] == UPLOAD_ERR_OK){
 
@@ -187,7 +187,7 @@
                 $destinationFile = $uploadDirectory . basename($_FILES["fileInput5"]["name"]);
                 unset($_FILES["fileInput5"]);
                 
-                $MyCar->setImage5($_SESSION['car']['uploadImage5']);
+                $MyCarForm->setImage5($_SESSION['car']['uploadImage5']);
 
             }else{
 
@@ -205,7 +205,7 @@
             
             }
 
-            $cars = initTabCar($cars, $MyCar, $MyCarForm);
+            $cars = initTabCar($cars, $MyCarForm);
             $changeImage = true;
         }
 
@@ -250,43 +250,43 @@
     }
     
     //Fonction d'initialisation du tableau des données de l'utilisateur
-    function initTabCar(array $cars, object $MyCar, object $MyCarForm):array{        
+    function initTabCar(array $cars, object $MyCarForm):array{        
         
-        $cars['id_car'] = $MyCar->getId();
-        $cars['brand'] = $MyCar->getBrand();
-        $cars['model'] = $MyCar->getModel();
-        $cars['motorization'] = $MyCar->getMotorization();
-        $cars['year'] = $MyCar->getYear();
-        $cars['mileage'] = $MyCar->getMileage();
-        $cars['price'] = $MyCar->getPrice();
-        $cars['sold'] = $MyCar->getSold();
-        $cars['description'] = $MyCar->getDescription();
-        $cars['image1'] = $MyCar->getImage1();
-        $cars['image2'] = $MyCar->getImage2();
-        $cars['image3'] = $MyCar->getImage3();
-        $cars['image4'] = $MyCar->getImage4();
-        $cars['image5'] = $MyCar->getImage5();
+        $cars['id_car'] = $MyCarForm->getId();
+        $cars['brand'] = $MyCarForm->getBrand();
+        $cars['model'] = $MyCarForm->getModel();
+        $cars['motorization'] = $MyCarForm->getMotorization();
+        $cars['year'] = $MyCarForm->getYear();
+        $cars['mileage'] = $MyCarForm->getMileage();
+        $cars['price'] = $MyCarForm->getPrice();
+        $cars['sold'] = $MyCarForm->getSold();
+        $cars['description'] = $MyCarForm->getDescription();
+        $cars['image1'] = $MyCarForm->getImage1();
+        $cars['image2'] = $MyCarForm->getImage2();
+        $cars['image3'] = $MyCarForm->getImage3();
+        $cars['image4'] = $MyCarForm->getImage4();
+        $cars['image5'] = $MyCarForm->getImage5();
 
         return $cars;
     }
 
     //Fonction de réinitialisation des variables de l'utilisateur
-    function resetCarVar(object $MyCar, object $MyCarForm):void{
+    function resetCarVar(object $MyCarForm):void{
         
-        $MyCar->setId(0);
-        $MyCar->setBrand('_');
-        $MyCar->setModel('_');
-        $MyCar->setMotorization('_');
-        $MyCar->setYear(2000);
-        $MyCar->setMileage(0);
-        $MyCar->setPrice(0);
-        $MyCar->setSold('Yes');
-        $MyCar->setDescription('_');
-        $MyCar->setImage1('_.webp');
-        $MyCar->setImage2('_.webp');
-        $MyCar->setImage3('_.webp');
-        $MyCar->setImage4('_.webp');
-        $MyCar->setImage5('_.webp');
+        $MyCarForm->setId(0);
+        $MyCarForm->setBrand('_');
+        $MyCarForm->setModel('_');
+        $MyCarForm->setMotorization('_');
+        $MyCarForm->setYear(2000);
+        $MyCarForm->setMileage(0);
+        $MyCarForm->setPrice(0);
+        $MyCarForm->setSold('Yes');
+        $MyCarForm->setDescription('_');
+        $MyCarForm->setImage1('_.webp');
+        $MyCarForm->setImage2('_.webp');
+        $MyCarForm->setImage3('_.webp');
+        $MyCarForm->setImage4('_.webp');
+        $MyCarForm->setImage5('_.webp');
     }
 
 ?>

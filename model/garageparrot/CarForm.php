@@ -3,8 +3,9 @@
 	//Author: Ludovic FOLLACO
 	//checked to 2024-10-04_16:49
 	namespace Model\CarForm;
+	use Model\Car\Car;
 
-	class CarForm
+	class CarForm extends Car
 	{
 		private $btnNavBarInsert = false;
 		public function getBtnNavBarInsert():bool{
