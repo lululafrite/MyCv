@@ -101,9 +101,9 @@
                 }
             }else{
                 $_SESSION['other']['error'] = false;
-                $_SESSION['other']['messagePw'] = 'Le mot de passe doit contenir au moins 13<br>
-                                                   caractères, dont une majuscule, une minuscule,<br>
-                                                   un chiffre et un caractère spécial parmis /*-.!?@';
+                $_SESSION['other']['messagePw'] = 'Le mot de passe doit contenir au moins 13 caractères,<br>
+                                                   dont une majuscule, une minuscule, un chiffre et<br>
+                                                   un caractère spécial parmis les suivants /*-.!?@';
             }
         }
 

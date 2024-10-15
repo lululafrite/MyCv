@@ -60,12 +60,11 @@
         }else if(input === 'txt_userEdit_password'){
 
             let passwordInput = document.getElementById(input).value;
-
-            // Vérifier que la longueur est de 8 caractères
-            if (passwordInput.length < 8) {
-                isError=true;
-            }else{
+            let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\/\*\-\.\!\?\@])[A-Za-z\d\/\*\-\.\!\?\@]{13,}$/;
+            if(passwordRegex.test(passwordInput)){
                 isError=false;
+            }else{
+                isError=true;
             }
             
         }else if(input === 'txt_userEdit_confirm'){
@@ -93,7 +92,7 @@
         }else{
 
             errorMessage.textContent = myMessage;
-            errorMessage.style.color = '#000000';
+            errorMessage.style.color = '#ffffff';
             
             if(datalist!=''){
                 myInput.style.background = '#DADADA';

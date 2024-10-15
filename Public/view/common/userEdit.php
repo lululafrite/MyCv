@@ -472,7 +472,7 @@
                         type="password"
                         placeholder=""
                         style="font-size: 1.6rem;"
-                        oninput="validateInput('txt_userEdit_password','','labelMessagePassword','Saisissez un mot de passe de 255 caractères maximum et 8 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /\*-.!?@')"
+                        oninput="validateInput('txt_userEdit_password','','labelMessagePassword','Saisissez un mot de passe de 255 caractères maximum et 13 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /\*-.!?@')"
                         value= "<?php echo Utilities::escapeInput($users['password']); ?>"
                     >
                 </td>
@@ -486,7 +486,7 @@
 
                 <td class="m-0 p-0">
                     <label class="form-control-lg m-0 mb-2 p-0" id="labelMessagePassword"  name="labelMessagePassword">
-                        Saisissez un mot de passe de 255 caractères maximum et 8 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /*-.!?@
+                        Saisissez un mot de passe de 255 caractères maximum et 13 caractères minimun comprenant au moins : 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spéciale parmi les suivants /*-.!?@
                     </label>
                 </td>
 

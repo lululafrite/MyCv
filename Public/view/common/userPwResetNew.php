@@ -72,10 +72,20 @@
                 </fieldset>
 
                 <div style='color:red;'>
-                    <p class=" text-center fs-2 pt-3"> <?php echo $_SESSION['other']['messagePw']; ?> </p>
+                    <p class=" text-left fs-4 pt-3">
+                        <?php
+                            echo $_SESSION['other']['messagePw'] != '' ?
+                                 $_SESSION['other']['messagePw'] :
+                                 'Le mot de passe doit contenir au moins 13 caratères,<br>
+                                 dont 1 majuscule, 1 minuscule, 1 chiffre et<br>
+                                 1 caractère spécial parmis les suivants /*-.!?@';
+                        ?>
+                    </p>
                 </div>
 
             </form>
+
+            <p></p>
 
         </div>
 
