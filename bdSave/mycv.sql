@@ -149,7 +149,7 @@ INSERT INTO `user` VALUES
 (3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Actarus123/'),
 (4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Goldorak123/'),
 (5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Venusia123/'),
-(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'6d9a2d8c478ee36f59274ad8b6eedc07f156299b197f37efff428a1d06b9abec',1728743778,'Ludovic123/*-');
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'badf7b94de109870f51c7dbeac60be1fa514b957266821f80f1466ffc57b71e6',1728986632,'Ludovic123/*-');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-15 10:03:44
+-- Dump completed on 2024-10-15 14:59:50

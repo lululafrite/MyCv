@@ -148,8 +148,10 @@ CREATE TABLE `comment` (
   `comment` text NOT NULL,
   `publication` tinyint(1) NOT NULL DEFAULT 0,
   `id_member` int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id_comment`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`id_comment`),
+  KEY `id_member` (`id_member`),
+  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,8 +163,7 @@ LOCK TABLES `comment` WRITE;
 INSERT INTO `comment` VALUES
 (1,'2024-01-02','Actarus',5,'Top!',2,3),
 (2,'2024-01-08','Goldorak',4,'Accueillant professionnel et honnete. Je recommande!',2,4),
-(3,'2024-01-15','Venusia',5,'Un passionne de bagnole! Ca fait plaisir!',2,5),
-(4,'2024-10-12','papa',3,'test sur GP',0,8);
+(3,'2024-01-15','Venusia',5,'Un passionne de bagnole! Ca fait plaisir!',2,5);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,7 +441,7 @@ INSERT INTO `user` VALUES
 (3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'0',0,'Actarus123/'),
 (4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'0',0,'User123/'),
 (5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'0',0,'Venusia123/'),
-(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'6d9a2d8c478ee36f59274ad8b6eedc07f156299b197f37efff428a1d06b9abec',1728743778,'Lud123/*-');
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'badf7b94de109870f51c7dbeac60be1fa514b957266821f80f1466ffc57b71e6',1728986632,'Lud123/*-');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,4 +481,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-15 10:02:10
+-- Dump completed on 2024-10-15 15:00:10

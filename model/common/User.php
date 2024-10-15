@@ -272,8 +272,8 @@
 		private $insertUser = 0;
 		public function insertUser():int{
 
-			$this->setToken(bin2hex(random_bytes(32)));
-			$this->setTimerToken(date('U'));
+			$token = bin2hex(random_bytes(32));
+			$timerToken = date('U');
 
 			$emailExist = false;
 			$pseudoExist = false;
@@ -364,8 +364,8 @@
 							$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
 							$stmt->bindParam(':subscription', $this->subscription, PDO::PARAM_STR);
 							$stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
-							$stmt->bindParam(':token', $this->getToken(), PDO::PARAM_STR);
-							$stmt->bindParam(':timer_token', $this->getTimerToken(), PDO::PARAM_INT);
+							$stmt->bindParam(':token', $token, PDO::PARAM_STR);
+							$stmt->bindParam(':timer_token', $timerToken, PDO::PARAM_INT);
 							$stmt->bindParam(':pw', $this->password, PDO::PARAM_STR);
 			
 							$stmt->execute();
@@ -381,7 +381,7 @@
 							
 						}catch(PDOException $e){
 							$_SESSION['other']['error'] = true;
-							$_SESSION['other']['message'] = "Error to query!!! function insertUser() in user.class.php" . $e->getMessage();
+							$_SESSION['other']['message'] = "Error to query!!! function insertUser() in user.class.php" . $e->getMessage() . '<br>';
 						}
 
 					}else{

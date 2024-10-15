@@ -149,23 +149,20 @@
                     $MyType = myType();
                     $MySubscription = mySubscription();
 
-                    if($_SESSION['user']['newMember']){
+                    $_SESSION['user']['newMember'] = false;
+                    $MyUserForm->setNewMember(false);
 
-                        $_SESSION['user']['newMember'] = false;
-                        $MyUserForm->setNewMember(false);
+                    $_SESSION['dataConnect']['id_user'] = $MyUserForm->getId();
+                    $_SESSION['dataConnect']['pseudo'] = $MyUserForm->getPseudo();
+                    $_SESSION['dataConnect']['avatar'] = $MyUserForm->getAvatar();
+                    $_SESSION['dataConnect']['type'] = 'Member';
+                    $_SESSION['dataConnect']['subscription'] = $MyUserForm->getSubscription();
+                    $_SESSION['dataConnect']['password'] = '';
+                    $_SESSION['dataConnect']['error'] = false;
+                    $_SESSION['dataConnect']['connexion'] = true;
 
-                        $_SESSION['dataConnect']['id_user'] = $MyUserForm->getId();
-                        $_SESSION['dataConnect']['pseudo'] = $MyUserForm->getPseudo();
-                        $_SESSION['dataConnect']['avatar'] = $MyUserForm->getAvatar();
-                        $_SESSION['dataConnect']['type'] = 'Member';
-                        $_SESSION['dataConnect']['subscription'] = $MyUserForm->getSubscription();
-                        $_SESSION['dataConnect']['password'] = '';
-                        $_SESSION['dataConnect']['error'] = false;
-                        $_SESSION['dataConnect']['connexion'] = true;
-
-                        $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
-                        Utilities::redirectToPage('home');
-                    }
+                    $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
+                    Utilities::redirectToPage('home');
                     
                     return;
 

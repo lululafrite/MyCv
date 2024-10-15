@@ -33,7 +33,7 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id_comment`),
   KEY `id_member` (`id_member`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +149,7 @@ INSERT INTO `user` VALUES
 (3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'',0,'Actarus123/'),
 (4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'',0,'Goldorak123/'),
 (5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'',0,'Venusia123/'),
-(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'6d9a2d8c478ee36f59274ad8b6eedc07f156299b197f37efff428a1d06b9abec',1728743778,'Admin123/');
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'badf7b94de109870f51c7dbeac60be1fa514b957266821f80f1466ffc57b71e6',1728986632,'Admin123/');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-15 10:02:50
+-- Dump completed on 2024-10-15 15:00:01
