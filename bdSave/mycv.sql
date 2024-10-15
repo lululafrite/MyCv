@@ -61,7 +61,7 @@ CREATE TABLE `home_article` (
   `home_article_img_objectFit` varchar(11) NOT NULL DEFAULT 'cover',
   `home_article_sort` int(11) NOT NULL,
   PRIMARY KEY (`home_article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,13 +126,15 @@ CREATE TABLE `user` (
   `avatar` varchar(255) NOT NULL DEFAULT 'avatar_membre_white.webp',
   `id_subscription` int(11) NOT NULL DEFAULT 3,
   `id_type` int(11) NOT NULL DEFAULT 2,
+  `token` varchar(255) NOT NULL,
+  `timer_Token` int(11) NOT NULL,
   `pw` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   KEY `index_user_id_type` (`id_type`),
   KEY `id_subscription` (`id_subscription`),
   CONSTRAINT `rel_user_id_type` FOREIGN KEY (`id_type`) REFERENCES `user_type` (`id_type`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_subscription`) REFERENCES `subscription` (`id_subscription`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Utilisateur pour la gestion de connexion au site';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,13 +144,12 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'ADMIN','Admin','Admin','admin@gmail.com','0102030405','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',2,1,'admin123/'),
-(2,'USER','User','User','user@gmail.com','0607080910','$2y$10$irfSGt1nAb3s1dFqvCxTeuamP66kvFoXP5KDRAybBXXzgSjRF5rAa','avatar_user.webp',2,3,'User123/'),
-(3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'Actarus123/'),
-(4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'Goldorak123/'),
-(5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'Venusia123/'),
-(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$FAcGC9iwqgVykFllHp8pmuUGyHkAEqw02fDw1FjgGqJ0kJTDFSCke','professeur_procyon.webp',2,1,'Admin123/'),
-(33,'TEST','Test','Testeur','test@gmail.com','06 08 81 83 90','$2y$10$p.Wlnd41St.MtRiLKWSIJuF68LpkfNs9k8DokNUJHELG9.aDZdH2i','avatar_membre_white.webp',2,2,'Test123/');
+(1,'ADMIN','Admin','Admin','admin@gmail.com','0102030405','$2y$10$Eu2g7qbA8I5a2DGPsoZ13OZBpHe5pELDYISthqk1FYW.JTkQgG19S','avatar_admin_black.webp',2,1,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'admin123/'),
+(2,'USER','User','User','user@gmail.com','0607080910','$2y$10$irfSGt1nAb3s1dFqvCxTeuamP66kvFoXP5KDRAybBXXzgSjRF5rAa','avatar_user.webp',2,3,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'User123/'),
+(3,'ACTARUS','Actarus','Actarus','actarus@gmail.com','0203040506','$2y$10$AY5n7w0aoCann8g3vW3mGukfjN6mTjlEJ.0GrOpZNU2CrECZkUzHy','avatar_actarus.webp',1,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Actarus123/'),
+(4,'GOLDORAK','Goldorak','Goldorak','goldorak@gmail.com','0304050607','$2y$10$eFIwsT3LnMuqzeQdJkujqesFGctYIrdpPx8Is2kybY5CcgQfsh2pG','avatar_goldorak_01.webp',2,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Goldorak123/'),
+(5,'VENUSIA','Venusia','Venusia','venusia@gmail.com','0405060708','$2y$10$PqWto4t7hH1RUymgzI2ANelWy.anLMRRtOv2sD8LKWqU1B/K8nzVS','avatar_venusia_01.webp',3,2,'07d94eeed903481162487674190888ce27990ab63099d4950b42f340034562ba',1728652501,'Venusia123/'),
+(6,'FOLLACO','Ludovic','Professeur','ludovic.follaco@free.fr','0608818390','$2y$10$2elY2LxGI9t6aoNPsygV5OJ06/0xbs//kmqTtAUuQyOhZi9VoPvX.','professeur_procyon.webp',2,1,'6d9a2d8c478ee36f59274ad8b6eedc07f156299b197f37efff428a1d06b9abec',1728743778,'Ludovic123/*-');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-03 19:19:08
+-- Dump completed on 2024-10-15 10:03:44

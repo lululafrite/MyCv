@@ -457,7 +457,7 @@
                 </td>
 
             </tr>
-
+        <?php if($_SESSION['user']['newMember']){ ?>
             <tr class="m-0 p-0">
 
                 <td class="text-end m-0 p-0">
@@ -527,6 +527,8 @@
                 </td>
 
             </tr>
+            
+        <?php } ?>
 
             <tr>
                 <td>

@@ -162,7 +162,7 @@
                             </a>
                         </li>
                         <?php } ?>
-                    <?php if($_SESSION['dataConnect']['type'] != 'Guest'){ ?>
+                    <?php if($_SESSION['dataConnect']['type'] != 'Guest' && $_SESSION['dataConnect']['type'] != 'Administrator'){ ?>
                         <li>
                             <form action="goldorak.php?page=userEdit" method="post">
                                 <button class="dropdown-item text-light" type="submit" name="btn_monCompte">

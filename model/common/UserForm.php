@@ -4,7 +4,9 @@
 	//checked to 2024-10-04_16:02
 	namespace Model\UserForm;
 
-	class UserForm
+	use Model\User\User;
+
+	class UserForm extends User
 	{
 		private $btnNavBarInsert = false;
 		public function getBtnNavBarInsert():bool{
