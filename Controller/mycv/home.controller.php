@@ -58,7 +58,7 @@
 
                     varArticle($homes, $article_id);
 
-                    if (Utilities::uploadImg('user', "newImgChapter1","text_article_img_" . $article_id,"file_article_img_" . $article_id,"./img/picture/")){
+                    if (Utilities::uploadImg('user', "newImgChapter1","text_article_img_" . $article_id,"file_article_img_" . $article_id,"./img/mycv/picture/")){
 
                         $arrayHomeArticle['articleImg'] = $_SESSION['user']['newImgChapter1'];
                         $homes->setArticleImg($_SESSION['user']['newImgChapter1']);

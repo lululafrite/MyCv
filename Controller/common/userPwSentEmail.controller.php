@@ -34,10 +34,12 @@
                 $bdd = null;
             }
             // Créer le lien de réinitialisation du mot de passe
+            $siteName = Utilities::checkAndReturnValueInUrl() === 'mycv' ? 'index' : Utilities::checkAndReturnValueInUrl();
+
             if(Utilities::checkIfLocal()){
-                $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'http://mycv/', $token);
+                $url = sprintf('%s' . $siteName . '.php?page=userPwResetNew&token=%s', 'http://mycv/', $token);
             }else{
-                $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'https://www.follaco.fr/', $token);
+                $url = sprintf('%s' . $siteName . '.php?page=userPwResetNew&token=%s', 'https://www.follaco.fr/', $token);
             }
 
             // Envoyer l'email de réinitialisation du mot de passe
