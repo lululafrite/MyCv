@@ -4,13 +4,24 @@
     //checked to 2024-10-04_15:49
     namespace Model\Page;
 
-    use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
     use function PHPUnit\Framework\isNull;
 
 	class Page
     {
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerPage();
+			}
+		}
+
         // __Nombre de ligne__________________________________________
 
         private $nbOfProduct = 1;
@@ -75,8 +86,19 @@
 
         private static $checkNumberOfProduct = 0;
 		public static function checkNumberOfProduct(string $table , string $whereClause = null):int{
-			
-            $bdd = DbConnect::DbConnect(new DbConnect());
+
+			if($_SESSION['debug']['monolog']){
+                self::initStaticLoggerPage();
+				$arrayLogger = [
+                    'user' => $_SESSION['dataConnect']['pseudo'],
+                    'function' => 'checkNumberOfProduct()',
+                    '$table' => $table,
+                    '$whereClause' => $whereClause,
+                    '$checkNumberOfProduct' => self::$checkNumberOfProduct
+                ];
+			}
+				
+            $bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 			try{
                 if(isNull($whereClause)){
@@ -91,15 +113,19 @@
                     self::$checkNumberOfProduct = $stmt->fetchColumn();
                 }
 
-                $_SESSION['other']['error'] = false;
-                $_SESSION['other']['message'] = "Nombre de produit trouvé";
+                if($_SESSION['debug']['monolog']){
+                    $arrayLogger['$checkNumberOfProduct'] = self::$checkNumberOfProduct;
+                    self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+                }
 
-			}catch (PDOException $e){
-                $_SESSION['other']['error'] = true;
-                $_SESSION['other']['message'] = "Erreur de la requete : " . $e->getMessage();
-			}
+			}catch(PDOException $e){
+                if($_SESSION['debug']['monolog']){
+                    self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+                }
+            }finally{
+                $bdd = null;
+            }
 
-			$bdd=null;
             return self::$checkNumberOfProduct;
 		}
 
@@ -122,5 +148,27 @@
             }
             $MyPage->setNbOfPage($nbOfPage);
         }
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerPage()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.Page');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/Page.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerPage()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.Page');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/Page.log', Logger::DEBUG));
+			}
+		}
     }
 ?>

@@ -11,16 +11,7 @@
     $MySubscription = array();
     $btnUpdate = false; settype($btnUpdate, 'boolean');
     
-    $urlImg = '../img/avatar/';
-    if(preg_match('/goldorak/', $_SERVER['REQUEST_URI'])){
-
-        $urlImg = '../img/goldorak/avatar/';
-
-    }elseif(preg_match('/garageparrot/', $_SERVER['REQUEST_URI'])){
-    
-        $urlImg = '../img/garageparrot/avatar/';
-    
-    }
+    $urlImg = './img/common/avatar/';
 
 //***********************************************************************************************
 // Echapper les variables $_POST
@@ -33,15 +24,11 @@
         $MyUserForm->setBtnUserEdit(isset($_POST['btn_userEdit']) ? true : false); //Button in the table to edit a user (user.php)
         
         $MyUserForm->setBtnNavBarInsert(isset($_POST['btn_navBar_new']) ? true : false); //Button in the navigation bar to insert a new user
-        $MyUserForm->getBtnNavBarInsert() ? $_SESSION['user']['newMember'] = true : $_SESSION['user']['newMember'] = false;
 
         $MyUserForm->setBtnMonCompte(isset($_POST['btn_monCompte']) ? true : false); //Button in the navigation bar
         $MyUserForm->getBtnMonCompte() ? $_SESSION['user']['updateMonCompte'] = true : $_SESSION['user']['updateMonCompte'] = false;
 
         $MyUserForm->setBtnInsert(isset($_POST['btn_userEdit_new']) ? true : false); //Button in the form to user (userEdit.php)
-        if($MyUserForm->getBtnInsert()){
-            $MyUserForm->getBtnInsert() ? $_SESSION['user']['newMember'] = true : $_SESSION['user']['newMember'] = false;
-        }
 
         $MyUserForm->setBtnDelete(isset($_POST['btn_userEdit_delete']) ? true : false); //Button in the form to user (userEdit.php)
         $MyUserForm->setBtnCancel(isset($_POST['btn_userEdit_cancel']) ? true : false); //Button in the form to user (userEdit.php)
@@ -128,7 +115,7 @@
         if(!Utilities::ckeckCsrf()){
             
             $users = initTabUser($users, $MyUserForm);
-            die($_SESSION['other']['message']);
+            die('Erreur de vérification CSRF');
 
         }else{
 
@@ -137,14 +124,15 @@
                 if(empty($MyUserForm->getType())){
                     $MyUserForm->setType('member');
                 }
+
                 $newUser = $MyUserForm->insertUser();
 
-                if(!$_SESSION['other']['error']){
+                if($newUser > 0){
 
                     $MyUserForm->setId($newUser);
 
                     $users = initTabUser($users, $MyUserForm);
-                    $users['message'] = $_SESSION['other']['message'];
+                    $users['message'] = 'Le nouvel utilisateur a été ajouté avec succès.';
                     
                     $MyType = myType();
                     $MySubscription = mySubscription();
@@ -152,14 +140,16 @@
                     $_SESSION['user']['newMember'] = false;
                     $MyUserForm->setNewMember(false);
 
-                    $_SESSION['dataConnect']['id_user'] = $MyUserForm->getId();
-                    $_SESSION['dataConnect']['pseudo'] = $MyUserForm->getPseudo();
-                    $_SESSION['dataConnect']['avatar'] = $MyUserForm->getAvatar();
-                    $_SESSION['dataConnect']['type'] = 'Member';
-                    $_SESSION['dataConnect']['subscription'] = $MyUserForm->getSubscription();
-                    $_SESSION['dataConnect']['password'] = '';
-                    $_SESSION['dataConnect']['error'] = false;
-                    $_SESSION['dataConnect']['connexion'] = true;
+                    if($_SESSION['dataConnect']['type'] === 'Guest'){
+                        $_SESSION['dataConnect']['id_user'] = $MyUserForm->getId();
+                        $_SESSION['dataConnect']['pseudo'] = $MyUserForm->getPseudo();
+                        $_SESSION['dataConnect']['avatar'] = $MyUserForm->getAvatar();
+                        $_SESSION['dataConnect']['type'] = 'Member';
+                        $_SESSION['dataConnect']['subscription'] = $MyUserForm->getSubscription();
+                        $_SESSION['dataConnect']['password'] = '';
+                        $_SESSION['dataConnect']['error'] = false;
+                        $_SESSION['dataConnect']['connexion'] = true;
+                    }
 
                     $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
                     Utilities::redirectToPage('home');
@@ -225,6 +215,8 @@
         return;
 
     }elseif($MyUserForm->getBtnInsert() || $MyUserForm->getBtnNavBarInsert()){
+        
+        $_SESSION['user']['newMember'] = true;
         
         $subscription = 'Vénusia'; settype($subscription, 'string');
         if(empty($MyUserForm->getSubscription())){
@@ -303,7 +295,7 @@
 
         if (Utilities::uploadImg('user', 'uploadAvatar','txt_userEdit_avatar','fileAvatar', $urlImg)){
             
-            if($MyUserForm->getBtnMonCompte()){
+            if($_SESSION['dataConnect']['type'] === 'Member'){
                 $_SESSION['dataConnect']['avatar'] = $_SESSION['user']['uploadAvatar'];
             }
 

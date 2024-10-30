@@ -12,9 +12,6 @@
     
             }else{
 
-                resetDataConnectVarSession();
-                resetOtherVarSession();
-
                 $email = ''; settype($email, "string");
                 $pw = ''; settype($pw, "string");
                 $hashedPw = ''; settype($hashedPw, "string");
@@ -30,7 +27,7 @@
 
                     $email = Utilities::filterInput('email');
 
-                    if(!User::checkEmail($email)){
+                    if(!User::checkEmail($email, Utilities::checkAndReturnValueInUrl())){
                         $_SESSION['other']['error'] = true;
                         $_SESSION['other']['message'] = 'This email is not existing!!!';
                         return;

@@ -1,5 +1,5 @@
 <?php
-	//carForm.class.php
+	//CarForm.php
 	//Author: Ludovic FOLLACO
 	//checked to 2024-10-04_16:49
 	namespace Model\CarForm;

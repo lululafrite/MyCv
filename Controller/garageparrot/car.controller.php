@@ -110,9 +110,9 @@
     
     $cars = $MyCar->getCarList($whereClause, 'price', 'ASC', $MyPage->getFirstProduct(), $MyPage->getProductPerPage());
 
-    $_SESSION['pagination']['nbOfProduct'] = Car::getCheckNbOfCar($whereClause);
+    $_SESSION['pagination']['nbOfProduct'] = $MyPage->checkNumberOfProduct('car', $whereClause);
     $_SESSION['pagination']['nbOfPage'] = ceil($_SESSION['pagination']['nbOfProduct'] / $MyPage->getProductPerPage());
-    $MyPage->setNbOfPage($_SESSION['pagination']['nbOfPage']);
+    //$MyPage->setNbOfPage($_SESSION['pagination']['nbOfPage']);
 
     unset($MyCar);
 

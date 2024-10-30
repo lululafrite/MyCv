@@ -55,9 +55,9 @@ async function fetchCars(page, pageSize) {
             console.log(`   model :`, model[0].name);
             
             conn = await pool.getConnection();
-            const motorization = await conn.query(`SELECT name FROM motorization WHERE id_motorization = ` + data[i].id_motorization + `;`);
+            const engine = await conn.query(`SELECT name FROM engine WHERE id_engine = ` + data[i].id_engine + `;`);
             conn.release();
-            console.log(`   motorization :`, motorization[0].name);
+            console.log(`   engine :`, engine[0].name);
 
             console.log(`   year :`, data[i].year);
             console.log(`   mileage :`, data[i].mileage);

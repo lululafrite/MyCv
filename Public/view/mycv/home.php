@@ -15,21 +15,21 @@
 
     <?php
 
-        for($i=0; $i<count($homeArticle); $i++){
+        for($i=0; $i<count($article); $i++){
 
-            if($homeArticle[$i]['home_article_img_rightOrLeft'] === 'right'){
+            if($article[$i]['article_img_rightOrLeft'] === 'right'){
 
-                homeArticleImgRight($homeArticle, $i);
+                homeArticleImgRight($article, $i);
 
-            }elseif($homeArticle[$i]['home_article_img_rightOrLeft'] === 'left'){
+            }elseif($article[$i]['article_img_rightOrLeft'] === 'left'){
 
-                homeArticleImgLeft($homeArticle, $i);
+                homeArticleImgLeft($article, $i);
 
             }
 
         }
         
-        homeArticleUmpty($homeArticle);
+        homeArticleUmpty($article);
 
     ?>
 

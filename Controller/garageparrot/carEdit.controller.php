@@ -1,18 +1,16 @@
 <?php
-    use Model\Car\Car;
     use Model\CarBrand\CarBrand;
     use Model\CarModel\CarModel;
-    use Model\CarMotorization\CarMotorization;
+    use Model\CarEngine\CarEngine;
     use Model\CarForm\CarForm;
     use Model\Utilities\Utilities;
     
-    $MyCar = new Car();
     $MyCarForm = new CarForm();
    
     $cars = array("id_car" => 0);
     $MyBrand = array();
     $MyModel = array();
-    $MyMotorization = array();
+    $MyEngine = array();
     
     $btnUpdate = false; settype($btnUpdate, 'boolean');
     $btnImage = false; settype($btnImage, 'boolean');
@@ -43,7 +41,7 @@
         $MyCarForm->setId(isset($_POST["txt_car_id"]) ? Utilities::filterInput("txt_car_id") : 0);
         $MyCarForm->setBrand(isset($_POST["list_carEdit_brand"]) ? Utilities::filterInput("list_carEdit_brand") : '');
         $MyCarForm->setModel(isset($_POST["list_carEdit_model"]) ? Utilities::filterInput("list_carEdit_model") : '');
-        $MyCarForm->setMotorization(isset($_POST["list_carEdit_motorization"]) ? Utilities::filterInput("list_carEdit_motorization") : '');
+        $MyCarForm->setEngine(isset($_POST["list_carEdit_engine"]) ? Utilities::filterInput("list_carEdit_engine") : '');
         $MyCarForm->setYear(isset($_POST["txt_carEdit_year"]) ? Utilities::filterInput("txt_carEdit_year") : 2000);
         
         $mileage = isset($_POST['txt_carEdit_mileage']) ? Utilities::filterInput('txt_carEdit_mileage') : '0 kms';
@@ -79,7 +77,7 @@
 
         $MyBrand = myBrand();
         $MyModel = myModel();
-        $MyMotorization = myMotorization();
+        $MyEngine = myEngine();
 
         return;
 
@@ -109,7 +107,7 @@
                 
                 $MyBrand = myBrand();
                 $MyModel = myModel();
-                $MyMotorization = myMotorization();
+                $MyEngine = myEngine();
 
                 return;
             }
@@ -121,7 +119,7 @@
 
             $MyBrand = myBrand();
             $MyModel = myModel();
-            $MyMotorization = myMotorization();
+            $MyEngine = myEngine();
 
             return;
 
@@ -136,7 +134,7 @@
     
         }elseif($btnImage){
             
-            $uploadDirectory = './img/vehicle/';
+            $uploadDirectory = './img/garageparrot/vehicle/';
 
             $_SESSION['car']['uploadImage1'] = $MyCarForm->getImage1();
             $_SESSION['car']['uploadImage2'] = $MyCarForm->getImage2();
@@ -237,16 +235,16 @@
 
         return $myModel;
     }
-    //Fonction traitement de la BD pour récupérer les données destinées à l'input liste motorization
-    function myMotorization():array{
+    //Fonction traitement de la BD pour récupérer les données destinées à l'input liste engine
+    function myEngine():array{
         
-        $Motorization = new CarMotorization();
-        $myMotorization = array();
+        $Engine = new CarEngine();
+        $myEngine = array();
 
-        $myMotorization = $Motorization->getMotorizationList(1,'name', 'ASC', 0, 50);
-        unset($Motorization);
+        $myEngine = $Engine->getEngineList(1,'name', 'ASC', 0, 50);
+        unset($Engine);
 
-        return $myMotorization;
+        return $myEngine;
     }
     
     //Fonction d'initialisation du tableau des données de l'utilisateur
@@ -255,7 +253,7 @@
         $cars['id_car'] = $MyCarForm->getId();
         $cars['brand'] = $MyCarForm->getBrand();
         $cars['model'] = $MyCarForm->getModel();
-        $cars['motorization'] = $MyCarForm->getMotorization();
+        $cars['engine'] = $MyCarForm->getEngine();
         $cars['year'] = $MyCarForm->getYear();
         $cars['mileage'] = $MyCarForm->getMileage();
         $cars['price'] = $MyCarForm->getPrice();
@@ -276,11 +274,11 @@
         $MyCarForm->setId(0);
         $MyCarForm->setBrand('_');
         $MyCarForm->setModel('_');
-        $MyCarForm->setMotorization('_');
+        $MyCarForm->setEngine('_');
         $MyCarForm->setYear(2000);
         $MyCarForm->setMileage(0);
         $MyCarForm->setPrice(0);
-        $MyCarForm->setSold('Yes');
+        $MyCarForm->setSold('Oui');
         $MyCarForm->setDescription('_');
         $MyCarForm->setImage1('_.webp');
         $MyCarForm->setImage2('_.webp');

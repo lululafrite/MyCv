@@ -1,5 +1,5 @@
 <?php
-	//goldorak
+	//garageparrot
     //router.php
 	//author : Ludovic FOLLACO
 	//checked to 2024-10-08_15:10
@@ -10,6 +10,7 @@
     if ($page === 'home'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
 
@@ -17,27 +18,43 @@
             Utilities::checkTokenJwt();
         }
         
-        require_once('view/goldorak/home.php');
+        require_once('view/garageparrot/home.php');
         return;
 
-    }else if($page === 'events'){
+    }else if($page === 'car'){
+
+        resetUserVarSession();
+        $_SESSION['other']['message'] = '';
+
+        if($_SESSION['dataConnect']['type'] === 'Administrator' || $_SESSION['dataConnect']['type'] === 'User'){
+            
+            Utilities::checkTokenJwt();
+            require_once('view/garageparrot/car_admin.php');
+
+        }else{
+            require_once('view/garageparrot/car.php');
+        }
+        return;
+
+    }else if ($page === 'carEdit'){
 
         resetUserVarSession();
         resetPageVarSession();
         resetOtherVarSession();
 
-        require_once 'view/goldorak/events.php';
+        if($_SESSION['dataConnect']['type'] === 'Administrator' || $_SESSION['dataConnect']['type'] === 'User'){
+            
+            Utilities::checkTokenJwt();
+            require_once('view/garageparrot/car_edit.php');
 
-    }else if ($page === 'adherer'){
-
-        resetUserVarSession();
-        resetPageVarSession();
-        resetOtherVarSession();
-
-        require_once 'view/goldorak/adherer.php';
+        }else{
+            require_once('view/errorPage/accessPage.php');
+        }
+        return;
 
     }else if ($page === 'user'){
 
+        resetCarVarSession();
         $_SESSION['other']['message'] = '';
         
         if($_SESSION['dataConnect']['type'] === 'Administrator'){
@@ -51,71 +68,25 @@
         return;
 
     }else if ($page === 'userEdit'){
-          
+
+        resetCarVarSession();            
         resetPageVarSession();
         resetOtherVarSession();
 
-        if($_SESSION['dataConnect']['type'] != 'Guest'){
+        if($_SESSION['dataConnect']['type'] === 'Administrator'){
+
             Utilities::checkTokenJwt();
+            require_once('view/common/userEdit.php');
+
+        }else{
+            require_once('view/errorPage/accessPage.php');
         }
-        
-        require_once('view/common/userEdit.php');
         return;
-
-    }else if($page === 'media'){
-
-        resetUserVarSession();
-        resetPageVarSession();
-        resetOtherVarSession();
-
-        if($_SESSION['dataConnect']['type'] != "Guest"){
-
-            Utilities::checkTokenJwt();
-            require_once 'view/goldorak/media.php';
-
-        }else{
-
-            require_once('view/errorPage/accessPage.php');
-
-        }
-
-    }else if ($page === 'commander'){
-
-        resetUserVarSession();
-        resetPageVarSession();
-        resetOtherVarSession();
-
-        if($_SESSION['dataConnect']['subscription'] === "Goldorak" ){
-            
-            Utilities::checkTokenJwt();
-            require_once 'view/goldorak/commander.php';
-
-        }else{
-
-            require_once('view/errorPage/accessPage.php');
-
-        }
-
-    }else if ($page === 'goldorakgo'){
-
-        resetUserVarSession();
-        resetPageVarSession();
-        resetOtherVarSession();
-
-        if($_SESSION['dataConnect']['subscription'] != "Vénusia" ){
-            
-            Utilities::checkTokenJwt();
-            require_once 'view/goldorak/goldorakgo.php';
-
-        }else{
-
-            require_once('view/errorPage/accessPage.php');
-
-        }
 
     }else if ($page === 'connexion'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -128,6 +99,7 @@
         if($_SESSION['dataConnect']['type'] != "Guest"){
 
             resetUserVarSession();
+            resetCarVarSession();
             resetPageVarSession();
             resetOtherVarSession();
             resetDataConnectVarSession();
@@ -146,9 +118,22 @@
         
         require_once('view/common/userPwResetNew.php');
 
+    }else if ($page === 'accessMethod'){
+        
+        require_once 'view/errorPage/accessMethod.php';
+
+    }else if ($page === 'accessPage'){
+        
+        require_once 'view/errorPage/accessPage.php';
+
+    }else if ($page === 'unknownPage'){
+        
+        require_once 'view/errorPage/unknownPage.php';
+
     }else if ($page === 'timeExpired'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -159,6 +144,7 @@
     }else if ($page === 'errorJwtKey'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -169,6 +155,7 @@
     }else if ($page === 'errorJwtPseudo'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -179,6 +166,7 @@
     }else if ($page === 'userPwRequestNew'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -189,6 +177,7 @@
     }else if ($page === 'userPwResetNew'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         resetDataConnectVarSession();
@@ -199,6 +188,7 @@
     }else if ($page === 'accessMethod'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
         
@@ -208,6 +198,7 @@
     }else if ($page === 'accessPage'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
 
@@ -217,15 +208,42 @@
     }else if ($page === 'unknownPage'){
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
 
         require_once('view/errorPage/unknownPage.php');
         return;
 
+    }else if ($page === 'kanban'){
+
+        resetUserVarSession();
+        resetCarVarSession();
+        resetPageVarSession();
+        resetOtherVarSession();
+
+        require_once('view/garageparrot/kanban.php');
+        return;
+
+    }else if ($page === 'mokup'){
+
+        resetUserVarSession();
+        resetCarVarSession();
+        resetPageVarSession();
+        resetOtherVarSession();
+
+        require_once('view/garageparrot/mokup.php');
+        return;
+
+    }else if ($page === 'api'){
+
+        require_once('../api/garageparrot/car.api.php');
+        return;
+
     }else{
 
         resetUserVarSession();
+        resetCarVarSession();
         resetPageVarSession();
         resetOtherVarSession();
 

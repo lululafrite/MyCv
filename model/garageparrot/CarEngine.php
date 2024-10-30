@@ -1,8 +1,8 @@
 <?php
-	//Brand.php
+	//CarEngine.php
 	//Author: Ludovic FOLLACO
-	//checked to 2024-10-04_16:31
-	namespace Model\CarBrand;
+	//checked to 2024-10-08_16:04
+	namespace Model\CarEngine;
 
 	use \PDO;
 	use \PDOException;
@@ -10,86 +10,83 @@
 	use Monolog\Logger;
 	use Monolog\Handler\StreamHandler;
 
-	class CarBrand
+	class CarEngine
 	{
 		const MSG_QUERY_ERROR = "Error to query.";
 		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
 
 		public function __construct(){
 			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
+				$this->initLoggerEngine();
 			}
 		}
 
-		private $id_brand;
-		public function getId(): int{
-			return $this->id_brand;
+		private $id_engine;
+		public function getId():int{
+			return $this->id_engine;
 		}
-		public function setId($new): void{
-			$this->id_brand = $new;
+		public function setId(int $new):void{
+			$this->id_engine = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $name;
-		public function getName(): string{
+		public function getName():string{
 			return $this->name;
 		}
-		public function setName($new): void{
+		public function setName(string $new):void{
 			$this->name = $new;
 		}
 
 		//-----------------------------------------------------------------------
-
-        private $addBrand = false;
-        public function getAddBrand():bool{
-            return $this->addBrand;
+        private $addEngine = false;
+        public function getAddEngine():bool{
+            return $this->addEngine;
         }
-        public function setAddBrand(bool $new):void{
-            $this->addBrand = $new;
+        public function setAddEngine(bool $new):void{
+            $this->addEngine = $new;
         }
 
 		//-----------------------------------------------------------------------
 
-		private $currentBrand = array();
-		public function getCurrentBrand(int $id_brand):array{
-
-			$this->currentBrand = [];
+		private $currentEngine = [];
+		public function getCurrentEngine(int $idEngine):array{
 
 			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
+				$this->initLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'getCurrentBrand()',
-					'$id_brand' => $id_brand,
-					'$currentBrand' => $this->currentBrand
+					'function' => 'getCurrentEngine()',
+					'$idEngine' => $idEngine,
+					'$currentEngine' => $this->currentEngine
 				];
 			}
 	
-			if(self::checkIdBrand($id_brand)){
+			if(self::checkIdEngine($idEngine)){
 
 				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 				try{
-					$sql = $bdd->prepare("SELECT `brand`.`id_brand`,
-												 `brand`.`name`
-										    FROM `brand`
-										   WHERE `brand`.`id_brand`=:id_brand");
+					$stmt = $bdd->prepare("SELECT `engine`.`id_engine`, `engine`.`name`
+											FROM  `engine`
+											WHERE `engine`.`id_engine`=:id_engine");
 
-					$sql->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
+					$stmt->bindParam(':id_engine', $id_engine, PDO::PARAM_INT);
 
-					$sql->execute();
+					$stmt->execute();
 
-					$this->currentBrand = $sql->fetch(PDO::FETCH_ASSOC);
+					$this->currentEngine = $stmt->fetch(PDO::FETCH_ASSOC);
 					
 					if($_SESSION['debug']['monolog']){
-						$arrayLogger['$currentBrand'] = $this->currentBrand;
+						$arrayLogger['$currentEngine'] = $this->currentEngine;
 						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 					}
 
-					return $this->currentBrand;
+					return $this->currentEngine;
 
-				}catch (PDOException $e){
+				}catch(PDOException $e){
+					
 					if($_SESSION['debug']['monolog']){
 						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 					}
@@ -99,37 +96,34 @@
 					$bdd=null;
 				}
 			}
-
-			return [];
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $brandList = array();
-		public function getBrandList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13): array{
-
-			$this->brandList = [];
-
+		private $engineList = [];
+		public function getEngineList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
+			
 			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
+				$this->initLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'getBrandList()',
+					'function' => 'getEngineList()',
 					'$whereClause' => $whereClause,
 					'$orderBy' => $orderBy,
 					'$ascOrDesc' => $ascOrDesc,
 					'$firstLine' => $firstLine,
 					'$linePerPage' => $linePerPage,
-					'$brandList' => $this->brandList
+					'$engineList' => $this->engineList
 				];
 			}
 			
 			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
-			    $stmt = $bdd->prepare("SELECT `brand`.`id_brand`,
-											  `brand`.`name`
-										 FROM `brand`
+			    $stmt = $bdd->prepare("SELECT `engine`.`id_engine`,
+											  `engine`.`name`,
+											  `engine`.`id_energy`
+										 FROM `engine`
 										WHERE $whereClause
 									 ORDER BY :orderBy :ascOrDesc
 										LIMIT :firstLine, :linePerPage");
@@ -140,17 +134,18 @@
 				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
 
 				$stmt->execute();
-
-				$this->brandList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				
+				$this->engineList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					
 				if($_SESSION['debug']['monolog']){
-					$arrayLogger['$brandList'] = true; //$this->brandList; replace true; by $this->brandList; to see the list of brand
+					$arrayLogger['$engineList'] = true; //$this->engineList; replace true; by $this->engineList; to see the list of brand
 					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 				}
 
-				return $this->brandList;
+				return $this->engineList;
 
-			}catch (PDOException $e){
+			}catch(PDOException $e){
+					
 				if($_SESSION['debug']['monolog']){
 					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 				}
@@ -163,85 +158,39 @@
 
 		//-----------------------------------------------------------------------
 
-		private $insertBrand = 0;
-		public function insertBrand():int{
+		private $insertEngine = 0;
+		public function insertEngine():int{
 
 			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
+				$this->initLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'insertBrand()',
-					'$insertBrand' => $this->insertBrand
+					'function' => 'insertEngine()',
+					'$insertEngine' => $this->insertEngine
 				];
 			}
 	
-			if(!self::checkNameBrand($this->name)){
-				
-				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
-
-				try{
-					$stmt = $bdd->prepare('INSERT INTO `brand`(`name`) VALUES(:name)');
-					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-					$stmt->execute();
-		
-					$stmt = $bdd->prepare('SELECT MAX(`id_brand`) FROM `brand`');
-					$stmt->execute();
-					
-					$this->insertBrand = intval($stmt->fetchColumn());
-					
-					if($_SESSION['debug']['monolog']){
-						$arrayLogger['$insertBrand'] = $this->insertBrand;
-						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
-					}
-
-				}catch (PDOException $e){
-					if($_SESSION['debug']['monolog']){
-						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
-					}
-
-				}finally{
-					$bdd=null;
-				}
-			}
-
-			return $this->insertBrand;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $updateBrand = false;
-		public function updateBrand(int $id_brand):bool{
-
-			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
-				$arrayLogger = [
-					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'updateBrand()',
-					'$id_brand' => $id_brand,
-					'$updateBrand' => $this->updateBrand
-				];
-			}
-	
-			if(self::checkIdBrand($id_brand)){
+			if(!self::checkNameEngine($this->name)){
 
 				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 				try{
-					$stmt = $bdd->prepare('UPDATE `brand` SET `name` = :name WHERE `id_brand` = :id_brand');
-
+					$stmt = $bdd->prepare('INSERT INTO `engine`(`name`) VALUES (:name)');
 					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-					$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
-
 					$stmt->execute();
 
-					$this->updateBrand = true;
+					$stmt = $bdd->prepare("SELECT MAX(`id_engine`) FROM `engine`");
+					$stmt->execute();
+
+					$this->insertEngine = intval($stmt->fetchColumn());
 					
 					if($_SESSION['debug']['monolog']){
-						$arrayLogger['$updateBrand'] = $this->updateBrand;
+						$arrayLogger['$insertEngine'] = $this->insertEngine;
 						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 					}
 
 				}catch (PDOException $e){
+					
 					if($_SESSION['debug']['monolog']){
 						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 					}
@@ -250,45 +199,94 @@
 					$bdd=null;
 				}
 
+				return $this->insertEngine;
 			}
-
-			return $this->updateBrand;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $deleteBrand = false;
-		public function deleteBrand(int $id_brand):bool{
+		private $updateEngine = false;
+		public function updateEngine(int $id_engine):bool{
 
 			if($_SESSION['debug']['monolog']){
-				$this->initLoggerBrand();
+				$this->initLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'deleteBrand()',
-					'$id_brand' => $id_brand,
-					'$deleteBrand' => $this->deleteBrand
+					'function' => 'updateEngine()',
+					'$id_engine' => $id_engine,
+					'$updateEngine' => $this->updateEngine
 				];
 			}
 	
-			if(self::checkIdBrand($id_brand)){
+			if(self::checkIdEngine($id_engine)){
 
-				if(!self::checkBrandOnCar($id_brand)){
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+
+				try{
+					$stmt = $bdd->prepare('UPDATE `engine` SET `name` = :name WHERE `id_engine` = :id_engine');
+
+					$stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+					$stmt->bindParam(':id_engine', $id_engine, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$this->updateEngine = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$updateEngine'] = $this->updateEngine;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+				}catch (PDOException $e){
+					
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+
+				}finally{
+					$bdd=null;
+				}
+
+			}
+
+			return $this->updateEngine;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $deleteEngine = false;
+		public function deleteEngine(int $id_engine):bool{
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerEngine();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'deleteEngine()',
+					'$id_engine' => $id_engine,
+					'$deleteEngine' => $this->deleteEngine
+				];
+			}
+	
+			if(self::checkIdEngine($id_engine)){
+
+				if(!self::checkEngineOnCar($id_engine)){
 
 					$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 					try{
-						$stmt = $bdd->prepare('DELETE FROM brand WHERE id_brand = :id_brand');
-						$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
+						$stmt = $bdd->prepare('DELETE FROM engine WHERE id_engine = :id_engine');
+						$stmt->bindParam(':id_engine', $id_engine, PDO::PARAM_INT);
 						$stmt->execute();
 
-						$this->deleteBrand = true;
+						$this->deleteEngine = true;
 
 						if($_SESSION['debug']['monolog']){
-							$arrayLogger['$deleteBrand'] = self::$deleteBrand;
+							$arrayLogger['$deleteEngine'] = self::$deleteEngine;
 							self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 						}
 
 					}catch(PDOException $e){
+
 						if($_SESSION['debug']['monolog']){
 							$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 						}
@@ -299,44 +297,45 @@
 				}
 			}
 
-			return $this->deleteBrand;
+			return $this->deleteEngine;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private static $checkIdBrand = false;
-		public static function checkIdBrand(int $id_brand):bool{
+		private static $checkIdEngine = false;
+		public static function checkIdEngine(int $id_Engine):bool{
 				
 			if($_SESSION['debug']['monolog']){
-				self::initStaticLoggerBrand();
+				self::initStaticLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'checkIdBrand()',
-					'$id_brand' => $id_brand,
-					'$checkIdBrand' => self::$checkIdBrand
+					'function' => 'checkIdEngine()',
+					'$id_Engine' => $id_Engine,
+					'$checkIdEngine' => self::$checkIdEngine
 				];
 			}
 
 			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
-				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `brand` WHERE `id_brand` = :id_brand");
-				$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_STR);
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `brand` WHERE `id_Engine` = :id_Engine");
+				$stmt->bindParam(':id_Engine', $id_Engine, PDO::PARAM_STR);
 
 				$stmt->execute();
 
 				$result = $stmt->fetchColumn();
 
 				if($result > 0){
-					self::$checkIdBrand = true;
+					self::$checkIdEngine = true;
 				}
 
 				if($_SESSION['debug']['monolog']){
-					$arrayLogger['$checkIdBrand'] = self::$checkIdBrand;
+					$arrayLogger['$checkIdEngine'] = self::$checkIdEngine;
 					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 				}
 
 			}catch(PDOException $e){
+
 				if($_SESSION['debug']['monolog']){
 					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 				}
@@ -345,28 +344,28 @@
 				$bdd=null;
 			}
 
-			return self::$checkIdBrand;
+			return self::$checkIdEngine;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private static $checkNameBrand = false;
-		public static function checkNameBrand(string $name):bool{
+		private static $checkNameEngine = false;
+		public static function checkNameEngine(string $name):bool{
 				
 			if($_SESSION['debug']['monolog']){
-				self::initStaticLoggerBrand();
+				self::initStaticLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'checkNameBrand()',
+					'function' => 'checkNameEngine()',
 					'$name' => $name,
-					'$checkNameBrand' => self::$checkNameBrand
+					'$checkNameEngine' => self::$checkNameEngine
 				];
 			}
 
 			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
-				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `brand` WHERE `name` = :name");
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `engine` WHERE `name` = :name");
 				$stmt->bindParam(':name', $name, PDO::PARAM_STR);
 
 				$stmt->execute();
@@ -374,15 +373,16 @@
 				$result = $stmt->fetchColumn();
 
 				if($result > 0){
-					self::$checkNameBrand = true;
+					self::$checkNameEngine = true;
 				}
 
 				if($_SESSION['debug']['monolog']){
-					$arrayLogger['$checkNameBrand'] = self::$checkNameBrand;
+					$arrayLogger['$checkNameEngine'] = self::$checkNameEngine;
 					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 				}
 
 			}catch(PDOException $e){
+
 				if($_SESSION['debug']['monolog']){
 					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 				}
@@ -391,43 +391,44 @@
 				$bdd=null;
 			}
 
-			return self::$checkNameBrand;
+			return self::$checkNameEngine;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private static $checkBrandOnCar = false;
-		public static function checkBrandOnCar(int $id_brand):bool{
+		private static $checkEngineOnCar = false;
+		public static function checkEngineOnCar(int $id_engine):bool{
 				
 			if($_SESSION['debug']['monolog']){
-				self::initStaticLoggerBrand();
+				self::initStaticLoggerEngine();
 				$arrayLogger = [
 					'user' => $_SESSION['dataConnect']['pseudo'],
-					'function' => 'checkBrandOnCar()',
-					'$id_brand' => $id_brand,
-					'$checkBrandOnCar' => self::$checkBrandOnCar
+					'function' => 'checkEngineOnCar()',
+					'$id_engine' => $id_engine,
+					'$checkEngineOnCar' => self::$checkEngineOnCar
 				];
 			}
 
 			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
-				$stmt = $bdd->prepare('SELECT COUNT(*) FROM car WHERE id_brand = :id_brand');
-				$stmt->bindParam(':id_brand', $id_brand, PDO::PARAM_INT);
+				$stmt = $bdd->prepare('SELECT COUNT(*) FROM car WHERE id_engine = :id_engine');
+				$stmt->bindParam(':id_engine', $id_engine, PDO::PARAM_INT);
 				$stmt->execute();
 
 				$result = $stmt->fetchColumn();
 
 				if($result > 0){
-					self::$checkBrandOnCar = true;
+					self::$checkEngineOnCar = true;
 				}
 
 				if($_SESSION['debug']['monolog']){
-					$arrayLogger['$checkBrandOnCar'] = self::$checkBrandOnCar;
+					$arrayLogger['$checkBrandOnCar'] = self::$checkEngineOnCar;
 					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 				}
 
 			}catch(PDOException $e){
+
 				if($_SESSION['debug']['monolog']){
 					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 				}
@@ -436,16 +437,16 @@
 				$bdd=null;
 			}
 
-			return self::$checkBrandOnCar;
+			return self::$checkEngineOnCar;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private static $staticLogger;
-		public static function initStaticLoggerBrand()
+		public static function initStaticLoggerEngine()
 		{
 			if (self::$staticLogger === null) {
-				self::$staticLogger = new Logger('Class.Brand');
+				self::$staticLogger = new Logger('Class.Engine');
 				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/GarageParrot.log', Logger::DEBUG));
 			}
 		}
@@ -453,12 +454,14 @@
 		//-----------------------------------------------------------------------
 
 		private $logger;
-		public function initLoggerBrand()
+		public function initLoggerEngine()
 		{
 			if ($this->logger === null) {
-				$this->logger = new Logger('Class.Brand');
+				$this->logger = new Logger('Class.Engine');
 				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/GarageParrot.log', Logger::DEBUG));
 			}
 		}
-	}	
+
+	}
+	
 ?>

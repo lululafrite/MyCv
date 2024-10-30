@@ -3,7 +3,7 @@
 function retour() {        
     setInputValue('list_carEdit_brand', '_');
     setInputValue('list_carEdit_model', '_');
-    setInputValue('list_carEdit_motorization', '_');
+    setInputValue('list_carEdit_engine', '_');
     setInputValue('txt_carEdit_year', '2024');
     setInputValue('txt_carEdit_mileage', '0');
     setInputValue('txt_carEdit_price', '0');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     myInput.style.backgroundColor = '#DADADA';
     var myInput = document.getElementById('list_carEdit_model');
     myInput.style.backgroundColor = '#DADADA';
-    var myInput = document.getElementById('list_carEdit_motorization');
+    var myInput = document.getElementById('list_carEdit_engine');
     myInput.style.backgroundColor = '#DADADA';
     var myInput = document.getElementById('list_carEdit_sold');
     myInput.style.backgroundColor = '#DADADA';
@@ -114,7 +114,7 @@ document.getElementById('formCarEdit').addEventListener('submit', function (even
 
     var MessageBrand = "Selectionner une marque dans la liste de choix.";
     var MessageModel = "Selectionner un modèle dans la liste de choix.";
-    var MessageMotorization = "Selectionner une motorization dans la liste de choix.";
+    var MessageEngine = "Selectionner une engine dans la liste de choix.";
     var MessageYear = "Saisissez l'année (à 4 chiffres) de 1er mise en circulation.";
     var MessageMileage = "Saisissez le kilomètrage (uniquement des chiffres).";
     var MessagePrice = "Saisissez le prix (uniquement des chiffres).";
@@ -132,7 +132,7 @@ document.getElementById('formCarEdit').addEventListener('submit', function (even
         isError = true;
     }
 
-    if (!validateInput('list_carEdit_motorization', 'datalist_carEdit_motorization', 'labelMessageMotorization', MessageMotorization)) {
+    if (!validateInput('list_carEdit_engine', 'datalist_carEdit_engine', 'labelMessageEngine', MessageEngine)) {
         isError = true;
     }
 

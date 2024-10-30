@@ -1,13 +1,28 @@
 <?php
+	//GoldorakHome.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-16_14:22
 	namespace Model\GoldorakHome;
 
 	use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
 	use Model\Utilities\Utilities;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
 
 	class GoldorakHome
 	{
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+			}
+		}
+
 		private $id_home;
 		public function getId():int{
 			return $this->id_home;
@@ -88,12 +103,22 @@
 
 		//-----------------------------------------------------------------------
 
-		private $home = array();
+		private $getHome = array();
 		public function getHome(int $id_home):array{
-	
-			if(Utilities::checkData('home','id_home', $id_home)){
 
-				$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getHome()',
+					'$id_home' => $id_home,
+					'$getHome' => $this->getHome
+				];
+			}
+	
+			if(self::checkIdHome($id_home)){
+
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 				
 				try{
 					$stmt = $bdd->prepare("SELECT
@@ -109,44 +134,52 @@
 											WHERE `home`.`id_home` = :id_home");
 
 					$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
+
 					$stmt->execute();
 
-					$bdd=null;
+					$this->getHome = $stmt->fetch(PDO::FETCH_ASSOC);
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$getHome'] = $this->getHome;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
 
-					$this->home = $stmt->fetch(PDO::FETCH_ASSOC);
-					$this->home['error'] = false;
-					$this->home['message'] = 'The query is executed correctly!!!';
-
-					return $this->home;
+					return $this->getHome;
 
 				}catch (PDOException $e){
-
-					echo "Erreur de la requête :" . $e->getMessage();
-
-					$bdd=null;
-
-					$this->home['error'] = true;
-					$this->home['message'] = 'Error to query : ' . $e->getMessage();
 					
-					return $this->home;
-				}
-			}else{
-				$bdd=null;
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+					return [];
 
-				$this->home['error'] = true;
-				$this->home['message'] = 'The id ' . $id_home . ' of the home table does not exist.';
-				
-				return $this->home;
+				}finally{
+					$bdd = null;
+				}
 			}
 		}
 
 
 		//-----------------------------------------------------------------------
 
-		private $homeList;
+		private $homeList = array();
 		public function getHomeList(string $whereClause, string $orderBy = 'id_home', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getHomeList()',
+					'$whereClause' => $whereClause,
+					'$orderBy' => $orderBy,
+					'$ascOrDesc' => $ascOrDesc,
+					'$firstLine' => $firstLine,
+					'$linePerPage' => $linePerPage,
+					'$homeList' => $this->homeList
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -171,109 +204,147 @@
 
 				$stmt->execute();
 
-				$bdd = null;
-
 				$this->homeList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				$this->homeList['error'] = false;
-				$this->homeList['message'] = 'The query is executed correctly!!!';
-				
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$homeList'] = true; //$this->homeList; replace true; by $this->homeList; if you want to see the result
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
 				return $this->homeList;
 
 			}catch (PDOException $e){
+					
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+				return [];
 
+			}finally{
 				$bdd = null;
-
-				$this->homeList['error'] = true;
-				$this->homeList['message'] = 'Error to query : ' . $e->getMessage();
-				
-				return $this->homeList;
-			}
-		}
-
-
-		//-----------------------------------------------------------------------
-		private $updateHome;
-		public function updateHome(int $id_home):array{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
-
-			try{
-				$stmt = $bdd->prepare("UPDATE `home`
-										SET `titre1` = :titre1,
-											`titre_chapter1` = :titre_chapter1,
-											`chapter1` = :chapter1,
-											`img_chapter1` = :img_chapter1,
-											`titre_chapter2` = :titre_chapter2,
-											`chapter2` = :chapter2,
-											`img_chapter2` = :img_chapter2
-											
-										WHERE `id_home` = :id_home");
-				
-				$stmt->bindParam(':titre1', $this->titre1, PDO::PARAM_STR);
-				$stmt->bindParam(':titre_chapter1', $this->titre_chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':chapter1', $this->chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':img_chapter1', $this->img_chapter1, PDO::PARAM_STR);
-				$stmt->bindParam(':titre_chapter2', $this->titre_chapter2, PDO::PARAM_STR);
-				$stmt->bindParam(':chapter2', $this->chapter2, PDO::PARAM_STR);
-				$stmt->bindParam(':img_chapter2', $this->img_chapter2, PDO::PARAM_STR);
-				$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
-
-				$stmt->execute();
-
-				$bdd=null;
-
-				$this->updateHome['error'] = false;
-				$this->updateHome['message'] = 'The query is executed correctly!!!';
-
-				return $this->updateHome;
-			}
-			catch (PDOException $e)
-			{
-				echo "Erreur de la requete :" . $e->GetMessage();
-
-				$bdd=null;
-
-				$this->updateHome['error'] = true;
-				$this->updateHome['message'] = 'Error to query : ' . $e->getMessage();
-
-				return $this->updateHome;
 			}
 		}
 
 		//-----------------------------------------------------------------------
-		private $deleteHome;
-		public function deleteHome(int $id_home):array{
+		
+		private $updateHome = false;
+		public function updateHome(int $id_home):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
-			
-			try
-			{
-				$stmt = $bdd->prepare('DELETE FROM home WHERE id_home = :id_home');
-				$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
-				$stmt->execute();
-
-				$bdd = null;
-
-				$this->deleteHome['error'] = false;
-				$this->deleteHome['message'] = 'The data is deleted correctly!!!';
-
-				return $this->deleteHome;
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'updateHome()',
+					'$id_home' => $id_home,
+					'$updateHome' => $this->updateHome
+				];
 			}
-			catch (PDOException $e)
-			{
-				$bdd = null;
+	
+			if(self::checkIdHome($id_home)){
 
-				$this->deleteHome['error'] = true;
-				$this->deleteHome['message'] = 'Error to query : ' . $e->getMessage();
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-				return $this->deleteHome;
+				try{
+					$stmt = $bdd->prepare("UPDATE `home`
+											SET `titre1` = :titre1,
+												`titre_chapter1` = :titre_chapter1,
+												`chapter1` = :chapter1,
+												`img_chapter1` = :img_chapter1,
+												`titre_chapter2` = :titre_chapter2,
+												`chapter2` = :chapter2,
+												`img_chapter2` = :img_chapter2
+												
+											WHERE `id_home` = :id_home");
+					
+					$stmt->bindParam(':titre1', $this->titre1, PDO::PARAM_STR);
+					$stmt->bindParam(':titre_chapter1', $this->titre_chapter1, PDO::PARAM_STR);
+					$stmt->bindParam(':chapter1', $this->chapter1, PDO::PARAM_STR);
+					$stmt->bindParam(':img_chapter1', $this->img_chapter1, PDO::PARAM_STR);
+					$stmt->bindParam(':titre_chapter2', $this->titre_chapter2, PDO::PARAM_STR);
+					$stmt->bindParam(':chapter2', $this->chapter2, PDO::PARAM_STR);
+					$stmt->bindParam(':img_chapter2', $this->img_chapter2, PDO::PARAM_STR);
+					$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$this->updateHome = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$updateHome'] = $this->updateHome;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+				
+				}catch (PDOException $e){
+					
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+
+				}finally{
+					$bdd = null;
+				}
 			}
+
+			return $this->updateHome;
 		}
 
-		private $insertHome;
-		public function insertHome():array{
+		//-----------------------------------------------------------------------
+		private $deleteHome = false;
+		public function deleteHome(int $id_home):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'deleteHome()',
+					'$id_home' => $id_home,
+					'$deleteHome' => $this->deleteHome
+				];
+			}
+	
+			if(self::checkIdHome($id_home)){
+
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+				
+				try{
+					$stmt = $bdd->prepare('DELETE FROM home WHERE id_home = :id_home');
+					$stmt->bindParam(':id_home', $id_home, PDO::PARAM_INT);
+					$stmt->execute();
+
+					$this->deleteHome = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$deleteHome'] = $this->deleteHome;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+				}catch (PDOException $e){
+					
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+
+				}finally{
+					$bdd = null;
+				}
+			}
+
+			return $this->deleteHome;
+		}
+
+		private $insertHome = 0;
+		public function insertHome():int{
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'insertHome()',
+					'$insertHome' => $this->insertHome
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 			try{
 				$stmt = $bdd->prepare("INSERT INTO `home` (`titre1`,
@@ -301,20 +372,95 @@
 	
 				$stmt->execute();
 
-				$bdd = null;
+				$stmt = $bdd->prepare("SELECT MAX(`id_home`) FROM `home`");
+				$stmt->execute();
 
-				$this->insertHome['error'] = false;
-				$this->insertHome['message'] = 'The data is inserted correctly!!!';
+				$this->insertHome = intval($stmt->fetchColumn());
 
-				return $this->insertHome;
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$insertHome'] = $this->insertHome;
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 			}catch (PDOException $e){
+
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
 				$bdd = null;
+			}
 
-				$this->insertHome['error'] = true;
-				$this->insertHome['message'] = 'Error to query : ' . $e->getMessage();
+			return $this->insertHome;
+		}
 
-				return $this->insertHome;
+		//-----------------------------------------------------------------------
+
+		private static $checkIdHome = false;
+		public static function checkIdHome(int $id_home):bool{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerHome();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkIdHome()',
+					'$id_home' => $id_home,
+					'$checkIdHome' => self::$checkIdHome
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+			
+			try{
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `home` WHERE `id_home` = :id_home");
+				$stmt->bindParam(':id_home', $id_home, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				if($result > 0){
+					self::$checkIdHome = true;
+				}
+
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkIdHome'] = self::$checkIdHome;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
+			}catch(PDOException $e){
+
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
+			}
+
+			return self::$checkIdHome;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerHome()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.Home');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/Goldorak.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerHome()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.Home');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/Goldorak.log', Logger::DEBUG));
 			}
 		}
 	}

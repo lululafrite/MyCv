@@ -46,7 +46,7 @@
         "Model\\CarForm\\": "model/garageparrot/",
         "Model\\GpHome\\": "model/garageparrot/",
         "Model\\CarModel\\": "model/garageparrot/",
-        "Model\\CarMotorization\\": "model/garageparrot/",
+        "Model\\CarEngine\\": "model/garageparrot/",
         "Model\\GpSchedules\\": "model/garageparrot/",
 
         "Model\\GoldorakHome\\": "model/goldorak/",

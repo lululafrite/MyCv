@@ -34,5 +34,5 @@
     
     }
 
-    $Home = $homes->get(1,'id_home','DESC','0','50');
+    $Home = $homes->getCurrentHome(1);
 ?>

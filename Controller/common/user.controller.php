@@ -3,8 +3,10 @@
 
     use Model\User\User;
     use Model\Utilities\Utilities;
+    //use Model\Page\Page;
 
     $MyUser = new User();
+    //$MyPage = new Page();
 
     $name_umpty = true;
     $pseudo_umpty = true;
@@ -91,7 +93,7 @@
 
     $users = $MyUser->getUserList($whereClause, "'name'", 'ASC', $MyPage->getFirstProduct(), $MyPage->getProductPerPage());
 
-    $_SESSION['pagination']['nbOfProduct'] = User::checkNbOfProduct($whereClause);
+    $_SESSION['pagination']['nbOfProduct'] = $MyPage->checkNumberOfProduct('user', $whereClause);
     $_SESSION['pagination']['nbOfPage'] = ceil($_SESSION['pagination']['nbOfProduct'] / $MyPage->getProductPerPage());
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------

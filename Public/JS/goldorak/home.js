@@ -32,7 +32,7 @@ function changePicture(nameInputFile, idImage) {
 
     if(files[0].name != ''){
         let imgElement = document.getElementById(idImage);
-        let nouveauChemin = 'img/picture/' + files[0].name;
+        let nouveauChemin = 'img/goldorak/picture/' + files[0].name;
         imgElement.src = nouveauChemin;
     }
 }
@@ -60,7 +60,7 @@ function sendDataOfHome(button){
     formData.append('txt_img_chapter2', document.querySelector('input[name="txt_img_chapter2"]').value);
 
     // Envoyer les données au serveur
-    sendDataToServer('index.php?page=home', formData) // Function in file fetch.js
+    sendDataToServer('goldorak.php?page=home', formData) // Function in file fetch.js
     .then(response => {
         //if (response.ok) {
         const messageAlerte = 'Enregistrement effectué avec succès!';

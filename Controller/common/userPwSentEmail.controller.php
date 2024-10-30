@@ -15,18 +15,12 @@
             // Générer un token unique
             $token = bin2hex(random_bytes(32));
             $timer_token = date('U') + 1800; // 30 minutes à partir de maintenant
-            
-            for($i=0; $i<3; $i++){
+
+            $configDb = DbConnect::configDbConnect();
+
+            foreach ($configDb as $dbName => $configDbConnect){
                 
-                if ($i === 0){
-                    $bdd = DbConnect::dbConnect(new DbConnect());
-
-                }elseif ($i === 1){
-                    $bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-
-                }elseif ($i === 2){
-                    $bdd = DbConnect::dbConnectGP(new DbConnect());
-                }
+                $bdd = DbConnect::connectDb($configDbConnect);
 
                 // Insérer le token dans la base de données
                 $stmt = $bdd->prepare('UPDATE `user` SET `token` = :token, `timer_token` = :timer_token WHERE email = :email');
@@ -39,54 +33,55 @@
 
                 $bdd = null;
             }
-                // Créer le lien de réinitialisation du mot de passe
-                if(Utilities::checkIfLocal()){
-                    $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'http://mycv/', $token);
-                }else{
-                    $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'https://www.follaco.fr/', $token);
-                }
+            // Créer le lien de réinitialisation du mot de passe
+            if(Utilities::checkIfLocal()){
+                $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'http://mycv/', $token);
+            }else{
+                $url = sprintf('%s' . Utilities::checkAndReturnValueInUrl() . '.php?page=userPwResetNew&token=%s', 'https://www.follaco.fr/', $token);
+            }
 
-                // Envoyer l'email de réinitialisation du mot de passe
-                $mail = new PHPMailer(true);
-                try{
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.ionos.fr';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'ludovic@follaco.fr';
-                    $mail->Password = 'JeaFra6769!';
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->Port = 587;
+            // Envoyer l'email de réinitialisation du mot de passe
+            $mail = new PHPMailer(true);
+            
+            try{
+                $mail->isSMTP();
+                $mail->Host = 'smtp.ionos.fr';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'ludovic@follaco.fr';
+                $mail->Password = 'JeaFra6769!';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
 
-                    // Définir l'encodage des caractères
-                    $mail->CharSet = 'UTF-8';
+                // Définir l'encodage des caractères
+                $mail->CharSet = 'UTF-8';
 
-                    $mail->setFrom('ludovic@follaco.fr', 'Webmaster Ludovic FOLLACO');
-                    $mail->addAddress($email);
+                $mail->setFrom('ludovic@follaco.fr', 'Webmaster Ludovic FOLLACO');
+                $mail->addAddress($email);
 
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Réinitialisation de mot de passe';
-                    $mail->Body    = "Bonjour,<br><br>Cet email est sûr! Il est envoyé par le serveur du site de Ludovic FOLLACO pour que vous puissiez changer votre mot de passe.<br>
-                                    Respectueusement,<br>
-                                    Ludovic FOLLACO.<br><br>
-                                    Cliquez sur ce lien pour réinitialiser votre mot de passe :<br>
-                                    <a href='$url'>$url</a><br><br>
-                                    <span style='color:orange;'>PS :<br>
-                                    Si vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet email.<br>
-                                    Ne répondez pas à cet eMail, il est généré automatiquement par un robot.</span><br><br>
-                                    <span style='color:red;'>ATTENTION :<br>
-                                    Ne transférer jamais cet eMail à qui que ce soit, vous pourriez vous faire pirater votre compte.<br>
-                                    Ne partagez jamais votre mot de passe avec qui que ce soit.</span>";
+                $mail->isHTML(true);
+                $mail->Subject = 'Réinitialisation de mot de passe';
+                $mail->Body    = "Bonjour,<br><br>Cet email est sûr! Il est envoyé par le serveur du site de Ludovic FOLLACO pour que vous puissiez changer votre mot de passe.<br>
+                                Respectueusement,<br>
+                                Ludovic FOLLACO.<br><br>
+                                Cliquez sur ce lien pour réinitialiser votre mot de passe :<br>
+                                <a href='$url'>$url</a><br><br>
+                                <span style='color:orange;'>PS :<br>
+                                Si vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet email.<br>
+                                Ne répondez pas à cet eMail, il est généré automatiquement par un robot.</span><br><br>
+                                <span style='color:red;'>ATTENTION :<br>
+                                Ne transférer jamais cet eMail à qui que ce soit, vous pourriez vous faire pirater votre compte.<br>
+                                Ne partagez jamais votre mot de passe avec qui que ce soit.</span>";
 
-                    $mail->AltBody = "Cliquez sur ce lien pour réinitialiser votre mot de passe :<br>$url";
+                $mail->AltBody = "Cliquez sur ce lien pour réinitialiser votre mot de passe :<br>$url";
 
-                    $mail->send();
-                    $_SESSION['other']['error'] = false;
-                    $_SESSION['other']['message'] = 'Email de réinitialisation envoyé.';
+                $mail->send();
+                $_SESSION['other']['error'] = false;
+                $_SESSION['other']['message'] = 'Email de réinitialisation envoyé.';
 
-                }catch(Exception $e){
-                    $_SESSION['other']['error'] = true;
-                    $_SESSION['other']['message'] = "Échec de l'envoi de l'email. Erreur: {$mail->ErrorInfo}";
-                }
+            }catch(Exception $e){
+                $_SESSION['other']['error'] = true;
+                $_SESSION['other']['message'] = "Échec de l'envoi de l'email. Erreur: {$mail->ErrorInfo}";
+            }
         }else{
             $_SESSION['other']['error'] = false;
             $_SESSION['other']['message'] = 'Aucun utilisateur trouvé avec cet email.';

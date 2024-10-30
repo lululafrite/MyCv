@@ -23,5 +23,5 @@
 
         $scheldule->updateSchedules(1);
     }
-    $horaires = $scheldule->getSchedule(1);
+    $horaires = $scheldule->getCurrentSchedules(1);
 ?>

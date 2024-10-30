@@ -2,7 +2,8 @@
     use Model\Utilities\Utilities;
 
     $_SESSION['other']['local'] = true; //set to false if online server and to true if local server
-
+    $_SESSION['debug']['monolog'] = false;
+    
     resetOtherVarSession();
 
     if (!isset($_SESSION['dataConnect']['type'])){
@@ -12,7 +13,6 @@
         resetCarVarSession();
         resetPageVarSession();
         resetUploadImgVarSession();
-        //resetOtherVarSession();
         resetTokenJwtVarSession();
         $_SESSION['token']['csrf'] = bin2hex(random_bytes(32));
         $_SESSION['other']['messagePw']="";
@@ -22,8 +22,8 @@
 
     function resetTokenJwtVarSession(): void{
 
-        $_SESSION['token']['jwt']['secretKey'] = "93082d283829273c47737cd555841ce33af04a29c791c2424df8e0f74a6d3afb";
-        $_SESSION['token']['jwt']['delay'] = 3600;
+        $_SESSION['token']['jwt']['secretKey'] = bin2hex(random_bytes(32));
+        $_SESSION['token']['jwt']['delay'] = 900;
         $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
     }
 
@@ -60,7 +60,6 @@
 
         $_SESSION['user']['uploadAvatar'] = 'avatar_membre_white.webp';
 
-        resetOtherVarSession();
     }
 
     function resetCarVarSession(): void{
@@ -70,7 +69,7 @@
         $_SESSION['car']['addCar'] = false;
         $_SESSION['car']['addBrand'] = false;
         $_SESSION['car']['addModel']=false;
-        $_SESSION['car']['addMotorization']=false;
+        $_SESSION['car']['addEngine']=false;
 
         $_SESSION['car']['criteriaBrand'] = 'Selectionnez une marque';
         $_SESSION['car']['criteriaModel'] = 'Selectionnez un modele';
@@ -83,7 +82,6 @@
         $_SESSION['car']['uploadImage4'] = '_.webp';
         $_SESSION['car']['uploadImage5'] = '_.webp';
 
-        resetOtherVarSession();
     }
 
     function resetPageVarSession(): void{

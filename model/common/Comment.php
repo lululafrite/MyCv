@@ -1,5 +1,5 @@
 <?php
-	//comment.class.php
+	//Comment.php
 	//author : Ludovic FOLLACO
 	//checked to 2024-10-08_15:10
 	namespace Model\Comment;
@@ -8,9 +8,21 @@
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
 	use Model\Utilities\Utilities;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
 
 	class Comment
 	{
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerComment();
+			}
+		}
+
 		private $id;
 		public function getId():int{
 			return $this->id;
@@ -71,23 +83,35 @@
 
 		//-----------------------------------------------------------------------
 
-		private $comments;
-		public function getComments(int $id_comment):array{
+		private $currentComment = array();
+		public function getCurrentComment(int $id_comment):array{
+
+			$this->currentComment = [];
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerComment();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getCurrentComment()',
+					'$id_comment' => $id_comment,
+					'$currentComment' => $this->currentComment
+				];
+			}
 	
 			if(Utilities::checkData('comment','id_comment', $id_comment)){
 
-				$bdd = DbConnect::DbConnect(new DbConnect());
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 				
 				try{
 					$stmt = $bdd->prepare("SELECT
-												`comment`.`id_comment`,
-												`comment`.`date_`,
-												`user`.`pseudo` AS `pseudo`,
-												`comment`.`rating`,
-												`comment`.`comment`,
-												`user`.`avatar` AS `avatar`,
-												`comment`.`publication`,
-												`comment`.`id_member`
+												 `comment`.`id_comment`,
+												 `comment`.`date_`,
+												 `user`.`pseudo` AS `pseudo`,
+												 `comment`.`rating`,
+												 `comment`.`comment`,
+												 `user`.`avatar` AS `avatar`,
+												 `comment`.`publication`,
+												 `comment`.`id_member`
 											
 											FROM `comment`
 
@@ -102,51 +126,60 @@
 
 					$stmt->execute();
 
-					$bdd=null;
+					$this->currentComment = $stmt->fetch(PDO::FETCH_ASSOC);
 
-					$this->comments = $stmt->fetch(PDO::FETCH_ASSOC);
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = 'The query is executed correctly!!!';
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$currentComment'] = $this->currentComment;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
 
-					return $this->comments;
+					return $this->currentComment;
 
+				}catch(PDOException $e){
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+					return [];
+				}finally{
+					$bdd = null;
 				}
-				catch (PDOException $e)
-				{
-					$bdd=null;
-
-					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
-
-					return $this->comments;
-				}
-			}else{
-				$bdd=null;
-
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'The ID is not existent!!!';
-
-				return $this->comments;
 			}
+
+    		return [];
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $commentList;
+		private $commentList = array();
 		public function getCommentList(string $whereClause, string $orderBy = 'date_', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 50):array{
 			
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerComment();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getCommentList()',
+					'$whereClause' => $whereClause,
+					'$orderBy' => $orderBy,
+					'$ascOrDesc' => $ascOrDesc,
+					'$firstLine' => $firstLine,
+					'$linePerPage' => $linePerPage,
+					'$commentList' => $this->commentList
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT 
-											`comment`.`id_comment`,
-											`comment`.`date_`,
-											`user`.`pseudo` AS `pseudo`,
-											`comment`.`rating`,
-											`comment`.`comment`,
-											`user`.`avatar` AS `avatar`,
-											`comment`.`publication`,
-											`comment`.`id_member`
+											 `comment`.`id_comment`,
+											 `comment`.`date_`,
+											 `user`.`pseudo` AS `pseudo`,
+											 `comment`.`rating`,
+											 `comment`.`comment`,
+											 `user`.`avatar` AS `avatar`,
+											 `comment`.`publication`,
+											 `comment`.`id_member`
+
 										FROM `comment`
 										
 										LEFT JOIN `user`
@@ -164,204 +197,357 @@
 				$stmt->bindParam(':linePerPage', $linePerPage, PDO::PARAM_INT);
 
 				$stmt->execute();
-
-				$bdd=null;
-				
+								
 				$this->commentList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = 'The query is executed correctly!!!';
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$commentList'] = true; //$this->commentList; // replace true; by $this->commentList; if you want to see the result
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 				return $this->commentList;
-			}
-			catch (PDOException $e)
-			{
-				$bdd=null;
-				
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
 
-				return $this->commentList;
+			}catch (PDOException $e){
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+				return [];
+			}finally{
+				$bdd = null;
 			}
 		}
 
 		//-----------------------------------------------------------------------
-		private $insertComment;
-		public function insertComment():array{
+		private $insertComment = 0;
+		public function insertComment():int{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if(!self::checkComment($this->pseudo, intval($this->rating), $this->comment)){
 
-			try{
-				$stmt = $bdd->prepare("SELECT `comment`.`id_comment`
-										FROM  `comment`
-										WHERE `comment`.`date_` = :date
-										AND `comment`.`pseudo` = :pseudo
-										AND `comment`.`rating` = :rating
-										AND `comment`.`comment` = :comment"
-										);
+				if($_SESSION['debug']['monolog']){
+					$this->initLoggerComment();
+					$arrayLogger = [
+						'user' => $_SESSION['dataConnect']['pseudo'],
+						'function' => 'insertComment()',
+						'$insertComment' => $this->insertComment
+					];
+				}
 
-				$stmt->bindParam(':date', $this->date);
-				$stmt->bindParam(':pseudo', $this->pseudo);
-				$stmt->bindParam(':rating', $this->rating);
-				$stmt->bindParam(':comment', $this->comment);
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-				$stmt->execute();
-
-				$this->insertComment = $stmt->fetch(PDO::FETCH_ASSOC);
-
-				if (!$this->insertComment) {
-
-					$stmt = $bdd->prepare("INSERT INTO `comment` (`date_`,
-																	`pseudo`,
-																	`rating`,
-																	`comment`,
-																	`id_member`)
-                        					VALUES (:date,
-													:pseudo,
-													:rating,
-													:comment,
-													(SELECT id_user FROM user WHERE `pseudo` = :pseudo2))");
+				try{
+					$stmt = $bdd->prepare('INSERT INTO `comment` (`date_`, `pseudo`, `rating`, `comment`, `id_member`)
+												VALUES (:date, :pseudo, :rating, :comment, (SELECT id_user FROM user WHERE `pseudo` = :pseudo))
+										');
 
 					$stmt->bindParam(':date', $this->date, PDO::PARAM_STR);
 					$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
 					$stmt->bindParam(':rating', intval($this->rating), PDO::PARAM_INT);
 					$stmt->bindParam(':comment', $this->comment, PDO::PARAM_STR);
-					$stmt->bindParam(':pseudo2', $this->pseudo, PDO::PARAM_STR);
-					//$stmt->bindParam(':publication', 0, PDO::PARAM_INT);
 
 					$stmt->execute();
 
-					$stmt = $bdd->prepare("SELECT MAX(`id_comment`) AS id_comment FROM `comment`");
+					$stmt = $bdd->prepare("SELECT MAX(`id_comment`) FROM `comment`");
 
 					$stmt->execute();
+
+					$this->insertComment = intval($stmt->fetchColumn());
 					
-					$bdd=null;
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$insertComment'] = $this->insertComment;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
 
-					$this->insertComment = $stmt->fetch(PDO::FETCH_ASSOC);
+				}catch(PDOException $e){
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
 
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = 'The data is inserted correctly!!!';
-
-					return $this->insertComment;
+				}finally{
+					$bdd = null;
 				}
-
-			}catch (PDOException $e){
-				$bdd=null;
-
-				$this->insertComment['id_comment'] = 0;
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
-
-				return $this->insertComment;
 			}
+			
+			return $this->insertComment;
 		}
 
 		//-----------------------------------------------------------------------
 		private $updateComment = false;
 		public function updateComment(int $id_comment):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if(self::checkIdComment($id_comment)){
 
-			try
-			{
-				$stmt = $bdd->prepare("UPDATE `comment`
-										  SET `date_` = :date,
-											  `pseudo` = :pseudo,
-											  `rating` = :rating,
-											  `comment` = :comment
-										WHERE `id_comment` = :id_comment");
+				if($_SESSION['debug']['monolog']){
+					$this->initLoggerComment();
+					$arrayLogger = [
+						'user' => $_SESSION['dataConnect']['pseudo'],
+						'function' => 'updateComment()',
+						'$id_comment' => $id_comment,
+						'$updateComment' => $this->updateComment
+					];
+				}
 
-				$stmt->bindParam(':date', $this->date, PDO::PARAM_STR);
-				$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
-				$stmt->bindParam(':rating', $this->rating, PDO::PARAM_INT);
-				$stmt->bindParam(':comment', $this->comment, PDO::PARAM_STR);
-				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-				$stmt->execute();
+				try
+				{
+					$stmt = $bdd->prepare("UPDATE `comment`
+											  SET `date_`      = :date,
+												  `pseudo`     = :pseudo,
+												  `rating`     = :rating,
+												  `comment`    = :comment
+											WHERE `id_comment` = :id_comment");
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = 'The data is updated correctly!!!';
+					$stmt->bindParam(':date', $this->date, PDO::PARAM_STR);
+					$stmt->bindParam(':pseudo', $this->pseudo, PDO::PARAM_STR);
+					$stmt->bindParam(':rating', $this->rating, PDO::PARAM_INT);
+					$stmt->bindParam(':comment', $this->comment, PDO::PARAM_STR);
+					$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
 
-				$this->updateComment = true;
+					$stmt->execute();
 
-			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
+					$this->updateComment = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$updateComment'] = $this->updateComment;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+				}catch (PDOException $e){
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+					return [];
+				}finally{
+					$bdd = null;
+				}
 			}
 
-			$bdd=null;
 			return $this->updateComment;
 		}
 
 		//-----------------------------------------------------------------------
+
 		private $modereComment = false;
 		public function modereComment(int $id_comment, string $publication):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			$dbName = Utilities::checkAndReturnValueInUrl();
 
-			try{
-				$stmt = $bdd->prepare("UPDATE `comment`
-										SET `publication` = :publication
-										WHERE `id_comment` = :id_comment");
+			if(self::checkIdComment($id_comment, $dbName)){
 
-				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
-				$stmt->bindParam(':publication', $publication, PDO::PARAM_INT);
+				if($_SESSION['debug']['monolog']){
+					$this->initLoggerComment();
+					$arrayLogger = [
+						'user' => $_SESSION['dataConnect']['pseudo'],
+						'function' => 'modereComment()',
+						'$id_comment' => $id_comment,
+						'$publication' => $publication,
+						'$modereComment' => $this->modereComment
+					];
+				}
 
-				$stmt->execute();
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = "The comment is moderated!!!";
+				try{
+					$stmt = $bdd->prepare("UPDATE `comment`
+											SET `publication` = :publication
+											WHERE `id_comment` = :id_comment");
 
-				$this->modereComment = true;
+					$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
+					$stmt->bindParam(':publication', $publication, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$this->modereComment = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$modereComment'] = $this->modereComment;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+				}catch (PDOException $e){
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+
+				}finally{
+					$bdd = null;
+				}
 			}
-			catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "The comment is not moderated!!!" . $e->GetMessage();
-			}
 
-			$bdd=null;
 			return $this->modereComment;
 		}
 
 		//-----------------------------------------------------------------------
+
 		private $deleteComment = false;
 		public function deleteComment(int $id_comment):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerComment();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'deleteComment()',
+					'$id_comment' => $id_comment,
+					'$deleteComment' => $this->deleteComment
+				];
+			}
 
-			try{
-				$stmt = $bdd->prepare("SELECT `comment`.`id_comment`
-										FROM  `comment`
-										WHERE `comment`.`id_comment` = :id_comment");
+			$dbName = Utilities::checkAndReturnValueInUrl();
 
-				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
-				$stmt->execute();
+			$subscriptionExist = false;
 
-				$result = $stmt->fetchColumn(); //(PDO::FETCH_COLUMN);
+			if(self::checkIdComment($id_comment, $dbName)){
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+				$subscriptionExist = true;
+			}
 
-				if($result !== false){
+			if($subscriptionExist){
 
+				try{
 					$deleteQuery = $bdd->prepare('DELETE FROM comment WHERE id_comment = :id_comment');
-
 					$deleteQuery->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
 
 					$deleteQuery->execute();
 
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "The comment is deleted!!!";
-
 					$this->deleteComment = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$deleteComment'] = $this->deleteComment;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+						
+				}catch(PDOException $e){
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
 
-				}else{
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "The comment is not existent!!!";
+				}finally{
+					$bdd = null;
 				}
-			}catch(PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "error query, the comment is not deleted!!!" . $e->GetMessage();
 			}
 
-			$bdd = null;
 			return $this->deleteComment;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $checkComment = false;
+		public static function checkComment(string $pseudo, int $rating, string $comment):bool{
+
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerComment();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkComment()',
+					'$checkComment' => self::$checkComment
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+
+			try{
+				$stmt = $bdd->prepare("SELECT COUNT(*)
+										 FROM comment
+										WHERE `comment`.`pseudo`  = :pseudo
+										  AND `comment`.`rating`  = :rating
+										  AND `comment`.`comment` = :comment
+									 ");
+				
+				$stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+				$stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
+				$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				if($result > 0){
+					self::$checkComment = true;
+				}
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkComment'] = self::$checkComment;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
+			}catch (PDOException $e){
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd = null;
+			}
+
+			return self::$checkComment;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $checkIdComment = false;
+		public static function checkIdComment(int $id_comment, string $dbName = 'mycv'):bool{
+
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerComment();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkIdComment()',
+					'$id_comment' => $id_comment,
+					'$checkIdComment' => self::$checkIdComment
+				];
+			}
+			
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+
+			try{
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `comment` WHERE `comment`.`id_comment` = :id_comment");
+				$stmt->bindParam(':id_comment', $id_comment, PDO::PARAM_INT);
+
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				if($result > 0){
+					self::$checkIdComment = true;
+				}
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkIdComment'] = self::$checkIdComment;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
+			}catch (PDOException $e){
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd = null;
+			}
+
+			return self::$checkIdComment;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerComment()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.Comment');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/Comment.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerComment()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.Comment');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/Comment.log', Logger::DEBUG));
+			}
 		}
 	}
 ?>

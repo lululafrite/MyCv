@@ -1,5 +1,5 @@
 <?php
-    //utilities.class.php
+    //Utilities.php
     //author: Ludovic FOLLACO
     //checked to 2024-10-04_16:06
     namespace Model\Utilities;
@@ -8,8 +8,21 @@
     use \PDOException;
     use Model\DbConnect\DbConnect;
     use Firebase\JWT\JWT;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
 
-    class Utilities {
+    class Utilities
+    {
+        
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUtilities();
+			}
+		}
 
         // Creating of JWT token
         public static function tokenJwt(string $pseudo, string $key, int $delay = 3600):string{
@@ -20,6 +33,30 @@
             ];
 
             return JWT::jsonEncode($tokenJwt);
+        }
+
+        public static function checkTokenJwt():void{
+            
+            $jwt1 = JWT::jsondecode($_SESSION['token']['jwt']['tokenJwt']);
+            $jwt2 = JWT::jsondecode(Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']));
+            
+            $delay = $jwt2->{'delay'} - $jwt1->{'delay'} <= $_SESSION['token']['jwt']['delay'];
+            $pseudo = $jwt1->{'pseudo'} === $jwt2->{'pseudo'};
+            $key = $jwt1->{'key'} === $jwt2->{'key'};
+
+            if(!$delay){
+                resetDataConnectVarSession();
+                self::redirectToPage('timeExpired');
+            }else if(!$pseudo){
+                resetDataConnectVarSession();
+                self::redirectToPage('errorJwtPseudo');
+            }else if(!$key){
+                resetDataConnectVarSession();
+                self::redirectToPage('errorJwtKey');
+            }
+            
+            $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
+
         }
 
         // Create and verification of CSRF token
@@ -85,7 +122,7 @@
             }elseif(self::checkValueInUrl('garageparrot')){
                 return "garageparrot";
             }
-            return "index";
+            return "mycv";
         }
 
         // Check if local server
@@ -96,28 +133,90 @@
         // Road to page        
         public static function redirectToPage(string $page):void{
             $baseUrl = self::checkIfLocal() ? "http://mycv" : "https://www.follaco.fr";
-            $siteName = self::checkAndReturnValueInUrl();
+            $siteName = self::checkAndReturnValueInUrl() === 'mycv' ? 'index' : self::checkAndReturnValueInUrl();
             $url = '<script>window.location.href = "' . $baseUrl . ($siteName === 'MyCv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";</script>';
             echo $url;
             die();
         }
 
+        public static function redirectToPageTimeOut(string $page):void{
+            $baseUrl = self::checkIfLocal() ? "http://mycv" : "https://www.follaco.fr";
+            $siteName = self::checkAndReturnValueInUrl() === 'mycv' ? 'index' : self::checkAndReturnValueInUrl();
+            $url = '<script>
+                        setTimeout(function(){
+                            window.location.href = "' . $baseUrl . ($siteName === 'MyCv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";
+                        }, 5000);
+                    </script>';
+            echo $url;
+            die();
+        }
+
         // Check if id is existing
+        private static $checkData = false;
 		public static function checkData(string $table, string $columnId, int $id):bool{
-			
-			$bdd = DbConnect::DbConnect(new DbConnect());
 
-			$stmt = $bdd->prepare("SELECT COUNT(*) FROM $table WHERE $columnId = :id");
-			$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-			$stmt->execute();
+			if($_SESSION['debug']['monolog']){
+                self::initLoggerUtilities();
+				$arrayLogger = [
+                    'user' => $_SESSION['dataConnect']['pseudo'],
+                    'function' => 'checkData()',
+                    '$table' => $table,
+                    '$columnId' => $columnId,
+                    '$id' => $id, '$checkData' => self::$checkData
+                ];
+			}
+            
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-			$result = $stmt->fetchColumn();
-			if($result > 0){
-				$bdd=null;
-				return true;
-			}else{
-				$bdd=null;
-				return false;
+            try{
+
+                $stmt = $bdd->prepare("SELECT COUNT(*) FROM $table WHERE $columnId = :id");
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $result = $stmt->fetchColumn();
+
+                if($result > 0){
+                    self::$checkData = true;
+                }
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkData'] = self::$checkData;
+					self::$logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
+			}catch (PDOException $e){
+
+                if($_SESSION['debug']['monolog']){
+				    self::$logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+                }
+
+			}finally{
+				$bdd = null;
+			}
+
+            return self::$checkData;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerUtilities()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.Utilities');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/Common.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerUtilities()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.Utilities');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/Common.log', Logger::DEBUG));
 			}
 		}
     }

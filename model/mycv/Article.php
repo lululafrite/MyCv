@@ -1,174 +1,221 @@
 <?php
+	//Article.php
+	//Author: Ludovic FOLLACO
+	//checked to 2024-10-16_13:45
 	namespace Model\Article;
 
 	use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
 
 	class Article
 	{
-		private $homeArticleId;
-		public function getHomeArticleId():int{
-			return $this->homeArticleId;
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+			}
 		}
-		public function setHomeArticleId(int $new):void{
-			$this->homeArticleId = $new;
+
+		private $articleId;
+		public function getarticleId():int{
+			return $this->articleId;
+		}
+		public function setarticleId(int $new):void{
+			$this->articleId = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $homeArticleTitle;
-		public function getHomeArticleTitle():string{
-			return $this->homeArticleTitle;
+		private $articleTitle;
+		public function getarticleTitle():string{
+			return $this->articleTitle;
 		}
-		public function setHomeArticleTitle(string $new):void{
-			$this->homeArticleTitle = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticle;
-		public function getHomeArticle():string{
-			return $this->homeArticle;
-		}
-		public function setHomeArticle(string $new):void{
-			$this->homeArticle = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImg;
-		public function getHomeArticleImg():string{
-			return $this->homeArticleImg;
-		}
-		public function setHomeArticleImg(string $new):void{
-			$this->homeArticleImg = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImgYesOrNo;
-		public function getHomeArticleImgYesOrNo():string{
-			return $this->homeArticleImgYesOrNo;
-		}
-		public function setHomeArticleImgYesOrNo(string $new):void{
-			$this->homeArticleImgYesOrNo = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImgRightOrLeft;
-		public function getHomeArticleImgRightOrLeft():string{
-			return $this->homeArticleImgRightOrLeft;
-		}
-		public function setHomeArticleImgRightOrLeft(string $new):void{
-			$this->homeArticleImgRightOrLeft = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImgWidth;
-		public function getHomeArticleImgWidth():string{
-			return $this->homeArticleImgWidth;
-		}
-		public function setHomeArticleImgWidth(string $new):void{
-			$this->homeArticleImgWidth = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImgHeight;
-		public function getHomeArticleImgHeight():string{
-			return $this->homeArticleImgHeight;
-		}
-		public function setHomeArticleImgHeight(string $new):void{
-			$this->homeArticleImgHeight = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleImgObjectFit;
-		public function getHomeArticleImgObjectFit():string{
-			return $this->homeArticleImgObjectFit;
-		}
-		public function setHomeArticleImgObjectFit(string $new):void{
-			$this->homeArticleImgObjectFit = $new;
-		}
-
-		//-----------------------------------------------------------------------
-
-		private $homeArticleSort;
-		public function getHomeArticleSort():string{
-			return $this->homeArticleSort;
-		}
-		public function setHomeArticleSort(string $new):void{
-			$this->homeArticleSort = $new;
+		public function setarticleTitle(string $new):void{
+			$this->articleTitle = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $article;
-		public function getArticle(int $home_article_id):array{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
-			
-			try{
-				$stmt = $bdd->prepare("SELECT
-											`home_article`.`home_article_id`,
-											`home_article`.`home_article_title`,
-											`home_article`.`home_article_subtitle`,
-											`home_article`.`home_article`,
-											`home_article`.`home_article_img`,
-											`home_article`.`home_article_img_yesOrNo`,
-											`home_article`.`home_article_img_rightOrLeft`,
-											`home_article`.`home_article_img_width`,
-											`home_article`.`home_article_img_height`,
-											`home_article`.`home_article_img_objectFit`,
-											`home_article`.`home_article_sort`
-										FROM `home_article`
-										WHERE `home_article`.`home_article_id` = :home_article_id");
-
-				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
-
-				$stmt->execute();
-
-				$this->article = $stmt->fetch(PDO::FETCH_ASSOC);
-
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = 'Home Article list is found';
-			
-			}catch (PDOException $e){
-
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query :' . $e->getMessage();
-				$this->article = false;
-			}
-
-			$bdd = null;
+		public function getArticle():string{
 			return $this->article;
+		}
+		public function setArticle(string $new):void{
+			$this->article = $new;
 		}
 
 		//-----------------------------------------------------------------------
 
-		private $articleList;
-		public function getArticleList(string $whereClause, string $orderBy = 'home_article_sort', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
+		private $articleImg;
+		public function getArticleImg():string{
+			return $this->articleImg;
+		}
+		public function setArticleImg(string $new):void{
+			$this->articleImg = $new;
+		}
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+		//-----------------------------------------------------------------------
+
+		private $articleImgYesOrNo;
+		public function getArticleImgYesOrNo():string{
+			return $this->articleImgYesOrNo;
+		}
+		public function setArticleImgYesOrNo(string $new):void{
+			$this->articleImgYesOrNo = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $articleImgRightOrLeft;
+		public function getArticleImgRightOrLeft():string{
+			return $this->articleImgRightOrLeft;
+		}
+		public function setArticleImgRightOrLeft(string $new):void{
+			$this->articleImgRightOrLeft = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $articleImgWidth;
+		public function getArticleImgWidth():string{
+			return $this->articleImgWidth;
+		}
+		public function setArticleImgWidth(string $new):void{
+			$this->articleImgWidth = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $articleImgHeight;
+		public function getArticleImgHeight():string{
+			return $this->articleImgHeight;
+		}
+		public function setArticleImgHeight(string $new):void{
+			$this->articleImgHeight = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $articleImgObjectFit;
+		public function getArticleImgObjectFit():string{
+			return $this->articleImgObjectFit;
+		}
+		public function setArticleImgObjectFit(string $new):void{
+			$this->articleImgObjectFit = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $articleSort;
+		public function getArticleSort():string{
+			return $this->articleSort;
+		}
+		public function setArticleSort(string $new):void{
+			$this->articleSort = $new;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $getCurrentArticle = array();
+		public function getCurrentArticle(int $article_id):array{
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getCurrentArticle()',
+					'$article_id' => $article_id,
+					'$getCurrentArticle' => $this->getCurrentArticle
+				];
+			}
+	
+			if(self::checkIdArticle($article_id)){
+
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+				
+				try{
+					$stmt = $bdd->prepare("SELECT
+												`article`.`article_id`,
+												`article`.`article_title`,
+												`article`.`article_subtitle`,
+												`article`.`article`,
+												`article`.`article_img`,
+												`article`.`article_img_yesOrNo`,
+												`article`.`article_img_rightOrLeft`,
+												`article`.`article_img_width`,
+												`article`.`article_img_height`,
+												`article`.`article_img_objectFit`,
+												`article`.`article_sort`
+											FROM `article`
+											WHERE `article`.`article_id` = :article_id");
+
+					$stmt->bindParam(':article_id', $article_id, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$this->getCurrentArticle = $stmt->fetch(PDO::FETCH_ASSOC);
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$getCurrentArticle'] = $this->getCurrentArticle;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+					
+					return $this->getCurrentArticle;
+				
+				}catch (PDOException $e){
+					
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+					return[];
+
+				}finally{
+					$bdd = null;
+				}
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $getArticleList = array();
+		public function getArticleList(string $whereClause, string $orderBy = 'article_sort', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
+			
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getArticleList()',
+					'$whereClause' => $whereClause,
+					'$orderBy' => $orderBy,
+					'$ascOrDesc' => $ascOrDesc,
+					'$firstLine' => $firstLine,
+					'$linePerPage' => $linePerPage,
+					'$getArticleList' => $this->getArticleList
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try
 			{
 				$stmt = $bdd->prepare("SELECT
-											`home_article`.`home_article_id`,
-											`home_article`.`home_article_title`,
-											`home_article`.`home_article`,
-											`home_article`.`home_article_img`,
-											`home_article`.`home_article_img_yesOrNo`,
-											`home_article`.`home_article_img_rightOrLeft`,
-											`home_article`.`home_article_img_width`,
-											`home_article`.`home_article_img_height`,
-											`home_article`.`home_article_img_objectFit`,
-											`home_article`.`home_article_sort`
-										FROM `home_article`
+											`article`.`article_id`,
+											`article`.`article_title`,
+											`article`.`article`,
+											`article`.`article_img`,
+											`article`.`article_img_yesOrNo`,
+											`article`.`article_img_rightOrLeft`,
+											`article`.`article_img_width`,
+											`article`.`article_img_height`,
+											`article`.`article_img_objectFit`,
+											`article`.`article_sort`
+										FROM `article`
 										WHERE $whereClause
 										ORDER BY :orderBy :ascOrDesc
 										LIMIT :firstLine, :linePerPage");
@@ -180,148 +227,276 @@
 
 				$stmt->execute();
 
-				$this->articleList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$this->getArticleList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$getArticleList'] = true; //$this->getArticleList; // replace true; by $this->getArticleList; if you want to see the result
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = 'Home Article list is found';
+				return $this->getArticleList;
 
 			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query :' . $e->getMessage();
-				$this->articleList = false;
-			}
+					
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+				return[];
 
-			$bdd = null;
-			return $this->articleList;
+			}finally{
+				$bdd = null;
+			}
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $updateArticle = false;
-		public function updateArticle(int $home_article_id):bool{
+		public function updateArticle(int $article_id):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'updateArticle()',
+					'$article_id' => $article_id,
+					'$updateArticle' => $this->updateArticle
+				];
+			}
+	
+			if(self::checkIdArticle($article_id)){
 
-			try{
-				$stmt = $bdd->prepare("UPDATE `home_article`
-										SET `home_article_title` = :homeArticleTitle,
-											`home_article` = :homeArticle,
-											`home_article_img` = :homeArticleImg,
-											`home_article_img_yesOrNo` = :homeArticleImgYesOrNo,
-											`home_article_img_rightOrLeft` = :homeArticleImgRightOrLeft,
-											`home_article_img_width` = :homeArticleImgWidth,
-											`home_article_img_height` = :homeArticleImgHeight,
-											`home_article_img_objectFit` = :homeArticleImgObjectFit,
-											`home_article_sort` = :homeArticleSort
-											
-										WHERE `home_article_id` = :home_article_id");
-				
-				$stmt->bindParam(':homeArticleTitle', $this->homeArticleTitle, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle', $this->homeArticle, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImg', $this->homeArticleImg, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgYesOrNo', $this->homeArticleImgYesOrNo, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgRightOrLeft', $this->homeArticleImgRightOrLeft, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgWidth', $this->homeArticleImgWidth, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgHeight', $this->homeArticleImgHeight, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgObjectFit', $this->homeArticleImgObjectFit, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleSort', $this->homeArticleSort, PDO::PARAM_STR);
-				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
-				
-				$stmt->execute();
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = "Home Article is updated";
+				try{
+					$stmt = $bdd->prepare("UPDATE `article`
+											SET `article_title` = :articleTitle,
+												`article` = :article,
+												`article_img` = :articleImg,
+												`article_img_yesOrNo` = :articleImgYesOrNo,
+												`article_img_rightOrLeft` = :articleImgRightOrLeft,
+												`article_img_width` = :articleImgWidth,
+												`article_img_height` = :articleImgHeight,
+												`article_img_objectFit` = :articleImgObjectFit,
+												`article_sort` = :articleSort
+												
+											WHERE `article_id` = :article_id");
+					
+					$stmt->bindParam(':articleTitle', $this->articleTitle, PDO::PARAM_STR);
+					$stmt->bindParam(':article', $this->article, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImg', $this->articleImg, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImgYesOrNo', $this->articleImgYesOrNo, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImgRightOrLeft', $this->articleImgRightOrLeft, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImgWidth', $this->articleImgWidth, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImgHeight', $this->articleImgHeight, PDO::PARAM_STR);
+					$stmt->bindParam(':articleImgObjectFit', $this->articleImgObjectFit, PDO::PARAM_STR);
+					$stmt->bindParam(':articleSort', $this->articleSort, PDO::PARAM_STR);
+					$stmt->bindParam(':article_id', $article_id, PDO::PARAM_INT);
+					
+					$stmt->execute();
 
-				$this->updateArticle = true;
-				
-			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to query :" . $e->getMessage();
+					$this->updateArticle = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$updateArticle'] = $this->updateArticle;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+					
+				}catch (PDOException $e){
+
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+
+				}finally{
+					$bdd = null;
+				}
 			}
 
-			$bdd = null;
 			return $this->updateArticle;
 		}
 
 		//-----------------------------------------------------------------------
 
 		private $deleteArticle = false;
-		public function deleteArticle(int $home_article_id): bool{
+		public function deleteArticle(int $article_id):bool{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
-			
-			try
-			{
-				$stmt = $bdd->prepare('DELETE FROM home_article WHERE home_article_id = :home_article_id');
-				$stmt->bindParam(':home_article_id', $home_article_id, PDO::PARAM_INT);
-
-				$stmt->execute();
-
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = "Home Article is deleted";
-
-				$this->deleteArticle = true;
-
-			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to query : " . $e->getMessage();
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'deleteArticle()',
+					'$article_id' => $article_id,
+					'$deleteArticle' => $this->deleteArticle
+				];
 			}
+	
+			if(self::checkIdArticle($article_id)){
+
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 				
-			$bdd = null;
+				try{
+					$stmt = $bdd->prepare('DELETE FROM article WHERE article_id = :article_id');
+					$stmt->bindParam(':article_id', $article_id, PDO::PARAM_INT);
+
+					$stmt->execute();
+
+					$this->deleteArticle = true;
+					
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$deleteArticle'] = $this->deleteArticle;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+				}catch (PDOException $e){
+					
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+
+				}finally{
+					$bdd = null;
+				}
+			}
+
 			return $this->deleteArticle;
 		}
 
 		//-----------------------------------------------------------------------
-		private $newArticle = false;
-		public function newArticle():bool{
+		private $insertArticle = 0;
+		public function insertArticle():int{
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'insertArticle()',
+					'$insertArticle' => $this->insertArticle
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 	
 			try
 			{
-				$stmt = $bdd->prepare("INSERT INTO `home_article` (`home_article_title`,
-															`home_article`,
-															`home_article_img`,
-															`home_article_img_yesOrNo`,
-															`home_article_img_rightOrLeft`,
-															`home_article_img_width`,
-															`home_article_img_height`,
-															`home_article_img_objectFit`,
-															`home_article_sort`) 
-										VALUES (:homeArticleTitle,
-												:homeArticle,
-												:homeArticleImg,
-												:homeArticleImgYesOrNo,
-												:homeArticleImgRightOrLeft,
-												:homeArticleImgWidth,
-												:homeArticleImgHeight,
-												:homeArticleImgObjectFit,
-												:homeArticleSort)");
+				$stmt = $bdd->prepare("INSERT INTO `article` (`article_title`,
+															`article`,
+															`article_img`,
+															`article_img_yesOrNo`,
+															`article_img_rightOrLeft`,
+															`article_img_width`,
+															`article_img_height`,
+															`article_img_objectFit`,
+															`article_sort`) 
+										VALUES (:articleTitle,
+												:article,
+												:articleImg,
+												:articleImgYesOrNo,
+												:articleImgRightOrLeft,
+												:articleImgWidth,
+												:articleImgHeight,
+												:articleImgObjectFit,
+												:articleSort)");
 	
-				$stmt->bindParam(':homeArticleTitle', $this->homeArticleTitle, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticle', $this->homeArticle, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImg', $this->homeArticleImg, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgYesOrNo', $this->homeArticleImgYesOrNo, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgRightOrLeft', $this->homeArticleImgRightOrLeft, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgWidth', $this->homeArticleImgWidth, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgHeight', $this->homeArticleImgHeight, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleImgObjectFit', $this->homeArticleImgObjectFit, PDO::PARAM_STR);
-				$stmt->bindParam(':homeArticleSort', $this->homeArticleSort, PDO::PARAM_STR);
+				$stmt->bindParam(':articleTitle', $this->articleTitle, PDO::PARAM_STR);
+				$stmt->bindParam(':article', $this->article, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImg', $this->articleImg, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImgYesOrNo', $this->articleImgYesOrNo, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImgRightOrLeft', $this->articleImgRightOrLeft, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImgWidth', $this->articleImgWidth, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImgHeight', $this->articleImgHeight, PDO::PARAM_STR);
+				$stmt->bindParam(':articleImgObjectFit', $this->articleImgObjectFit, PDO::PARAM_STR);
+				$stmt->bindParam(':articleSort', $this->articleSort, PDO::PARAM_STR);
 					
 				$stmt->execute();
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = "Home Article is inserted";
+				$stmt = $bdd->prepare("SELECT MAX(`article_id`) FROM `article`");
+				$stmt->execute();
 
-				$this->newArticle = true;
+				$this->insertArticle = intval($stmt->fetchColumn());
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$insertArticle'] = $this->insertArticle;
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
-			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to query : " . $e->getMessage();
+			}catch(PDOException $e){
+					
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd = null;
+			}
+			
+			return $this->insertArticle;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $checkIdArticle = false;
+		public static function checkIdArticle(int $article_id):bool{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerArticle();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkIdArticle()',
+					'$article_id' => $article_id,
+					'$checkIdArticle' => self::$checkIdArticle
+				];
 			}
 
-			$bdd = null;
-			return $this->newArticle;
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
+			
+			try{
+				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `article` WHERE `article_id` = :article_id");
+				$stmt->bindParam(':article_id', $article_id, PDO::PARAM_STR);
+
+				$stmt->execute();
+
+				$result = $stmt->fetchColumn();
+
+				if($result > 0){
+					self::$checkIdArticle = true;
+				}
+
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkIdArticle'] = self::$checkIdArticle;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
+
+			}catch(PDOException $e){
+
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
+			}
+
+			return self::$checkIdArticle;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerArticle()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.Article');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/MyCv.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerArticle()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.Article');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/MyCv.log', Logger::DEBUG));
+			}
 		}
 	}
 ?>

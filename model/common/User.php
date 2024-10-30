@@ -7,9 +7,21 @@
 	use \PDO;
 	use \PDOException;
 	use Model\DbConnect\DbConnect;
+	use Monolog\Logger;
+	use Monolog\Handler\StreamHandler;
 
 	class User
 	{
+		const MSG_QUERY_ERROR = "Error to query.";
+		const MSG_QUERY_CORRECTLY = "Query executed correctly.";
+
+		public function __construct()
+		{
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+			}
+		}
+
 		private $id_user = 0;
 		public function getId():int{
 			return $this->id_user;
@@ -166,10 +178,22 @@
 
 		private $currentUser = array();
 		public function getCurrentUser(int $id_user):array{
-	
-			if(self::checkIdUser($id_user)){
 
-				$bdd = DbConnect::DbConnect(new DbConnect());
+			$this->currentUser = [];
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getCurrentUser()',
+					'$id_user' => $id_user,
+					'$currentUser' => $this->currentUser
+				];
+			}
+	
+			if(self::checkIdUser($id_user, 'mycv')){
+
+				$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 				try{
 					$stmt = $bdd->prepare("SELECT
@@ -199,21 +223,25 @@
 					$stmt->execute();
 
 					$this->currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
-					
-					$_SESSION['other']['error'] = false;
-					$_SESSION['other']['message'] = "The user with id " . $id_user . " is existing in database!!!";
+
+					if($_SESSION['debug']['monolog']){
+						$arrayLogger['$currentUser'] = $this->currentUser;
+						$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+					}
+
+					return $this->currentUser;
 	
 				}catch(PDOException $e){
-					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = "Error to query : function getCurrentUser() :" . $e->GetMessage();
+					if($_SESSION['debug']['monolog']){
+						$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+					}
+					return [];
+				}finally{
+					$bdd = null;
 				}
-			}else{
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
 			}
-			
-			$bdd = null;
-			return $this->currentUser;
+
+    		return [];
 		}
 
 		//-----------------------------------------------------------------------
@@ -221,7 +249,23 @@
 		private $userList = array();
 		public function getUserList(string $whereClause, string $orderBy = 'name', string $ascOrDesc = 'ASC', int $firstLine = 0, int $linePerPage = 13):array{
 			
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			$this->userList = [];
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'getUserList()',
+					'$whereClause' => $whereClause,
+					'$orderBy' => $orderBy,
+					'$ascOrDesc' => $ascOrDesc,
+					'$firstLine' => $firstLine,
+					'$linePerPage' => $linePerPage,
+					'$userList' => $this->userList
+				];
+			}
+
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
 			try{
 				$stmt = $bdd->prepare("SELECT
@@ -254,17 +298,22 @@
 				$stmt->execute();
 
 				$this->userList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$subscriptionList'] = true; //$this->subscriptionList; // replace true; by $this->subscriptionList; if you want to see the result
+					$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = 'The query is executed correctly!!!';
+				return $this->userList;
 
 			}catch (PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = 'Error to query : ' . $e->getMessage();
+				if($_SESSION['debug']['monolog']){
+					$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+				return [];
+			}finally{
+				$bdd = null;
 			}
-
-			$bdd=null;
-			return $this->userList;
 		}
 
 		//-----------------------------------------------------------------------
@@ -272,55 +321,36 @@
 		private $insertUser = 0;
 		public function insertUser():int{
 
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'db' => 'mycv',
+					'function' => 'insertUser()',
+					'$insertUser' => $this->insertUser
+				];
+			}
+
 			$token = bin2hex(random_bytes(32));
 			$timerToken = date('U');
 
 			$emailExist = false;
 			$pseudoExist = false;
 
-			for($i=0; $i<3; $i++){
-				
-				if ($i === 0){
+			$configDb = DbConnect::configDbConnect();
 
-					if(!self::checkEmail($this->email, 'mycv')){
+			foreach ($configDb as $dbName => $configDbConnect){
 
-						if(!self::checkPseudo($this->pseudo, 'mycv')){
-							$bdd = DbConnect::dbConnect(new DbConnect());
-						}else{
-							$pseudoExist = true;
-						}
+				if (!self::checkEmail($this->email, $dbName)){
 
+					if(!self::checkPseudo($this->pseudo)){
+						$bdd = DbConnect::connectDb($configDbConnect);
 					}else{
-						$emailExist = true;
+						$pseudoExist = true;
 					}
 
-				}elseif ($i === 1){
-
-					if(!self::checkEmail($this->email, 'goldorak')){
-
-						if(!self::checkPseudo($this->pseudo, 'goldorak')){
-							$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-						}else{
-							$pseudoExist = true;
-						}
-
-					}else{
-						$emailExist = true;
-					}
-
-				}elseif ($i === 2){
-
-					if(!self::checkEmail($this->email, 'garage_parrot')){
-
-						if(!self::checkPseudo($this->pseudo, 'garage_parrot')){
-							$bdd = DbConnect::dbConnectGP(new DbConnect());
-						}else{
-							$pseudoExist = true;
-						}
-
-					}else{
-						$emailExist = true;
-					}
+				}else{
+					$emailExist = true;
 				}
 
 				if(!$emailExist){
@@ -370,65 +400,57 @@
 			
 							$stmt->execute();
 			
-							// Récupérer l'ID de l'utilisateur nouvellement inséré
-							$stmt = $bdd->prepare("SELECT MAX(`id_user`) AS id_user FROM `user`");
+							$stmt = $bdd->prepare("SELECT MAX(`id_user`) FROM `user`");
 							$stmt->execute();
 
 							$this->insertUser = intval($stmt->fetchColumn());
-
-							$_SESSION['other']['error'] = false;
-							$_SESSION['other']['message'] = "The user is add with success!!!";
+						
+							if($_SESSION['debug']['monolog']){
+								$arrayLogger['db'] = $dbName;
+								$arrayLogger['$insertUser'] = $this->insertUser;
+								$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+							}
 							
 						}catch(PDOException $e){
-							$_SESSION['other']['error'] = true;
-							$_SESSION['other']['message'] = "Error to query!!! function insertUser() in user.class.php" . $e->getMessage() . '<br>';
+							if($_SESSION['debug']['monolog']){
+								$arrayLogger['db'] = $dbName;
+								$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+							}
+	
+						}finally{
+							$bdd = null;
 						}
-
-					}else{
-						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "This pseudonyme is existent!!! function insertUser() in user.class.php";
 					}
-
-				}else{
-					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = "This email is existent!!! function insertUser() in user.class.php";
 				}
-				
-				$emailExist = false;
-				$pseudoExist = false;
 			}
-		
-			$bdd = null;
+				
 			return $this->insertUser;
 		}
 
 		//-----------------------------------------------------------------------
 		private $updateUser = false;
 		public function updateUser(int $id_user):bool{
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'db' => 'mycv',
+					'function' => 'updateUser()',
+					'$id_user' => $id_user,
+					'$updateUser' => $this->updateUser
+				];
+			}
+
+			$configDb = DbConnect::configDbConnect();
+
+			foreach ($configDb as $dbName => $configDbConnect){
 			
-			$idUserExist = false;
+				$idUserExist = false;
 
-			for($i=0; $i<3; $i++){
-				
-				if ($i === 0){
-
-					if(self::checkIdUser($id_user, 'mycv')){
-						$bdd = DbConnect::dbConnect(new DbConnect());
-						$idUserExist = true;
-					}
-
-				}elseif ($i === 1){
-
-					if(self::checkIdUser($id_user, 'goldorak')){
-						$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-						$idUserExist = true;
-					}
-
-				}elseif ($i === 2){
-					if(self::checkIdUser($id_user, 'garage_parrot')){
-						$bdd = DbConnect::dbConnectGP(new DbConnect());
-						$idUserExist = true;
-					}
+				if (self::checkIdUser($id_user, $dbName)){
+					$bdd = DbConnect::connectDb($configDbConnect);
+					$idUserExist = true;
 				}
 			
 				if($idUserExist){
@@ -462,19 +484,25 @@
 						$_SESSION['other']['message'] = "The user with id " . $id_user . " is update with success!!!";
 						
 						$this->updateUser = true;
-
-					}catch(PDOException $e){
-						$_SESSION['other']['error'] = false;
-						$_SESSION['other']['message'] = "Error to query!!! function updateUser() in user.class.php :" . $e->GetMessage();
+					
+						if($_SESSION['debug']['monolog']){
+							$arrayLogger['db'] = $dbName;
+							$arrayLogger['$updateUser'] = $this->updateUser;
+							$this->logger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+						}
+					
+					}catch (PDOException $e){
+						if($_SESSION['debug']['monolog']){
+							$arrayLogger['db'] = $dbName;
+							$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+						}
+	
+					}finally{
+						$bdd=null;
 					}
-				}else{
-					$_SESSION['other']['error'] = true;
-					$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
 				}
-				$idUserExist = false;
 			}
 
-			$bdd=null;
 			return $this->updateUser;
 		}
 
@@ -482,39 +510,27 @@
 
 		private $deleteUser = false;
 		public function deleteUser(int $id_user):bool{
+
+			if($_SESSION['debug']['monolog']){
+				$this->initLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'db' => 'mycv',
+					'function' => 'deleteUser()',
+					'$id_user' => $id_user,
+					'$deleteUser' => $this->deleteUser
+				];
+			}
+
+			$configDb = DbConnect::configDbConnect();
+
+			foreach ($configDb as $dbName => $configDbConnect){
 			
-			$idUserExist = false;
+				$idUserExist = false;
 
-			for($i=0; $i<3; $i++){
-				
-				if ($i === 0){
-
-					if(self::checkIdUser($id_user, 'mycv')){
-						$bdd = DbConnect::dbConnect(new DbConnect());
-						$idUserExist = true;
-					}else{
-						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
-					}
-
-				}elseif ($i === 1){
-
-					if(self::checkIdUser($id_user, 'goldorak')){
-						$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-						$idUserExist = true;
-					}else{
-						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
-					}
-
-				}elseif ($i === 2){
-					if(self::checkIdUser($id_user, 'garage_parrot')){
-						$bdd = DbConnect::dbConnectGP(new DbConnect());
-						$idUserExist = true;
-					}else{
-						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "The user with id " . $id_user . " is not existing!!!";
-					}
+				if (self::checkIdUser($id_user, $dbName)){
+					$bdd = DbConnect::connectDb($configDbConnect);
+					$idUserExist = true;
 				}
 			
 				if($idUserExist){
@@ -522,22 +538,27 @@
 					try{
 						$stmt = $bdd->prepare('DELETE FROM user WHERE id_user = :id_user');
 						$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-						$stmt->execute();
 
-						$_SESSION['other']['error'] = false;
-						$_SESSION['other']['message'] = "The user with id " . $id_user . " is delete with success!!!";
+						$stmt->execute();
 
 						$this->deleteUser = true;
 
+						if($_SESSION['debug']['monolog']){
+							$arrayLogger['db'] = $dbName;
+							$arrayLogger['$deleteUser'] = $this->deleteUser;
+							self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+						}
+					
 					}catch (PDOException $e){
-						$_SESSION['other']['error'] = true;
-						$_SESSION['other']['message'] = "Error to delete user : " . $e->getMessage();
+						if($_SESSION['debug']['monolog']){
+							$arrayLogger['db'] = $dbName;
+							$this->logger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+						}
+					}finally{
+						$bdd=null;
 					}
 				}
-
 			}
-
-			$bdd=null;
 			return $this->deleteUser;
 		}
 
@@ -547,8 +568,19 @@
 		
 		private static $checkUserConnect = array();
         public static function checkUserConnect(string $email, string $pw):array{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkUserConnect()',
+					'$email' => $email,
+					'$pw' => $pw,
+					'$checkUserConnect' => self::$checkUserConnect
+				];
+			}
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 
             try{
                 $stmt = $bdd->prepare("SELECT   `id_user`,
@@ -575,28 +607,38 @@
 
                 self::$checkUserConnect = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                $_SESSION['other']['error'] = false;
-                $_SESSION['other']['message'] = "Utilisateur trouvé";
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkUserConnect'] = self::$checkUserConnect;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
-            }catch(PDOException $e){
-                $_SESSION['other']['error'] = true;
-                $_SESSION['other']['message'] = "Erreur de la requête : " . $e->getMessage();
-            }
+			}catch(PDOException $e){
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
 
-			$bdd=null;
+			}finally{
+				$bdd=null;
+			}
 			return self::$checkUserConnect;
         }
 		
 		private static $checkIdUser = false;
-		public static function checkIdUser(int $id_user, string $bd = 'mycv'):bool{
-			
-			if($bd === 'goldorak'){
-				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-			}elseif($bd === 'garage_parrot'){
-				$bdd = DbConnect::DbConnectGP(new DbConnect());
-			}else{
-				$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkIdUser(int $id_user, string $db = 'mycv'):bool{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'$db' => $db,
+					'function' => 'checkIdUser()',
+					'$id_user' => $id_user,
+					'$checkIdUser' => self::$checkIdUser
+				];
 			}
+			
+			$configDb = DbConnect::configDbConnect();
+			$bdd = DbConnect::connectDb($configDb[$db]);
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `id_user` = :id_user");
@@ -608,34 +650,43 @@
 
 				if($result > 0){
 					self::$checkIdUser = true;
-					$_SESSION['other']['message'] = "This id_user is existent!!!";
-				}else{
-					$_SESSION['other']['message'] = "This id_user is not existent!!!";
 				}
 
-				$_SESSION['other']['error'] = false;
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkIdUser'] = self::$checkIdUser;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 			}catch(PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to function checkIdUser() in user.class.php:" . $e->getMessage();
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
 			}
 
-			$bdd=null;
 			return self::$checkIdUser;
 		}
 
 		//-----------------------------------------------------------------------
 		
 		private static $checkPseudo = false;
-		public static function checkPseudo(string $pseudo, string $bd = 'mycv'):bool{
-			
-			if($bd === 'goldorak'){
-				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-			}elseif($bd === 'garage_parrot'){
-				$bdd = DbConnect::DbConnectGP(new DbConnect());
-			}else{
-				$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkPseudo(string $pseudo, string $db = 'mycv'):bool{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'$db' => $db,
+					'function' => 'checkPseudo()',
+					'$pseudo' => $pseudo,
+					'$checkPseudo' => self::$checkPseudo
+				];
 			}
+			
+			$configDb = DbConnect::configDbConnect();
+			$bdd = DbConnect::connectDb($configDb[$db]);
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `pseudo` = :pseudo");
@@ -647,34 +698,43 @@
 
 				if($result > 0){
 					self::$checkPseudo = true;
-					$_SESSION['other']['message'] = "This pseudo is existent!!!";
-				}else{
-					$_SESSION['other']['message'] = "This pseudo is not existent!!!";
 				}
 
-				$_SESSION['other']['error'] = false;
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkPseudo'] = self::$checkPseudo;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 			}catch(PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to function checkPseudo() in user.class.php:" . $e->getMessage();
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
 			}
 
-			$bdd=null;
 			return self::$checkPseudo;
 		}
 
 		//-----------------------------------------------------------------------
 		
 		private static $checkEmail = false;
-		public static function checkEmail(string $email, string $bd = 'mycv'):bool{
-			
-			if($bd === 'goldorak'){
-				$bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-			}elseif($bd === 'garage_parrot'){
-				$bdd = DbConnect::DbConnectGP(new DbConnect());
-			}else{
-				$bdd = DbConnect::DbConnect(new DbConnect());
+		public static function checkEmail(string $email, string $db = 'mycv'):bool{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'$db' => $db,
+					'function' => 'checkEmail()',
+					'$email' => $email,
+					'$checkEmail' => self::$checkEmail
+				];
 			}
+			
+			$configDb = DbConnect::configDbConnect();
+			$bdd = DbConnect::connectDb($configDb[$db]);
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE `email` = :email");
@@ -686,27 +746,43 @@
 
 				if($result > 0){
 					self::$checkEmail = true;
-					$_SESSION['other']['message'] = "This email is existent!!!";
-				}else{
-					$_SESSION['other']['message'] = "This email is not existent!!!";
 				}
 
-				$_SESSION['other']['error'] = false;
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkEmail'] = self::$checkEmail;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 			}catch(PDOException $e){
-				$_SESSION['other']['message'] = "Error to function checkEmail() in user.class.php:" . $e->getMessage();
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
 			}
 
-			$bdd=null;
 			return self::$checkEmail;
 		}
 
 		//-----------------------------------------------------------------------
 		
         private static $pwConnect = "";
-        public static function checkPassword(string $email):string{
-
-			$bdd = DbConnect::DbConnect(new DbConnect());
+        public static function checkPassword(string $email, string $db = 'mycv'):string{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'$db' => $db,
+					'function' => 'checkPassword()',
+					'$pseudo' => $email,
+					'$pwConnect' => self::$pwConnect
+				];
+			}
+			
+			$configDb = DbConnect::configDbConnect();
+			$bdd = DbConnect::connectDb($configDb[$db]);
 
             try{
                 $stmt = $bdd->prepare("SELECT `password`
@@ -719,15 +795,20 @@
 
                 self::$pwConnect = $stmt->fetchColumn();
 
-                $_SESSION['other']['error'] = false;
-                $_SESSION['other']['message'] = "Mot de passe trouvé";
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$pwConnect'] = self::$pwConnect;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
-            }catch (PDOException $e){
-                $_SESSION['other']['error'] = true;
-                $_SESSION['other']['message'] = "Erreur de la requete : " . $e->getMessage();
-            }
+			}catch(PDOException $e){
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
 
-			$bdd=null;
+			}finally{
+				$bdd=null;
+			}
+
 			return self::$pwConnect;
         }
 
@@ -735,8 +816,18 @@
 		
 		private static  $checkNbOfProduct = 0;
 		public static function checkNbOfProduct(string $whereClause):int{
+				
+			if($_SESSION['debug']['monolog']){
+				self::initStaticLoggerUser();
+				$arrayLogger = [
+					'user' => $_SESSION['dataConnect']['pseudo'],
+					'function' => 'checkNbOfProduct()',
+					'$whereClause' => $whereClause,
+					'$checkNbOfProduct' => self::$checkNbOfProduct
+				];
+			}
 
-			$bdd = DbConnect::DbConnect(new DbConnect());
+			$bdd = DbConnect::connectionDb(DbConnect::configDbConnect());
 			
 			try{
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM `user` WHERE $whereClause ");
@@ -744,16 +835,43 @@
 				
 				self::$checkNbOfProduct = $stmt->fetchColumn();
 
-				$_SESSION['other']['error'] = false;
-				$_SESSION['other']['message'] = "The query is executed correctly!!!";
+				if($_SESSION['debug']['monolog']){
+					$arrayLogger['$checkNbOfProduct'] = self::$checkNbOfProduct;
+					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
+				}
 
 			}catch(PDOException $e){
-				$_SESSION['other']['error'] = true;
-				$_SESSION['other']['message'] = "Error to function checkNbOfProduct() in user.class.php:" . $e->getMessage();
+				if($_SESSION['debug']['monolog']){
+					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
+				}
+
+			}finally{
+				$bdd=null;
 			}
 
-			$bdd=null;
 			return self::$checkNbOfProduct;
+		}
+
+		//-----------------------------------------------------------------------
+
+		private static $staticLogger;
+		public static function initStaticLoggerUser()
+		{
+			if (self::$staticLogger === null) {
+				self::$staticLogger = new Logger('Class.User');
+				self::$staticLogger->pushHandler(new StreamHandler(__DIR__ . '/User.log', Logger::DEBUG));
+			}
+		}
+
+		//-----------------------------------------------------------------------
+
+		private $logger;
+		public function initLoggerUser()
+		{
+			if ($this->logger === null) {
+				$this->logger = new Logger('Class.User');
+				$this->logger->pushHandler(new StreamHandler(__DIR__ . '/User.log', Logger::DEBUG));
+			}
 		}
 	}
 ?>

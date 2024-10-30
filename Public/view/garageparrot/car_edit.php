@@ -90,8 +90,8 @@
                         style="font-size: 1.6rem;"
                         value=
                             "<?php
-                                if(!empty($MyCar->getId())){
-                                    echo $MyCar->getId();
+                                if(!empty($MyCarForm->getId())){
+                                    echo $MyCarForm->getId();
                                 }else{
                                     echo $cars['id_car'];
                                 }
@@ -212,25 +212,25 @@
             <tr class="m-0 p-0">
 
                 <td class="text-end m-0 p-0">
-                    <label class="form-label m-0 p-0 pe-3" for="list_carEdit_motorization">Motorization<span style="color:red;">*</span></label>
+                    <label class="form-label m-0 p-0 pe-3" for="list_carEdit_engine">Engine<span style="color:red;">*</span></label>
                 </td>
 
                 <td class="m-0 p-0">
 
                     <input
-                        list="datalist_carEdit_motorization"
-                        name="list_carEdit_motorization"
-                        id="list_carEdit_motorization"
+                        list="datalist_carEdit_engine"
+                        name="list_carEdit_engine"
+                        id="list_carEdit_engine"
                         class="form-control-lg m-0 p-0 ps-3 border border-black fs-4"
-                        placeholder="Selectionnez un motorization"
-                        oninput="validateInput('list_carEdit_motorization','datalist_carEdit_motorization','labelMessageMotorization','Veuillez selectionner une valeur existante.')"
-                        value= "<?php echo $cars['motorization']; ?>"
+                        placeholder="Selectionnez un engine"
+                        oninput="validateInput('list_carEdit_engine','datalist_carEdit_engine','labelMessageEngine','Veuillez selectionner une valeur existante.')"
+                        value= "<?php echo $cars['engine']; ?>"
                     >
 
-                    <datalist id="datalist_carEdit_motorization">
+                    <datalist id="datalist_carEdit_engine">
 
-                        <?php for($i=0;$i != count($MyMotorization);$i++) { ?>
-                            <option value="<?php echo $MyMotorization[$i]['name']; ?>">
+                        <?php for($i=0;$i != count($MyEngine);$i++) { ?>
+                            <option value="<?php echo $MyEngine[$i]['name']; ?>">
                         <?php } ?>
 
                     </datalist>
@@ -246,7 +246,7 @@
 
                 <td class="m-0 p-0">
 
-                    <label class="form-control-lg m-0 mb-2 p-0" id="labelMessageMotorization">
+                    <label class="form-control-lg m-0 mb-2 p-0" id="labelMessageEngine">
                         Veuillez selectionner une motorisation dans la liste de choix.
                     </label>
 
@@ -918,4 +918,6 @@
 
 </section>
 
+<script src="../js/common/function.js"></script>
+<script src="../js/common/fetch.js"></script>
 <script src="../js/carEdit.js"></script>

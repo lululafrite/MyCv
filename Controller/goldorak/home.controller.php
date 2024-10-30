@@ -28,7 +28,7 @@
 
             $btn_img_chapter1 = false;
 
-            if (Utilities::uploadImg('user', 'newImgChapter1','txt_img_chapter1','file_img_chapter1','./img/picture/')){
+            if (Utilities::uploadImg('user', 'newImgChapter1','txt_img_chapter1','file_img_chapter1','./img/goldorak/picture/')){
 
                 $home[0]['img_chapter1'] = $_SESSION['user']['newImgChapter1'];
 
@@ -42,7 +42,7 @@
 
         if($btn_img_chapter2){
 
-            if (Utilities::uploadImg('user', 'newImgChapter2','txt_img_chapter2','file_img_chapter2','./img/picture/')){
+            if (Utilities::uploadImg('user', 'newImgChapter2','txt_img_chapter2','file_img_chapter2','./img/goldorak/picture/')){
 
                 $home[0]['img_chapter2'] = $_SESSION['user']['newImgChapter2'];
 

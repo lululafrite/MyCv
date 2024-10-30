@@ -7,8 +7,8 @@
         setInputValue('txt_userEdit_email', 'user@gmail.com');
         setInputValue('txt_userEdit_phone', '00 00 00 00 00');
         setInputValue('list_userEdit_type', 'User');
-        setInputValue('txt_userEdit_password', 'Abc123/*-');
-        setInputValue('txt_userEdit_confirm', 'Abc123/*-');
+        setInputValue('txt_userEdit_password', 'Abcd123456/*-');
+        setInputValue('txt_userEdit_confirm', 'Abcd123456/*-');
 
         return;
     }

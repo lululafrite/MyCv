@@ -1,42 +1,146 @@
 <?php
+	//mycv
+    //router.php
+	//author : Ludovic FOLLACO
+	//checked to 2024-10-08_15:10
     use Model\Utilities\Utilities;
 
     $page = isset($_GET['page']) ? Utilities::escapeInput($_GET['page']) : 'home';
     
-    $_SESSION['token']['jwt']['tokenJwt'] = Utilities::tokenJwt($_SESSION['dataConnect']['pseudo'], $_SESSION['token']['jwt']['secretKey'], $_SESSION['token']['jwt']['delay']);
-    
     if ($page === 'home'){
 
+        resetOtherVarSession();
+
+        if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
+            Utilities::checkTokenJwt();
+        }
+        
         require_once('view/mycv/home.php');
+        return;
 
-    }elseif($page === 'mycv'){
+    }else if($page === 'mycv'){
 
+        resetOtherVarSession();
+
+        if($_SESSION['dataConnect']['pseudo'] != 'Guest'){
+            Utilities::checkTokenJwt();
+        }
+        
         require_once('view/mycv/myCv.php');
+        return;
 
-    }elseif($page === 'connexion'){
+    }else if($page === 'connexion'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
 
         require_once('view/common/connexion.php');
+        return;
 
-    }elseif($page === 'disconnect'){
+    }else if($page === 'disconnect'){
 
-        require_once('view/common/disconnect.php');
+        if($_SESSION['dataConnect']['type'] != "Guest"){
 
-    }elseif ($page === 'userPwRequestNew'){
+            resetOtherVarSession();
+            resetDataConnectVarSession();
+    
+            Utilities::redirectToPage("home");
+            return;
+        }else{
+            require_once 'view/errorPage/accessPage.php';
+        }
+
+    }else if ($page === 'userPwRequestNew'){
         
-        //resetUserVarSession();
         require_once('view/common/userPwRequestNew.php');
 
-    }elseif ($page === 'userPwResetNew'){
+    }else if ($page === 'userPwResetNew'){
         
-        //resetUserVarSession();
         require_once('view/common/userPwResetNew.php');
 
-    }else {
+    }else if ($page === 'accessMethod'){
         
+        require_once 'view/errorPage/accessMethod.php';
+
+    }else if ($page === 'accessPage'){
+        
+        require_once 'view/errorPage/accessPage.php';
+
+    }else if ($page === 'unknownPage'){
+        
+        require_once 'view/errorPage/unknownPage.php';
+
+    }else if ($page === 'timeExpired'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
+
+        require_once('view/errorPage/timeExpired.php');
+        return;
+
+    }else if ($page === 'errorJwtKey'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
+
+        require_once('view/errorPage/errorJwtKey.php');
+        return;
+
+    }else if ($page === 'errorJwtPseudo'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
+
+        require_once('view/errorPage/errorJwtPseudo.php');
+        return;
+
+    }else if ($page === 'userPwRequestNew'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
+        
+        require_once('view/common/userPwRequestNew.php');
+        return;
+
+    }else if ($page === 'userPwResetNew'){
+
+        resetOtherVarSession();
+        resetDataConnectVarSession();
+        
+        require_once('view/common/userPwResetNew.php');
+        return;
+
+    }else if ($page === 'accessMethod'){
+
+        resetOtherVarSession();
+        
+        require_once 'view/errorPage/accessMethod.php';
+        return;
+
+    }else if ($page === 'accessPage'){
+
+        resetOtherVarSession();
+
+        require_once('view/errorPage/accessPage.php');
+        return;
+
+    }else if ($page === 'unknownPage'){
+
+        resetOtherVarSession();
+
         require_once('view/errorPage/unknownPage.php');
-        
-        /*resetDataConnectVarSession();
-        require_once('errorPage/timeExpired.php');*/
+        return;
+
+    }else{
+
+        resetOtherVarSession();
+
+        if($_SESSION['dataConnect']['type'] != 'Guest'){
+            Utilities::checkTokenJwt();
+        }
+
+        require_once('view/errorPage/unknownPage.php');
+        return;
     }
 
 ?>

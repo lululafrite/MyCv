@@ -117,10 +117,10 @@
                     <td class="tdText border border-0">
                         <input
                             type="text"
-                            name="txt_car_motorization"
+                            name="txt_car_engine"
                             class="bg-secondary text-light text-start ps-2"
                             readonly
-                            value='<?php echo Utilities::escapeInput($cars[$i]['motorization']);?>'
+                            value='<?php echo Utilities::escapeInput($cars[$i]['engine']);?>'
                         >
                     </td>
 

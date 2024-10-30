@@ -128,8 +128,8 @@
                                 <h3 class="px-3">
                                     <input
                                         type="text"
-                                        name="text_home_article_title_new"
-                                        id="text_home_article_title_new"
+                                        name="text_article_title_new"
+                                        id="text_article_title_new"
                                         value="SAISISSEZ LE TITRE DE L'ARTICLE"
                                     >
                                 </h3>
@@ -140,8 +140,8 @@
 
                                 <p class="px-3" style="text-align: justify; white-space: pre-line;">
                                     <textarea
-                                        name="textarea_home_article_new"
-                                        id="textarea_home_article_new"
+                                        name="textarea_article_new"
+                                        id="textarea_article_new"
                                         cols="1"
                                         rows="10"
                                     >Saisissez votre article...</textarea>
@@ -159,8 +159,8 @@
                             
                             <img
                                 class="rounded-3"
-                                id="home_article_img_new"
-                                name="home_article_img_new"
+                                id="article_img_new"
+                                name="article_img_new"
                                 src="img/mycv/picture/img_umpty300x600.jpg"
                                 alt="image de l'article new"
                                 style="width: 150px; height: auto; object-fit: cover;"
@@ -188,13 +188,13 @@
 
                                     <input
                                         class="form-control-lg bg-transparent m-0 p-0 border border-black"
-                                        id="text_home_article_img_new"
-                                        name="text_home_article_img_new"
+                                        id="text_article_img_new"
+                                        name="text_article_img_new"
                                         type="text"
                                         placeholder="Saisissez le nom de l'image"
                                         readonly
                                         style="font-size: 1.6rem;"
-                                        oninput="validateInput('text_home_article_img','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
+                                        oninput="validateInput('text_article_img','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
                                         value="img_umpty300x600.jpg"
                                     >
 
@@ -205,8 +205,8 @@
                                     <input
                                         class=""
                                         type="file"
-                                        name="file_home_article_img_new"
-                                        id="file_home_article_img_new"
+                                        name="file_article_img_new"
+                                        id="file_article_img_new"
                                         accept="image/jpeg, image/png, image/webp"
                                     >
 
@@ -217,8 +217,8 @@
                                     <input
                                         class="btn btn-lg btn-primary "
                                         type="submit"
-                                        name="btn_home_article_img_new"
-                                        id="btn_home_article_img_new"
+                                        name="btn_article_img_new"
+                                        id="btn_article_img_new"
                                         value="Upload image new"
                                         style="width: auto;"
                                     >
@@ -233,14 +233,14 @@
                                 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_img_yesOrNo_new"
+                                for="article_img_yesOrNo_new"
                                 style="width: 130px;"
                             >Show image :</label>
                             <input
                                 class="d-flex text-start"
                                 type="checkbox"
-                                id="home_article_img_yesOrNo_new"
-                                name="home_article_img_yesOrNo_new"
+                                id="article_img_yesOrNo_new"
+                                name="article_img_yesOrNo_new"
                                 style="width: 20px; height: 20px;"
                                 value="yes"
                                 checked
@@ -252,13 +252,13 @@
 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_img_rightOrLeft_new"
+                                for="article_img_rightOrLeft_new"
                                 style="width: 130px;"
                             >Right or left :</label>
                             <select
                                 class="form-select"
-                                id="home_article_img_rightOrLeft_new"
-                                name="home_article_img_rightOrLeft_new"
+                                id="article_img_rightOrLeft_new"
+                                name="article_img_rightOrLeft_new"
                                 style="width: 100px;"
                             >
                             <option value="right">right</option>
@@ -271,13 +271,13 @@
 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_img_objectFit_new"
+                                for="article_img_objectFit_new"
                                 style="width: 130px;"
                             >Object-fit :</label>
                             <select
                                 class="form-select"
-                                id="home_article_img_objectFit_new"
-                                name="home_article_img_objectFit_new"
+                                id="article_img_objectFit_new"
+                                name="article_img_objectFit_new"
                                 style="width: 100px;"
                             >
                             <option value="cover">cover</option>
@@ -293,14 +293,14 @@
 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_img_width_new"
+                                for="article_img_width_new"
                                 style="width: 130px;"
                             >Width :</label>
                             <input
                                 class="form-control fs-5"
                                 type="text"
-                                id="home_article_img_width_new"
-                                name="home_article_img_width_new"
+                                id="article_img_width_new"
+                                name="article_img_width_new"
                                 style="width: 100px;"
                                 value="150px"
                             >
@@ -311,14 +311,14 @@
 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_img_height_new"
+                                for="article_img_height_new"
                                 style="width: 130px;"
                             >Height :</label>
                             <input
                                 class="form-control fs-5"
                                 type="text"
-                                id="home_article_img_height_new"
-                                name="home_article_img_height_new"
+                                id="article_img_height_new"
+                                name="article_img_height_new"
                                 style="width: 100px;"
                                 value="auto"
                             >
@@ -334,14 +334,14 @@
 
                             <label
                                 class="form-label fs-4"
-                                for="home_article_sort_new"
+                                for="article_sort_new"
                                 style="width: 130px;"
                             >Article number :</label>
                             <input
                                 class="form-control fs-5"
                                 type="text"
-                                id="home_article_sort_new"
-                                name="home_article_sort_new"
+                                id="article_sort_new"
+                                name="article_sort_new"
                                 style="width: 100px;"
                                 value="100"
                             >
@@ -353,8 +353,8 @@
                             <input
                                 class="btn btn-lg btn-primary"
                                 type="submit"
-                                name="btn_new_home_article"
-                                id="btn_new_home_article"
+                                name="btn_new_article"
+                                id="btn_new_article"
                                 value="Save article new"
                                 style="width: auto;"
                             >
@@ -381,21 +381,21 @@
 ?>
 
 <?php function homeArticleId($article, $i){ 
-    $id = Utilities::escapeInput($article[$i]['home_article_id']);
+    $id = Utilities::escapeInput($article[$i]['article_id']);
     if ($_SESSION['dataConnect']['type']==='Administrator'){?>
 
         <div class="d-flex flex-row align-items-center ps-3 pb-3">
 
             <label
                 class="form-label fs-4"
-                for="home_article_id"
+                for="article_id"
                 style="width: 130px;"
             >Article ID :</label>
             <input
                 class="form-control fs-5"
                 type="text"
-                id="home_article_id"
-                name="home_article_id"
+                id="article_id"
+                name="article_id"
                 style="width: 100px;"
                 value="<?php echo $id; ?>"
             >
@@ -412,21 +412,21 @@
     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
         <h3 class="px-3">
-            <?php echo Utilities::escapeInput($article[$i]['home_article_title']); ?>
+            <?php echo Utilities::escapeInput($article[$i]['article_title']); ?>
         </h3>
 
     <?php } ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = Utilities::escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['article_id']);
     ?>
         
         <h3 class="px-3">
             <input
                 type="text"
-                name="text_home_article_title_<?php echo $id; ?>"
-                id="text_home_article_title_<?php echo $id; ?>"
-                value="<?php echo Utilities::escapeInput($article[$i]['home_article_title']); ?>"
+                name="text_article_title_<?php echo $id; ?>"
+                id="text_article_title_<?php echo $id; ?>"
+                value="<?php echo Utilities::escapeInput($article[$i]['article_title']); ?>"
             >
         </h3>
 
@@ -437,22 +437,22 @@
     <?php if ($_SESSION['dataConnect']['type']!='Administrator'){ ?>
 
         <p class="px-3" style="text-align: justify; white-space: pre-line;">
-            <?php echo Utilities::escapeInput($article[$i]['home_article']); ?>
+            <?php echo Utilities::escapeInput($article[$i]['article']); ?>
         </p>
     
     <?php } ?>
     
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = Utilities::escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['article_id']);
     ?>
         
         <p class="px-3" style="text-align: justify; white-space: pre-line;">
             <textarea
-                name="textarea_home_article_<?php echo $id; ?>"
-                id="textarea_home_article_<?php echo $id; ?>"
+                name="textarea_article_<?php echo $id; ?>"
+                id="textarea_article_<?php echo $id; ?>"
                 cols="1"
                 rows="10"
-            ><?php echo Utilities::escapeInput($article[$i]['home_article']); ?></textarea>
+            ><?php echo Utilities::escapeInput($article[$i]['article']); ?></textarea>
         </p>
 
     <?php } ?>
@@ -463,7 +463,7 @@
 <?php function homeArticleButtonImg($article, $i){ ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = Utilities::escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['article_id']);
     ?>
         
         <div class="container px-3 pb-0 pb-lg-3">
@@ -474,14 +474,14 @@
 
                     <input
                         class="form-control-lg bg-transparent m-0 p-0 border border-black"
-                        id="text_home_article_img_<?php echo $id; ?>"
-                        name="text_home_article_img_<?php echo $id; ?>"
+                        id="text_article_img_<?php echo $id; ?>"
+                        name="text_article_img_<?php echo $id; ?>"
                         type="text"
                         placeholder="Saisissez le nom de l'image"
                         readonly
                         style="font-size: 1.6rem;"
-                        oninput="validateInput('text_home_article_img','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
-                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
+                        oninput="validateInput('text_article_img','','labelMessageimg_chapter2','Saisissez le nom de l\'image (sans useractères spéciaux sauf - et _) aux formats *.png ou *.jpg ou *.webp. Sinon, téléchargez une image depuis votre disque local. ATTENTION!!! Dimmentions image au ratio de 200px sur 450px.')"
+                        value="<?php echo Utilities::escapeInput($article[$i]['article_img']);?>"
                     >
 
                 </div>
@@ -491,8 +491,8 @@
                     <input
                         class=""
                         type="file"
-                        name="file_home_article_img_<?php echo $id; ?>"
-                        id="file_home_article_img_<?php echo $id; ?>"
+                        name="file_article_img_<?php echo $id; ?>"
+                        id="file_article_img_<?php echo $id; ?>"
                         accept="image/jpeg, image/png, image/webp"
                     >
 
@@ -503,8 +503,8 @@
                     <input
                         class="btn btn-lg btn-primary "
                         type="submit"
-                        name="btn_home_article_img_<?php echo $id; ?>"
-                        id="btn_home_article_img_<?php echo $id; ?>"
+                        name="btn_article_img_<?php echo $id; ?>"
+                        id="btn_article_img_<?php echo $id; ?>"
                         value="Upload image <?php echo $id; ?>"
                         style="width: auto;"
                     >
@@ -521,19 +521,19 @@
 
 <?php function homeArticleImg($article, $i){ ?>
 
-    <?php if ($article[$i]['home_article_img_yesOrNo'] === "yes"){ 
-            $id = Utilities::escapeInput($article[$i]['home_article_id']);
+    <?php if ($article[$i]['article_img_yesOrNo'] === "yes"){ 
+            $id = Utilities::escapeInput($article[$i]['article_id']);
     ?>
 
         <div class="d-none d-sm-block">
             
             <img
                 class="rounded-3"
-                id="home_article_img_<?php echo $id; ?>"
-                name="home_article_img_<?php echo $id; ?>"
-                src="img/mycv/picture/<?php echo Utilities::escapeInput($article[$i]['home_article_img']);?>"
+                id="article_img_<?php echo $id; ?>"
+                name="article_img_<?php echo $id; ?>"
+                src="img/mycv/picture/<?php echo Utilities::escapeInput($article[$i]['article_img']);?>"
                 alt="image de l'article <?php echo $id; ?>"
-                style="width: <?php echo Utilities::escapeInput($article[$i]['home_article_img_width']);?>; height: <?php echo Utilities::escapeInput($article[$i]['home_article_img_height']);?>; object-fit: <?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']);?>;"
+                style="width: <?php echo Utilities::escapeInput($article[$i]['article_img_width']);?>; height: <?php echo Utilities::escapeInput($article[$i]['article_img_height']);?>; object-fit: <?php echo Utilities::escapeInput($article[$i]['article_img_objectFit']);?>;"
             >
 
         </div>
@@ -546,7 +546,7 @@
 <?php function homeArticleSettings($article, $i){ ?>
 
     <?php if ($_SESSION['dataConnect']['type']==='Administrator'){ 
-            $id = Utilities::escapeInput($article[$i]['home_article_id']);
+            $id = Utilities::escapeInput($article[$i]['article_id']);
     ?>
         <div class="container">
 
@@ -560,17 +560,17 @@
                         
                         <label
                             class="form-label fs-4"
-                            for="home_article_img_yesOrNo_<?php echo $id; ?>"
+                            for="article_img_yesOrNo_<?php echo $id; ?>"
                             style="width: 130px;"
                         >Show image :</label>
                         <input
                             class="d-flex text-start"
                             type="checkbox"
-                            id="home_article_img_yesOrNo_<?php echo $id; ?>"
-                            name="home_article_img_yesOrNo_<?php echo $id; ?>"
+                            id="article_img_yesOrNo_<?php echo $id; ?>"
+                            name="article_img_yesOrNo_<?php echo $id; ?>"
                             style="width: 20px; height: 20px;"
                             value="yes"
-                            <?php if (Utilities::escapeInput($article[$i]['home_article_img_yesOrNo']) === 'yes'){ echo 'checked'; } ?>
+                            <?php if (Utilities::escapeInput($article[$i]['article_img_yesOrNo']) === 'yes'){ echo 'checked'; } ?>
                         >
                 </div>
 
@@ -578,16 +578,16 @@
 
                     <label
                         class="form-label fs-4"
-                        for="home_article_img_rightOrLeft_<?php echo $id; ?>"
+                        for="article_img_rightOrLeft_<?php echo $id; ?>"
                         style="width: 130px;"
                     >Right or left :</label>
                     <select
                         class="form-select"
-                        id="home_article_img_rightOrLeft_<?php echo $id; ?>"
-                        name="home_article_img_rightOrLeft_<?php echo $id; ?>"
+                        id="article_img_rightOrLeft_<?php echo $id; ?>"
+                        name="article_img_rightOrLeft_<?php echo $id; ?>"
                         style="width: 100px;"
                     >
-                    <option value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_rightOrLeft']); ?>"><?php echo Utilities::escapeInput($article[$i]['home_article_img_rightOrLeft']); ?></option>
+                    <option value="<?php echo Utilities::escapeInput($article[$i]['article_img_rightOrLeft']); ?>"><?php echo Utilities::escapeInput($article[$i]['article_img_rightOrLeft']); ?></option>
                     <option value="right">right</option>
                     <option value="left">left</option>
                     </select>
@@ -598,16 +598,16 @@
 
                     <label
                         class="form-label fs-4"
-                        for="home_article_img_objectFit_<?php echo $id; ?>"
+                        for="article_img_objectFit_<?php echo $id; ?>"
                         style="width: 130px;"
                     >Object-fit :</label>
                     <select
                         class="form-select"
-                        id="home_article_img_objectFit_<?php echo $id; ?>"
-                        name="home_article_img_objectFit_<?php echo $id; ?>"
+                        id="article_img_objectFit_<?php echo $id; ?>"
+                        name="article_img_objectFit_<?php echo $id; ?>"
                         style="width: 100px;"
                     >
-                    <option value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']); ?>"><?php echo Utilities::escapeInput($article[$i]['home_article_img_objectFit']); ?></option>
+                    <option value="<?php echo Utilities::escapeInput($article[$i]['article_img_objectFit']); ?>"><?php echo Utilities::escapeInput($article[$i]['article_img_objectFit']); ?></option>
                     <option value="cover">cover</option>
                     <option value="contain">contain</option>
                     <option value="fill">fill</option>
@@ -621,16 +621,16 @@
 
                     <label
                         class="form-label fs-4"
-                        for="home_article_img_width_<?php echo $id; ?>"
+                        for="article_img_width_<?php echo $id; ?>"
                         style="width: 130px;"
                     >Width :</label>
                     <input
                         class="form-control fs-5"
                         type="text"
-                        id="home_article_img_width_<?php echo $id; ?>"
-                        name="home_article_img_width_<?php echo $id; ?>"
+                        id="article_img_width_<?php echo $id; ?>"
+                        name="article_img_width_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_width']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['article_img_width']); ?>"
                     >
                     
                 </div>
@@ -639,16 +639,16 @@
 
                     <label
                         class="form-label fs-4"
-                        for="home_article_img_height_<?php echo $id; ?>"
+                        for="article_img_height_<?php echo $id; ?>"
                         style="width: 130px;"
                     >Height :</label>
                     <input
                         class="form-control fs-5"
                         type="text"
-                        id="home_article_img_height_<?php echo $id; ?>"
-                        name="home_article_img_height_<?php echo $id; ?>"
+                        id="article_img_height_<?php echo $id; ?>"
+                        name="article_img_height_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_img_height']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['article_img_height']); ?>"
                     >
                     
                 </div>
@@ -662,16 +662,16 @@
 
                     <label
                         class="form-label fs-4"
-                        for="home_article_sort_<?php echo $id; ?>"
+                        for="article_sort_<?php echo $id; ?>"
                         style="width: 130px;"
                     >Article number :</label>
                     <input
                         class="form-control fs-5"
                         type="text"
-                        id="home_article_sort_<?php echo $id; ?>"
-                        name="home_article_sort_<?php echo $id; ?>"
+                        id="article_sort_<?php echo $id; ?>"
+                        name="article_sort_<?php echo $id; ?>"
                         style="width: 100px;"
-                        value="<?php echo Utilities::escapeInput($article[$i]['home_article_sort']); ?>"
+                        value="<?php echo Utilities::escapeInput($article[$i]['article_sort']); ?>"
                     >
                     
                 </div>
@@ -681,8 +681,8 @@
                         <input
                             class="btn btn-lg btn-primary"
                             type="submit"
-                            name="btn_save_home_article_<?php echo $id; ?>"
-                            id="btn_save_home_article_<?php echo $id; ?>"
+                            name="btn_save_article_<?php echo $id; ?>"
+                            id="btn_save_article_<?php echo $id; ?>"
                             value="Save article <?php echo $id; ?>"
                             style="width: 150px;"
                         >
@@ -692,8 +692,8 @@
                         <input
                             class="btn btn-lg btn-danger"
                             type="submit"
-                            name="btn_delete_home_article_<?php echo $id; ?>"
-                            id="btn_delete_home_article_<?php echo $id; ?>"
+                            name="btn_delete_article_<?php echo $id; ?>"
+                            id="btn_delete_article_<?php echo $id; ?>"
                             value="Delete article <?php echo $id; ?>"
                             style="width: 150px;"
                         >

@@ -24,18 +24,12 @@
                     if($password === $confirm_password){
                         
                         $new_password = password_hash($password, PASSWORD_DEFAULT);
+
+                        $configDb = DbConnect::configDbConnect();
             
-                        for($i=0; $i<3; $i++){
+                        foreach ($configDb as $dbName => $configDbConnect){
                             
-                            if ($i === 0){
-                                $bdd = DbConnect::dbConnect(new DbConnect());
-            
-                            }elseif ($i === 1){
-                                $bdd = DbConnect::dbConnectGoldorak(new DbConnect());
-            
-                            }elseif ($i === 2){
-                                $bdd = DbConnect::dbConnectGP(new DbConnect());
-                            }
+					        $bdd = DbConnect::connectDb($configDbConnect);
 
                             try{
 
@@ -74,7 +68,7 @@
                                             
                                             $bdd = null;
 
-                                            if ($i === 2){
+                                            if ($dbName === 'mycv'){
                                                 Utilities::redirectToPage('connexion');
                                             }
 

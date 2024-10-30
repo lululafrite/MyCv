@@ -8,7 +8,7 @@
 <body>
     <?php require_once('../module/garageparrot/header.php'); // Load the marker <header> ?>
 <main>
-    <?php require_once('../module/garageparrot/main.php'); // loaded the page router ?>
+    <?php require_once('../module/garageparrot/router.php'); // loaded the page router ?>
 </main>
     <?php
         if(!preg_match('/timeExpired/', $_SERVER['REQUEST_URI'])){

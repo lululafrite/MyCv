@@ -55,14 +55,14 @@
     mainDiv.appendChild(carModelContainer);
 
     // Motorisation options
-    const carMotorizations = [
+    const carEngines = [
         'Selectionnez une motorisation', '1.2 PURE TECH 110CH (81kW)', '1.5 BLUE HDI 130CH (96kW)',
         '1.6 CRDI 115CH (85kW)', '1.6 ECO-G 115CH (85kW)', 'FUEL CELL 150kWh', '64 kWh EV',
         '40kWh ELECTRIC', '2.0 TFSI 200CH (147kW)', '2.0 TDI 150CH (110kW)', '2.0 ATKINSON 250CH (180kW)',
         '1.8 SYNERGY DRIVE 220CH (162kW)', '1.6 VTEC 120CH (88kW)','_'
     ];
-    const carMotorizationContainer = createSelectContainer('Motorisation :', 'select_car_motorization', 'select_car_motorization', carMotorizations);
-    mainDiv.appendChild(carMotorizationContainer);
+    const carEngineContainer = createSelectContainer('Motorisation :', 'select_car_engine', 'select_car_engine', carEngines);
+    mainDiv.appendChild(carEngineContainer);
 
     // Kms MAX options
     const carMileages = [

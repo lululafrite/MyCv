@@ -57,7 +57,7 @@
             { label: 'ID:', id: 'id', name: 'txt_carEdit_id', value: car.id_car, type: 'text', class: 'bgDark text-light text-start ps-2', readonly: true },
             { label: 'Marque:', id: 'brand', name: 'txt__Car--Brand', value: car.brand, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
             { label: 'Modèle:', id: 'model', name: 'txt__Car--Model', value: car.model, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
-            { label: 'Moteur:', id: 'motorization', name: 'txt__Car--Motorization', value: car.motorisation, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
+            { label: 'Moteur:', id: 'engine', name: 'txt__Car--Engine', value: car.engine, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
             { label: 'Année:', id: 'year', name: 'txt__Car--year', value: car.year, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
             { label: 'Kilomètrage:', id: 'mileage', name: 'txt__Car--mileage', value: `${car.mileage} kms`, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
             { label: 'Prix:', id: 'price', name: 'txt__Car--price', value: `${car.price} € TTC`, type: 'text', class: 'bg-secondary text-light text-start ps-2', readonly: true },
@@ -148,11 +148,11 @@
     }
 
     // Fonction pour filtrer les voitures en fonction de la marque, du modèle et de la motorisation sélectionnés
-    function filterCars(cars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice) {
+    function filterCars(cars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice) {
         return cars.filter(car => {
             return (selectedBrand === 'Selectionnez une marque' || car.brand === selectedBrand) &&
                 (selectedModel === 'Selectionnez un modele' || car.model === selectedModel) &&
-                (selectedMotorization === 'Selectionnez une motorisation' || car.motorisation === selectedMotorization) &&
+                (selectedEngine === 'Selectionnez une motorisation' || car.engine === selectedEngine) &&
                 (selectedMileage === 'Selectionnez un kilometrage maxi' || car.mileage <= selectedMileage) &&
                 (selectedPrice === 'Selectionnez un prix maxi' || car.price <= selectedPrice); 
         });
@@ -172,50 +172,50 @@
             document.getElementById('select_car_brand').addEventListener('change', (event) => {
                 const selectedBrand = event.target.value;
                 const selectedModel = document.getElementById('select_car_model').value;
-                const selectedMotorization = document.getElementById('select_car_motorization').value;
+                const selectedEngine = document.getElementById('select_car_engine').value;
                 const selectedMileage = document.getElementById('select_car_mileage').value;
                 const selectedPrice = document.getElementById('select_car_price').value;
-                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice);
+                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice);
                 displayCars(filteredCars);
             });
 
             document.getElementById('select_car_model').addEventListener('change', (event) => {
                 const selectedBrand = document.getElementById('select_car_brand').value;
                 const selectedModel = event.target.value;
-                const selectedMotorization = document.getElementById('select_car_motorization').value;
+                const selectedEngine = document.getElementById('select_car_engine').value;
                 const selectedMileage = document.getElementById('select_car_mileage').value;
                 const selectedPrice = document.getElementById('select_car_price').value;
-                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice);
+                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice);
                 displayCars(filteredCars);
             });
 
-            document.getElementById('select_car_motorization').addEventListener('change', (event) => {
+            document.getElementById('select_car_engine').addEventListener('change', (event) => {
                 const selectedBrand = document.getElementById('select_car_brand').value;
                 const selectedModel = document.getElementById('select_car_model').value;
-                const selectedMotorization = event.target.value;
+                const selectedEngine = event.target.value;
                 const selectedMileage = document.getElementById('select_car_mileage').value;
                 const selectedPrice = document.getElementById('select_car_price').value;
-                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice);
+                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice);
                 displayCars(filteredCars);
             });
 
             document.getElementById('select_car_mileage').addEventListener('change', (event) => {
                 const selectedBrand = document.getElementById('select_car_brand').value;
                 const selectedModel = document.getElementById('select_car_model').value;
-                const selectedMotorization = document.getElementById('select_car_motorization').value;
+                const selectedEngine = document.getElementById('select_car_engine').value;
                 const selectedMileage = event.target.value;
                 const selectedPrice = document.getElementById('select_car_price').value;
-                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice);
+                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice);
                 displayCars(filteredCars);
             });
 
             document.getElementById('select_car_price').addEventListener('change', (event) => {
                 const selectedBrand = document.getElementById('select_car_brand').value;
                 const selectedModel = document.getElementById('select_car_model').value;
-                const selectedMotorization = document.getElementById('select_car_motorization').value;
+                const selectedEngine = document.getElementById('select_car_engine').value;
                 const selectedMileage = document.getElementById('select_car_mileage').value;
                 const selectedPrice = event.target.value;
-                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedMotorization, selectedMileage, selectedPrice);
+                const filteredCars = filterCars(allCars, selectedBrand, selectedModel, selectedEngine, selectedMileage, selectedPrice);
                 displayCars(filteredCars);
             });
 
