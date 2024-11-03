@@ -51,7 +51,7 @@ function lanceLeDe(){
 //Sortir une valeur aléatoire du dé et incrémenter la valeur dans la variable 'somme' OU annuler le tour si la valeur est égale à 1.
 function valeurDuDe() {
     let randomNumber = Math.floor(Math.random() * 6) + 1;
-    document.querySelector(".img3").setAttribute("src", "../../img/goldorak/game/dice" + randomNumber + ".png");
+    document.querySelector(".img3").setAttribute("src", "../../img/goldorak/game/dice" + randomNumber + ".webp");
 
     if (randomNumber === 1){
         

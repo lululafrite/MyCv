@@ -4,7 +4,7 @@
 
         <div class="d-flex flex-column align-items-center">
 
-            <a class="navbar-brand text-light" href="#"></a>
+            <a class="navbar-brand text-light" href="index.php?page=home"></a>
             <button
                 class="navbar-toggler bg-corps-tertiaire mb-2"
                 type="button"
@@ -51,7 +51,7 @@
                             </li>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=home" target="_blank">
-                                    <img class="p-2" src="../img/common/icon/garage_black_75x75.png" alt="icone du bouton garage parrot" style="width:30px;">    
+                                    <img class="p-2" src="../img/common/icon/garage_black_75x75.webp" alt="icone du bouton garage parrot" style="width:30px;">    
                                     Garage Parrot
                                 </a>
                             </li>
@@ -103,7 +103,7 @@
                         <?php if(!$_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="index.php?page=connexion">
-                                    <img class="p-2" src="img/common/icon/login_25x25.png" alt="icone du bouton s'identifier">    
+                                    <img class="p-2" src="img/common/icon/login_25x25.webp" alt="icone du bouton s'identifier">    
                                     Connexion
                                 </a>
                             </li>
@@ -111,7 +111,7 @@
                         <?php if($_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="index.php?page=disconnect">
-                                    <img class="p-2" src="img/common/icon/logout_25x25.png" alt="icone du bouton s'identifier">    
+                                    <img class="p-2" src="img/common/icon/logout_25x25.webp" alt="icone du bouton s'identifier">    
                                     Déconnexion
                                 </a>
                             </li>

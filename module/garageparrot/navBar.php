@@ -2,7 +2,7 @@
 
     <div class="text-center my-auto">
         <a href="garageparrot.php?page=home">
-            <img class="img-fluid px-2" src="../img/garageparrot/logo/Logo_Garage_Parrot_250x70_Dark.png" alt="logo du garage parrot">
+            <img class="img-fluid px-2" src="../img/garageparrot/logo/Logo_Garage_Parrot_250x70_Dark.webp" alt="logo du garage parrot">
         </a>
     </div>
 
@@ -10,7 +10,7 @@
 
         <div class="d-flex flex-column align-items-center">
 
-            <a class="navbar-brand text-light" href="#"></a>
+            <a class="navbar-brand text-light" href="garageparrot.php?page=home"></a>
             <button
                 class="navbar-toggler bg-corps-tertiaire mb-2"
                 type="button"
@@ -76,7 +76,7 @@
 
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="p-2 h-75" src="../img/common/icon/car-icon_71x75.png" alt="icone du bouton s'identifier">    
+                                <img class="p-2 h-75" src="../img/common/icon/car-icon_71x75.webp" alt="icone du bouton s'identifier">    
                                 <span class="Nav_Span1">Nos véhicules<br><span class="Nav_Span2">d'occasions</span></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -159,14 +159,14 @@
                         <?php if(!$_SESSION['dataConnect']['connexion']){ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=connexion">
-                                    <img class="p-2" src="../img/common/icon/login_25x25.png" alt="icone du bouton connexion">    
+                                    <img class="p-2" src="../img/common/icon/login_25x25.webp" alt="icone du bouton connexion">    
                                     Connexion
                                 </a>
                             </li>
                         <?php }else{ ?>
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="garageparrot.php?page=disconnect">
-                                    <img class="p-2" src="../img/common/icon/logout_25x25.png" alt="icone du bouton s'identifier">    
+                                    <img class="p-2" src="../img/common/icon/logout_25x25.webp" alt="icone du bouton s'identifier">    
                                     Déconnexion
                                 </a>
                             </li>

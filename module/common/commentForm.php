@@ -77,4 +77,3 @@
 
 </table>
 
-<script src="../js/common/rating.js"></script>

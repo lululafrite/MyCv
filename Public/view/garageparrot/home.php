@@ -343,5 +343,7 @@
 
 </div>
 
+<!--
 <script src="../js/common/function.js"></script>
 <script src="../js/common/fetch.js"></script>
+-->

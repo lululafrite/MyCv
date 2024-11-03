@@ -1,9 +1,11 @@
 ### Folder tmp ###
-/bdSave/
+/saveDb/
+/saveImg/
 
 ### My files ###
 *.pptx
 *.neon
+purgecss.js
 
 ### nodeJs ###
 node_modules/

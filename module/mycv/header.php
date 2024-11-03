@@ -24,7 +24,16 @@
 
                 <div class="carousel-item active" data-bs-interval="10000">
 
-                    <img src="img/mycv/banner/jpg/productivite_1920x400.jpg" class="d-block w-100" alt="...">
+                    <picture>
+                        <source srcset="img/mycv/banner/productivite/productivite_480x100.webp" media="(max-width: 480px)" width="480" height="100">
+                        <source srcset="img/mycv/banner/productivite/productivite_576x120.webp" media="(max-width: 576px)" width="576" height="120">
+                        <source srcset="img/mycv/banner/productivite/productivite_768x160.webp" media="(max-width: 768px)" width="768" height="160">
+                        <source srcset="img/mycv/banner/productivite/productivite_960x200.webp" media="(max-width: 960px)" width="960" height="200">
+                        <source srcset="img/mycv/banner/productivite/productivite_1440x300.webp" media="(max-width: 1440px)" width="1440" height="300">
+                        <source srcset="img/mycv/banner/productivite/productivite_1820x400.webp" media="(max-width: 1820px)" width="1820" height="400">
+                        <source srcset="img/mycv/banner/productivite/productivite_1920x400.webp" media="(min-width: 1821px)" width="1920" height="400">
+                        <img src="img/mycv/banner/productivite/productivite_1920x400.webp" class="d-block w-100" alt="image symbolisant la productivité" width="1920" height="400">
+                    </picture>
                     
                     <div class="carousel-caption d-flex justify-content-center align-items-center">
 
@@ -71,7 +80,16 @@
 
                 <div class="carousel-item">
 
-                    <img src="img/mycv/banner/jpg/connectivite_1920x400.jpg" class="d-block w-100" alt="...">
+                    <picture>
+                        <source srcset="img/mycv/banner/connectivite/connectivite_480x100.webp" media="(max-width: 480px)" width="480" height="100">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_576x120.webp" media="(max-width: 576px)" width="576" height="120">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_768x160.webp" media="(max-width: 768px)" width="768" height="160">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_960x200.webp" media="(max-width: 960px)" width="960" height="200">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_1440x300.webp" media="(max-width: 1440px)" width="1440" height="300">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_1820x400.webp" media="(max-width: 1820px)" width="1820" height="400">
+                        <source srcset="img/mycv/banner/connectivite/connectivite_1920x400.webp" media="(min-width: 1821px)" width="1920" height="400">
+                        <img src="img/mycv/banner/connectivite/connectivite_1920x400.webp" class="d-block w-100" alt="image symbolisant la connectivité" width="1920" height="400">
+                    </picture>
 
                     <div class="carousel-caption d-flex justify-content-center">
 
@@ -88,7 +106,16 @@
 
                 <div class="carousel-item">
 
-                    <img src="img/mycv/banner/jpg/agil_1920x400.jpg" class="d-block w-100" alt="...">
+                    <picture>
+                        <source srcset="img/mycv/banner/agil/agil_480x100.webp" media="(max-width: 480px)" width="480" height="100">
+                        <source srcset="img/mycv/banner/agil/agil_576x120.webp" media="(max-width: 576px)" width="576" height="120">
+                        <source srcset="img/mycv/banner/agil/agil_768x160.webp" media="(max-width: 768px)" width="768" height="160">
+                        <source srcset="img/mycv/banner/agil/agil_960x200.webp" media="(max-width: 960px)" width="960" height="200">
+                        <source srcset="img/mycv/banner/agil/agil_1440x300.webp" media="(max-width: 1440px)" width="1440" height="300">
+                        <source srcset="img/mycv/banner/agil/agil_1820x400.webp" media="(max-width: 1820px)" width="1820" height="400">
+                        <source srcset="img/mycv/banner/agil/agil_1920x400.webp" media="(min-width: 1821px)" width="1920" height="400">
+                        <img src="img/mycv/banner/agil/agil_1920x400.webp" class="d-block w-100" alt="image symbolisant la méthode agil" width="1920" height="400">
+                    </picture>
 
                     <div class="carousel-caption d-flex justify-content-center">
 

@@ -1,4 +1,4 @@
-<footer class="container-fluid pt-5 mt-5" style="background-image: url('../img/garageparrot/baniere/carbone_1920x450.jpg'); background-size: cover; background-position: center; height: auto; width:auto;">
+<footer class="container-fluid pt-5 mt-5" style="background-image: url('../img/garageparrot/baniere/carbone_1920x450.webp'); background-size: cover; background-position: center; height: auto; width:auto;">
     <div class="d-flex justify-content-center">
         <div class="container">
             <div class="row">
@@ -18,7 +18,7 @@
             <div  class="col-3 text-center bg-dark bg-gradient rounded-5 px-0 py-2 mx-0 mt-5">
                 <img class="pb-3 pb-md-0" src="../img/common/icon/youtube_white_77x60.webp" alt="logo youtube" style="height: 40px;">
                 <img class="pb-3 pb-md-0" src="../img/common/icon/twitter_white_60x60.webp" alt="logo txitter ou x" style="height: 40px;">
-                <img class="pb-3 pb-md-0" src="../img/common/icon/instagram.png" alt="logo instagram" style="height: 40px;">
+                <img class="pb-3 pb-md-0" src="../img/common/icon/instagram.webp" alt="logo instagram" style="height: 40px;">
                 <img class="pb-3 pb-md-0" src="../img/common/icon/tiktok.webp" alt="logo txitter ou x" style="height: 40px;">
             </div>
         </div>

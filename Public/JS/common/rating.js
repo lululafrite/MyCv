@@ -11,12 +11,12 @@ function handleRating(event){
         // Réinitialiser les classes "active" pour toutes les étoiles
         let stars = document.querySelectorAll('.rating i');
         stars.forEach(function(star) {
-        star.classList.remove('active');
+            star.classList.remove('active');
         });
 
         // Ajouter la classe "active" pour les étoiles jusqu'à la note sélectionnée
         for (let i = 0; i < ratingValue; i++) {
-        stars[i].classList.add('active');
+            stars[i].classList.add('active');
         }
         
     }
@@ -47,4 +47,9 @@ function comment(input){
 
     }
 
+}
+
+function verifInputEmpty(input) {
+    const myInput = document.getElementById(input);
+    return myInput.value.trim() === '';
 }

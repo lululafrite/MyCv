@@ -107,7 +107,7 @@
         <div class="col-md-2 m-md-0 mb-4">
             
             <div class="d-flex justify-content-center">
-                <img class="img3" src="../img/goldorak/game/dice3.png" onClick="lanceLeDe()" style="width: 100px; height: 100px;">
+                <img class="img3" src="../img/goldorak/game/dice3.webp" onClick="lanceLeDe()" style="width: 100px; height: 100px;">
             </div>
         </div>
         

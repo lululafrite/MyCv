@@ -1,4 +1,4 @@
-<footer class="container-fluid">
+<footer class="container-fluid" style="background-image: none;">
 
     <div class="bg-black mb-5">
         <section class="d-flex flex-column flex-sm-row justify-content-center">

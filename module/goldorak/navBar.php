@@ -2,7 +2,7 @@
 
     <div class="d-flex flex-column align-items-center">
 
-        <a class="navbar-brand text-light" href="#"></a>
+        <a class="navbar-brand text-light" href="goldorak.php?page=home"></a>
         <button
             class="navbar-toggler bg-primary"
             type="button"
