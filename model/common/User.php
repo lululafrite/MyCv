@@ -333,6 +333,7 @@
 
 			$token = bin2hex(random_bytes(32));
 			$timerToken = date('U');
+			$hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
 
 			$emailExist = false;
 			$pseudoExist = false;
@@ -358,7 +359,6 @@
 					if(!$pseudoExist){
 						
 						try{
-							$hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
 
 							$stmt = $bdd->prepare("INSERT INTO `user`(`name`,
 																		`surname`,
@@ -568,7 +568,9 @@
 		
 		private static $checkUserConnect = array();
         public static function checkUserConnect(string $email, string $pw):array{
-				
+
+			self::$checkUserConnect = [];
+
 			if($_SESSION['debug']['monolog']){
 				self::initStaticLoggerUser();
 				$arrayLogger = [
@@ -612,15 +614,18 @@
 					self::$staticLogger->info(self::MSG_QUERY_CORRECTLY, $arrayLogger);
 				}
 
+				return self::$checkUserConnect;
+
 			}catch(PDOException $e){
 				if($_SESSION['debug']['monolog']){
 					self::$staticLogger->error(self::MSG_QUERY_ERROR . $e->getMessage() . '.', $arrayLogger);
 				}
 
+				return [];
+
 			}finally{
 				$bdd=null;
 			}
-			return self::$checkUserConnect;
         }
 		
 		private static $checkIdUser = false;

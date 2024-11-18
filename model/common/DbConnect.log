@@ -1,0 +1,3 @@
+[2024-11-13T16:31:50.630379+00:00] Class.DbConnect.INFO: Query executed correctly. {"user":"Guest","function":"connectDb()","$dbConfig":{"DB_HOST":"localhost","DB_NAME":"mycv","DB_USER":"root","DB_PASS":"","DB_PORT":"3307"},"$bdd":{"PDO":[]}} []
+[2024-11-13T16:31:50.718818+00:00] Class.DbConnect.INFO: Query executed correctly. {"user":"Guest","function":"connectDb()","$dbConfig":{"DB_HOST":"localhost","DB_NAME":"mycv","DB_USER":"root","DB_PASS":"","DB_PORT":"3307"},"$bdd":{"PDO":[]}} []
+[2024-11-13T16:31:50.734493+00:00] Class.DbConnect.INFO: Query executed correctly. {"user":"Guest","function":"connectDb()","$dbConfig":{"DB_HOST":"localhost","DB_NAME":"mycv","DB_USER":"root","DB_PASS":"","DB_PORT":"3307"},"$bdd":{"PDO":[]}} []

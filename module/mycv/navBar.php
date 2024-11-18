@@ -36,6 +36,15 @@
                         </a>
 
                     </li>
+                    
+                    <li class="nav-item custom-border-md-bottom">
+                        
+                        <a class="nav-link" aria-current="page" href="index.php?page=actuPresse">
+                            <img class="p-2 h-75" src="img/common/icon/news.svg" alt="icone du bouton la presse en parle">    
+                            <span class="Nav_Span1">La presse<br><span class="Nav_Span2">en parle</span></span>
+                        </a>
+
+                    </li>
 
                     <li class="nav-item dropdown custom-border-md-bottom">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

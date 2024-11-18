@@ -1,6 +1,7 @@
 <?php
 	use Model\Utilities\Utilities;
 	$siteName = Utilities::checkAndReturnValueInUrl();
+	$siteName = $siteName === 'mycv' ? 'index' : $siteName;
 	$url = $siteName . '.php?page=connexion';
 ?>
 

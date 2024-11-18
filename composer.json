@@ -52,7 +52,8 @@
         "Model\\GoldorakHome\\": "model/goldorak/",
 
         "Model\\Article\\": "model/mycv/",
-        "Model\\Home\\": "model/mycv/"
+        "Model\\Home\\": "model/mycv/",
+        "Model\\Experience\\": "model/mycv/"
     }
   }
 }

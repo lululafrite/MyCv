@@ -41,17 +41,18 @@
     $index = strpos($current_url, 'index') !== false;
     $commander = strpos($current_url, 'commander') !== false;
     $home = strpos($current_url, 'home') !== false;
+    $car = strpos($current_url, 'car') !== false;
+    $mycv = strpos($current_url, 'page=mycv') !== false;
 ?>
 
 <!-- ------------------------------- LIBRARY CSS -------------------------------- -->
 <link rel='stylesheet' type='text/css' href='../css/assets/bootstrap.min.css'>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">-->
 
 <?php if(!$index){ ?>
 
     <?php if($home){ ?>
 
-        <link rel='stylesheet' type='text/css' href='../css/assets/jquery.fancybox.min.css'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel='stylesheet' type='text/css' href='../css/common/rating_comment.css'>
 
     <?php } ?>
@@ -74,9 +75,19 @@
     <link rel='stylesheet' type='text/css' href='../css/garageparrot/style_navbar.css'>
     <link rel='stylesheet' type='text/css' href='../css/garageparrot/garage_parrot_style.css'>
 
+    <?php if($car){ ?>
+        <link rel='stylesheet' type='text/css' href='../css/assets/jquery.fancybox.min.css'>
+    <?php } ?>
+
 <?php }else{ ?>
 
     <link rel='stylesheet' type='text/css' href='../css/mycv/style_navbar.css'>
     <link rel='stylesheet' type='text/css' href='../css/mycv/myCv_style.css'>
 
+    <?php if($mycv){ ?>
+        <link rel='stylesheet' type='text/css' href='../css/assets/jquery.fancybox.min.css'>
+    <?php } ?>
+
 <?php } ?>
+
+<link rel='stylesheet' type='text/css' href='../css/common/rgpd.css'>

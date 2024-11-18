@@ -1,7 +1,4 @@
 # Site web pour le GARAGE V.PARROT
-
-Tous les documents sont disponibles dans Dossier_Technique/
-
 ******** MANUEL D'INSTALLATION ONLINE ET LOCAL ********
 
 Le manuel ci-dessous d'écrit uniquement les étapes principales à respecter pour travailler en local ou en online
@@ -19,7 +16,8 @@ POUR TRAVAILLER EN LOCAL
     - php debug
     - php extension pack
     - php intelephense
-    - symfony for VSCode
+    - Git Graph
+    - 
 4) Configurez le fichier launch.json de VS Code
     - Référez-vous au fichier tuto/launch.txt
 5) Base de données (mariadb)

@@ -29,6 +29,13 @@
         require_once('view/mycv/myCv.php');
         return;
 
+    }else if($page === 'actuPresse'){
+
+        resetOtherVarSession();
+        
+        require_once('view/mycv/actuPresse.php');
+        return;
+
     }else if($page === 'connexion'){
 
         resetOtherVarSession();

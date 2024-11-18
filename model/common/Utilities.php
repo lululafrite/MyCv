@@ -133,18 +133,20 @@
         // Road to page        
         public static function redirectToPage(string $page):void{
             $baseUrl = self::checkIfLocal() ? "http://mycv" : "https://www.follaco.fr";
-            $siteName = self::checkAndReturnValueInUrl() === 'mycv' ? 'index' : self::checkAndReturnValueInUrl();
-            $url = '<script>window.location.href = "' . $baseUrl . ($siteName === 'MyCv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";</script>';
+            $siteName = self::checkAndReturnValueInUrl();
+            $siteName = $siteName === 'mycv' ? 'index' : $siteName;
+            $url = '<script>window.location.href = "' . $baseUrl . ($siteName === 'mycv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";</script>';
             echo $url;
             die();
         }
 
         public static function redirectToPageTimeOut(string $page):void{
             $baseUrl = self::checkIfLocal() ? "http://mycv" : "https://www.follaco.fr";
-            $siteName = self::checkAndReturnValueInUrl() === 'mycv' ? 'index' : self::checkAndReturnValueInUrl();
+            $siteName = self::checkAndReturnValueInUrl();
+            $siteName = $siteName === 'mycv' ? 'index' : $siteName;
             $url = '<script>
                         setTimeout(function(){
-                            window.location.href = "' . $baseUrl . ($siteName === 'MyCv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";
+                            window.location.href = "' . $baseUrl . ($siteName === 'mycv' ? '' : '/' . $siteName) . '.php?page=' . $page . '";
                         }, 5000);
                     </script>';
             echo $url;

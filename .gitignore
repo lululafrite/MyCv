@@ -6,6 +6,10 @@
 *.pptx
 *.neon
 purgecss.js
+google526a6a38db56d4a8.html
+robots.txt
+sitemap.xml
+.htaccess
 
 ### nodeJs ###
 node_modules/

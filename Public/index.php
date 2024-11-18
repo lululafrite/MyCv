@@ -10,7 +10,8 @@
 ?>
 
 <body class="bg-body-tertiary p-0 m-0">
-
+    
+    <?php require_once('../module/common/tagManager.php'); // Google Tag Manager (noscript) ?>
     <?php require_once('../module/mycv/header.php'); // Load the marker <header> ?>
 
 <main class=" p-0 mx-0 my-0">
@@ -19,10 +20,9 @@
 
     <?php require_once('../module/mycv/footer.php');  // Load the marker <footer> ?>
 
-    <?php require_once('./js/common/libraryJS.php'); ?>
+    <?php require_once('../module/common/rgpd.php'); ?>
 
-    
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <?php require_once('./js/common/libraryJS.php'); ?>
 
 </body>
 

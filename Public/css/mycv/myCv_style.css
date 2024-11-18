@@ -32,7 +32,13 @@ h4{
 input, textarea{
   border: none;
   width: 100%;
-  font-size: 1.6rem;  
+  font-size: 1.6rem;
+}
+
+.auto-resize-input {
+  width: auto; /* Permet à l'input de se redimensionner automatiquement */
+  /*min-width: 50px; /* Largeur minimale pour éviter que l'input ne devienne trop petit */
+  box-sizing: content-box; /* Assure que la largeur est calculée en fonction du contenu */
 }
 
 /* Manage color star*/
@@ -77,6 +83,12 @@ header{
 .roundedImgRight{
   border-top-right-radius: 5px; /* Ajustez la valeur selon vos besoins */
   border-bottom-right-radius: 5px;
+}
+
+.iframeActuPresse{
+  width: 560px;
+  height: 315px;
+  border: none;
 }
 
 @media screen and (min-width: 993px){
@@ -251,5 +263,49 @@ header{
     text-align: center;
     border-radius: 10px;
   }
+  
+  .slideshow{
+    /*width: 250px;*/
+  }
 
+}
+
+@media screen and (max-width: 375px){
+
+  .iframeActuPresse{
+    width: 250px;
+    height: auto;
+    border: none;
+  }
+  
+}
+
+@media screen and (max-width: 300px){
+
+  .iframeActuPresse{
+    width: 200px;
+    height: auto;
+    border: none;
+  }
+
+}
+
+@media screen and (max-width: 240px){
+
+  .iframeActuPresse{
+    width: 150px;
+    height: auto;
+    border: none;
+  }
+  
+}
+
+@media screen and (max-width: 190px){
+
+  .iframeActuPresse{
+    width: 100px;
+    height: auto;
+    border: none;
+  }
+  
 }
