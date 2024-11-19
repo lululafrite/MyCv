@@ -8,7 +8,7 @@
                 </div>
                 <!-- <div class="col-12 col-lg-5 mx-auto me-lg-0 text-center "> -->
                 <div class="col-12 col-lg-5 mx-auto me-lg-0">
-                    <?php require_once('../module/garageparrot/contact.php'); ?>
+                    <?php require_once('../module/common/contact.php'); ?>
                 </div>
             </div>
         </div>

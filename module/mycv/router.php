@@ -36,6 +36,13 @@
         require_once('view/mycv/actuPresse.php');
         return;
 
+    }else if($page === 'contact'){
+
+        resetOtherVarSession();
+        
+        require_once('view/common/contact.php');
+        return;
+
     }else if($page === 'connexion'){
 
         resetOtherVarSession();

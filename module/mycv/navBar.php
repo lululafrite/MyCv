@@ -84,18 +84,18 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item Nav_Span1" href="mailto:ludovic.folaco@free.fr">
+                                <a class="dropdown-item Nav_Span1" href="index.php?page=contact">
                                     <img class="p-2 h-75" src="img/common/icon/envelope-at.svg" alt="icone du bouton s'identifier">
-                                    <span class="Nav_Span2">ludovic.folaco@free.fr</span></span>
+                                    <span class="Nav_Span2">Formulaire de contact</span></span>
                                 </a>
-                            </li>       
+                            </li>
 
                             <li>
                                 <a class="dropdown-item Nav_Span1" href="https://www.linkedin.com/in/ludovic-follaco-a74b5394/" target="_blank">
                                     <img class="p-2 h-75" src="img/common/icon/linkedin.svg" alt="icone du bouton s'identifier">
                                     <span class="Nav_Span2">Mon Linkedin</span></span>
                                 </a>
-                            </li>    
+                            </li>
 
                         </ul>
 

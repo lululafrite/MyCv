@@ -47,17 +47,17 @@
             
             try{
                 $mail->isSMTP();
-                $mail->Host = 'smtp.ionos.fr';
+                $mail->Host = 'smtp.free.fr';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'ludovic@follaco.fr';
-                $mail->Password = 'JeaFra6769!';
+                $mail->Username = 'ludovic.follaco@free.fr';
+                $mail->Password = 'MarLis123!';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
                 // Définir l'encodage des caractères
                 $mail->CharSet = 'UTF-8';
 
-                $mail->setFrom('ludovic@follaco.fr', 'Webmaster Ludovic FOLLACO');
+                $mail->setFrom('ludovic.follaco@free.fr', 'Webmaster Ludovic FOLLACO');
                 $mail->addAddress($email);
 
                 $mail->isHTML(true);

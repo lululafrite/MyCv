@@ -85,6 +85,8 @@
         $home['home_title_page'] = "Mon parcours";
     }else if(preg_match("/actuPresse/", $_SERVER['REQUEST_URI'])){
         $home['home_title_page'] = "La presse en parle";
+    }else if(preg_match("/contact/", $_SERVER['REQUEST_URI'])){
+        $home['home_title_page'] = "Envoyez un courriel à Ludovic FOLLACO!";
     }else{
         $home['home_title_page'] = "";
         $_SESSION['other']['message'] = "";
